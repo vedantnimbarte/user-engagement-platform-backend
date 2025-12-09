@@ -1,0 +1,133 @@
+{
+  "msg": {
+    "ok": "OK",
+    "argument_validation_error": "Invalid argument passed.",
+    "created_success": "Created successfully.",
+    "updated_success": "Updated successfully.",
+    "deleted_success": "Deleted successfully.",
+    "already_exists": "This Email Already exist.",
+    "cannot_perform_action": "Could not perform action.",
+    "internal_server_error": "Internal server error.",
+    "user_already_exists": "User already exists! Please try login",
+    "user_has_been_created_successfully": "User has been created successfully!",
+    "logged_in_successfully": "User has been logged in successfully!!",
+    "unauthorized_request": "You are unauthorized for this request!",
+    "email_already_verified": "Your email is already verified!",
+    "verification_mail_sent": "Email verification OTP has been sent to your mail",
+    "otp_sent_successfully": "OTP has been sent on your mail successfully",
+    "otp_not_found": "OTP not found for this user!",
+    "too_many_otp_attempts": "Too many otp attempts!",
+    "invalid_email": "This Email doesn't exist",
+    "reset_password_link_sent": "Reset password link has been sent to your email",
+    "reset_password_successful": "Password has been reset successfully. You can now login with your new password",
+    "reset_link_doesnt_exists": "Reset link has expired or already been used",
+    "invalid_email_or_password": "Invalid email or password!",
+    "invalid_reset_token": "Invalid or expired reset token",
+    "invalid_reset_password_link": "Invalid reset password link",
+    "invalid_invitation_link": "Invalid invitation link",
+    "invitation_link_already_used": "This Invitation Link has been already Used",
+    "invalid_email_verification_link": "Invalid email verification link",
+    "user_doesnt_exists": "User doesn't exists! Please register first.",
+    "client_registered_successfully": "Client has been registered successfully!",
+    "logged_out_successfully": "You have been logged out successfully.",
+    "email_not_verified": "Please verify your email first",
+    "email_verified_successfully": "Email verified successfully!",
+    "already_logged_out": "You are already logged out",
+    "email_verification_off": "Email verification step is off",
+    "transaction_failed": "Transaction failed!",
+    "incomplete_social_registration": "Registration of this user is yet incomplete. Redirecting to complete registration flow.",
+    "social_login_registration_success": "You are almost there. Add some more details to complete your registration.",
+    "no_email_setting_found": "No email setting data found.",
+    "assigned_to_account": "User successfully assigned to account",
+    "account_deleted": "This user has been disabled or deleted,Conttact Support.",
+    "early_access_requested": "Your Sign up request is not approved yet!! Be patient we will notify you when it approved.",
+    "signup_request": "Your Request For Sign up submitted successfully",
+    "invalid_input": "Please provide valid input!",
+    "user_not_found": "User not found",
+    "account_already_exists_with_same_domain": "Your account is already exists with this email,Please seek an invitation from your existing account user.",
+    "email_not_allowed": "This email is not allowed, Try with your business email!",
+    "failed_to_send_reset_password_email": "Failed to send reset password email",
+    "passwords_not_match": "Password and confirm password do not match",
+    "invalid_google_token": "Invalid Google token",
+    "google_auth_failed": "Google authentication failed",
+    "user_data_fetched_successfully": "User data fetched successfully"
+  },
+  "permissions": {
+    "application_permission_created": "Permission assigned to application successfully.",
+    "application_permission_not_found": "Permission and application combination not found for this query.",
+    "application_permission_already_assigned": "Permission is already assigned to this application.",
+    "application_permission_unassigned": "Permission unassigned from this application successfully.",
+    "application_permission_already_unassigned": "Permission is already unassigned from this application.",
+    "application_permission_denied": "This application does not have permission to perform this action.",
+    "application_feature_not_found": "Feature with id not exist in this application.",
+    "feature_permission_denied": "This feature does not have permission to perform this action.",
+    "application_feature_permission_not_found": "Permission and feature combination not found for this query.",
+    "feature_permission_updated_successfully": "Feature permission updated successfully.",
+    "application_feature_permission_no_data_found": "No permission found for this feature in this role.",
+    "permissions_denied": "You do not have permission to perform this action for this role.",
+    "no_subscription_found": "No subscription found for this account.",
+    "trial_period_expired": "Your trial period has expired. Please subscribe to continue using this application.",
+    "subscription_period_expired": "Your subscription period has expired. Please subscribe to continue using this application."
+  },
+  "feature": {
+    "no_data_found": "Feature not found for this query.",
+    "no_permission_create": "This feature has not permission for create.",
+    "no_permission_update": "This feature has not permission for update.",
+    "no_permission_delete": "This feature has not permission for delete.",
+    "no_permission_read": "This feature has not permission for read.",
+    "no_permission_action": "This feature has not permission for action."
+  },
+  "roles": {
+    "restore": "Role has been deleted.Contact account owner!",
+    "no_data_found": "No role found for this query.",
+    "disabled_foreign_key": "Role has been deleted.Contact account owner!",
+    "role_not_assigned": "This role is not assigned to you.",
+    "no_default_role": "No default role found for this User."
+  },
+  "unauthorized": {
+    "deleted_user": "This user has been disabled, Please contact account owner.",
+    "sub_domain_exists": "Sub domain already exists!",
+    "invalid_JWT_token": "Token has been expired!",
+    "already_logged_in": "You are already logged in",
+    "max_login_attempts": "You have reached to maximum login attempts! Please try again after sometime",
+    "invalid_token": "Unauthorized"
+  },
+  "2FA": {
+    "two_fa_enabled": "Two factor authentication is enabled",
+    "invalid_otp": "Invalid OTP",
+    "too_many_otp_attempts": "You have reached to maximum otp attempts! Please try again after sometime.",
+    "try_after_one_hour": "Please try sending OTP after sometime.",
+    "authenticator_not_verified": "Please register with the authenticator first",
+    "session_already_in_use": "Session already created. Complete 2FA process to proceed further!",
+    "invalid_two_fa_type": "Invalid two-factor authentication type passed.",
+    "phone_number_not_found": "Mobile number not found for the user.",
+    "mobile_prefix_not_found": "Mobile prefix not found.",
+    "otp_sent_on_authenticator": "Please submit the OTP from your authenticator app.",
+    "otp_sent_on_phone": "The otp has been sent to your mobile number successfully. ",
+    "session_could_not_created": "Session could not be created."
+  },
+  "OTPLogin": {
+    "try_after_one_hour": "You have reached to maximum otp attempts! Please try again after sometime",
+    "too_many_otp_attempts": "You have reached to maximum login attempts! Please try again after sometime"
+  },
+  "email_verify": {
+    "session_already_in_use": "Session already created. Complete email verification process to proceed further!"
+  },
+  "setPassword": {
+    "password_already_set": "Password has been already set. Please try login or contact administration",
+    "password_couldnt_be_updated": "Password couldn't be updated. Please try again!",
+    "password_set_successful": "Password has been set successfully.",
+    "password_not_set": "Please set your Password First."
+  },
+  "authentication_server": {
+    "no_data_found": "No authentication service found for this query."
+  },
+  "twilio_setting": {
+    "created_success": "Twilio setting has been created successfully.",
+    "updated_success": "Twilio setting has been updated successfully.",
+    "no_data_found": "Twilio settings not found."
+  },
+  "country": {
+    "country_not_found": "No country found for this query."
+  }
+}

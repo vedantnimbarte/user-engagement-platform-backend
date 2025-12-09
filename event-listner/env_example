@@ -1,0 +1,46 @@
+NODE_ENV=development
+PORT=5010
+
+# Other Configurations
+API_VERSION=v1
+JWT_SECRET=dev-secret-key
+JWT_EXPIRES_IN=90d
+
+# Main Database Configuration
+DB_HOST=localhost
+DB_PORT=6432
+DB_NAME=""
+DB_USER=""
+DB_PASSWORD=""
+
+# Redis Configuration
+REDIS_HOST=127.0.0.1
+REDIS_PORT=6379
+REDIS_PASSWORD=
+
+
+#tenant direct connection
+TENANT_DB_USER=postgres
+TENANT_DB_PASSWORD=""
+TENANT_DB_HOST=localhost
+TENANT_DB_PORT=6432
+
+#tenant pgbouncer connection
+TENANT_DB_USER_SAVE=postgres
+TENANT_DB_PASSWORD_SAVE=""
+TENANT_DB_HOST_SAVE=localhost
+TENANT_DB_PORT_SAVE=6432
+
+# Other Configurations
+API_VERSION=v1
+JWT_SECRET=your-jwt-secret
+JWT_EXPIRES_IN=90d
+
+## mail credentials
+MAIL_PROTOCOL="SMTP"
+MAIL_HOST="smtp.gmail.com"
+MAIL_PORT=465
+MAIL_USER_NAME=""
+MAIL_PASSWORD=""
+MAIL_FROM_EMAIL=""
+MAIL_SECURE_CONNECTION="true"

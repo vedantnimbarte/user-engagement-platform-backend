@@ -1,0 +1,276 @@
+/* CSS Variables for customization */
+:root {
+    --cta-title-color: #000000;
+    --cta-description-color: #64748B;
+    --cta-background-color: #ffffff;
+    --cta-primary-color: #3B82F6;
+    --cta-primary-dark-color: #2563EB;
+    --cta-secondary-color: #64748B;
+    --cta-secondary-bg-color: #ffffff;
+    --cta-secondary-border-color: #E2E8F0;
+    --cta-secondary-hover-bg-color: #F8FAFC;
+    --cta-secondary-selected-bg-color: #F1F5F9;
+  }
+  
+  /* Main component container */
+  .cta-component {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 9.05px;
+    margin-top: 20px;
+    background-color: var(--cta-background-color, #ffffff);
+  }
+  
+  /* Base button styles */
+  .cta-primary-button,
+  .cta-secondary-button {
+    width: 100%;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    outline: none;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  
+  /* Primary button styles */
+  .cta-primary-button {
+    padding: 12px 16px;
+    color: white;
+  }
+  
+  /* Primary button default state */
+  .cta-primary-default {
+    background: linear-gradient(to right, var(--cta-primary-color, #3B82F6), var(--cta-primary-dark-color, #2563EB));
+    transform: translateY(0);
+  }
+  
+  .cta-primary-default:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+  }
+  
+  .cta-primary-default:active {
+    transform: translateY(0);
+  }
+  
+  /* Primary button selected state */
+  .cta-primary-selected {
+    background-color: var(--cta-primary-dark-color, #2563EB);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    transform: translateY(0);
+  }
+  
+  /* Secondary button styles */
+  .cta-secondary-button {
+    padding: 10px 16px;
+  }
+  
+  /* Secondary button default state */
+  .cta-secondary-default {
+    background-color: var(--cta-secondary-bg-color, #ffffff);
+    border: 1px solid var(--cta-secondary-border-color, #E2E8F0);
+    color: var(--cta-secondary-color, #64748B);
+  }
+  
+  .cta-secondary-default:hover {
+    background-color: var(--cta-secondary-hover-bg-color, #F8FAFC);
+    border-color: #CBD5E1;
+  }
+  
+  /* Secondary button selected state */
+  .cta-secondary-selected {
+    background-color: var(--cta-secondary-selected-bg-color, #F1F5F9);
+    color: var(--cta-secondary-color, #64748B);
+    border: 1px solid #CBD5E1;
+  }
+  
+  /* Focus states for accessibility */
+  .cta-primary-button:focus {
+    box-shadow: 0 0 0 2px var(--cta-primary-color, #3B82F6), 0 0 0 4px rgba(59, 130, 246, 0.2);
+  }
+  
+  .cta-secondary-button:focus {
+    box-shadow: 0 0 0 2px var(--cta-primary-color, #3B82F6), 0 0 0 4px rgba(59, 130, 246, 0.2);
+  }
+  
+  /* Disabled state */
+  .cta-disabled {
+    opacity: 0.6;
+    cursor: not-allowed !important;
+    pointer-events: none;
+  }
+  
+  /* Loading state */
+  .cta-component.loading .cta-primary-button,
+  .cta-component.loading .cta-secondary-button {
+    position: relative;
+    color: transparent;
+  }
+  
+  .cta-component.loading .cta-primary-button::after,
+  .cta-component.loading .cta-secondary-button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 16px;
+    height: 16px;
+    margin: -8px 0 0 -8px;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: cta-spin 1s linear infinite;
+  }
+  
+  .cta-component.loading .cta-primary-button::after {
+    border-color: white;
+    border-right-color: transparent;
+  }
+  
+  .cta-component.loading .cta-secondary-button::after {
+    border-color: var(--cta-secondary-color, #64748B);
+    border-right-color: transparent;
+  }
+  
+  @keyframes cta-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  /* Responsive design */
+  @media (max-width: 640px) {
+    .cta-component {
+      flex-direction: column;
+      gap: 12px;
+    }
+    
+    .cta-primary-button,
+    .cta-secondary-button {
+      width: 100%;
+      padding: 14px 16px;
+      font-size: 16px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .cta-component {
+      margin-top: 16px;
+      gap: 10px;
+    }
+    
+    .cta-primary-button,
+    .cta-secondary-button {
+      padding: 12px 14px;
+      font-size: 15px;
+    }
+  }
+  
+  /* High contrast mode support */
+  @media (prefers-contrast: high) {
+    .cta-primary-default {
+      background: #000000;
+      border: 2px solid #000000;
+    }
+    
+    .cta-secondary-default {
+      border: 2px solid #000000;
+      background: #ffffff;
+      color: #000000;
+    }
+    
+    .cta-secondary-default:hover {
+      background: #f0f0f0;
+    }
+  }
+  
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    .cta-primary-button,
+    .cta-secondary-button {
+      transition: none;
+    }
+    
+    .cta-primary-default:hover {
+      transform: none;
+    }
+    
+    .cta-component.loading .cta-primary-button::after,
+    .cta-component.loading .cta-secondary-button::after {
+      animation: none;
+    }
+  }
+  
+  /* Dark mode support */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --cta-background-color: #1f2937;
+      --cta-secondary-bg-color: #374151;
+      --cta-secondary-border-color: #4b5563;
+      --cta-secondary-hover-bg-color: #4b5563;
+      --cta-secondary-selected-bg-color: #4b5563;
+      --cta-secondary-color: #d1d5db;
+    }
+  }
+  
+  /* Animation for button press effect */
+  .cta-primary-button:active,
+  .cta-secondary-button:active {
+    transform: scale(0.98);
+  }
+  
+  /* Hover effects enhancement */
+  .cta-primary-default:hover {
+    background: linear-gradient(to right, #2563EB, #1d4ed8);
+  }
+  
+  .cta-secondary-default:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Success state (when both buttons are visible but one is selected) */
+  .cta-component.answered .cta-primary-selected {
+    background: linear-gradient(to right, #10b981, #059669);
+  }
+  
+  .cta-component.answered .cta-secondary-selected {
+    background-color: #f3f4f6;
+    border-color: #9ca3af;
+  }
+  
+  /* Error state */
+  .cta-component.error .cta-primary-button,
+  .cta-component.error .cta-secondary-button {
+    border: 2px solid #ef4444;
+  }
+  
+  .cta-component.error .cta-primary-default {
+    background: linear-gradient(to right, #ef4444, #dc2626);
+  }
+  
+  /* Compact variant */
+  .cta-component.compact {
+    gap: 6px;
+    margin-top: 12px;
+  }
+  
+  .cta-component.compact .cta-primary-button,
+  .cta-component.compact .cta-secondary-button {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+  
+  /* Full width variant for mobile */
+  .cta-component.full-width {
+    width: 100%;
+  }
+  
+  .cta-component.full-width .cta-primary-button,
+  .cta-component.full-width .cta-secondary-button {
+    flex: 1;
+  }

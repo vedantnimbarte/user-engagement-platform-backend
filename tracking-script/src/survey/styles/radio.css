@@ -1,0 +1,342 @@
+/* CSS Variables for customization */
+:root {
+    --radio-title-color: #000000;
+    --radio-description-color: #64748B;
+    --radio-background-color: #ffffff;
+    --radio-primary-color: #3B82F6;
+    --radio-border-color: #E6EAEF;
+    --radio-text-color: #1F2429;
+    --radio-hover-border-color: #CBD5E1;
+    --radio-hover-bg-color: #F8FAFC;
+    --radio-selected-bg-color: #EBF5FF;
+    --radio-radio-border-color: #CBD5E1;
+  }
+  
+  /* Main component container */
+  .radio-component {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    background-color: var(--radio-background-color, #ffffff);
+  }
+  
+  /* Option button */
+  .radio-option-button {
+    width: 100%;
+    text-align: left;
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 1.25px solid;
+    background: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    outline: none;
+  }
+  
+  /* Unselected state */
+  .radio-option-unselected {
+    border-color: var(--radio-border-color, #E6EAEF);
+    background-color: transparent;
+  }
+  
+  .radio-option-unselected:hover {
+    border-color: var(--radio-hover-border-color, #CBD5E1);
+    background-color: var(--radio-hover-bg-color, #F8FAFC);
+  }
+  
+  /* Selected state */
+  .radio-option-selected {
+    border-color: var(--radio-primary-color, #3B82F6);
+    background-color: var(--radio-selected-bg-color, #EBF5FF);
+  }
+  
+  .radio-option-selected:hover {
+    border-color: var(--radio-primary-color, #3B82F6);
+    background-color: var(--radio-selected-bg-color, #EBF5FF);
+  }
+  
+  /* Focus state for accessibility */
+  .radio-option-button:focus {
+    outline: 2px solid var(--radio-primary-color, #3B82F6);
+    outline-offset: 2px;
+  }
+  
+  /* Visual radio element */
+  .radio-visual {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+  }
+  
+  /* Unselected radio visual */
+  .radio-visual-unselected {
+    border: 1.25px solid var(--radio-radio-border-color, #CBD5E1);
+    background-color: transparent;
+  }
+  
+  /* Selected radio visual */
+  .radio-visual-selected {
+    background-color: var(--radio-primary-color, #3B82F6);
+    border: 1.25px solid var(--radio-primary-color, #3B82F6);
+  }
+  
+  /* Radio dot */
+  .radio-dot {
+    display: none;
+    width: 12px;
+    height: 12px;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .radio-dot svg {
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* Option text */
+  .radio-option-text {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--radio-text-color, #1F2429);
+    line-height: 1.4;
+    user-select: none;
+  }
+  
+  /* Animation for smooth transitions */
+  .radio-option-button {
+    transform: translateY(0);
+  }
+  
+  .radio-option-button:active {
+    transform: translateY(1px);
+  }
+  
+  /* Hover effects for better interactivity */
+  .radio-visual-unselected {
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+  }
+  
+  .radio-option-unselected:hover .radio-visual-unselected {
+    border-color: var(--radio-primary-color, #3B82F6);
+    background-color: rgba(59, 130, 246, 0.05);
+  }
+  
+  /* Selected option enhanced styling */
+  .radio-option-selected .radio-visual-selected {
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+  }
+  
+  /* Animation for radio selection */
+  @keyframes radio-select {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+  }
+  
+  .radio-visual-selected {
+    animation: radio-select 0.3s ease;
+  }
+  
+  /* Disabled state */
+  .radio-option-button:disabled,
+  .radio-disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  
+  /* Loading state */
+  .radio-component.loading {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+  
+  /* Responsive design */
+  @media (max-width: 640px) {
+    .radio-component {
+      gap: 10px;
+    }
+    
+    .radio-option-button {
+      padding: 10px 14px;
+    }
+    
+    .radio-visual {
+      width: 18px;
+      height: 18px;
+      margin-right: 10px;
+    }
+    
+    .radio-dot {
+      width: 10px;
+      height: 10px;
+    }
+    
+    .radio-option-text {
+      font-size: 13px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .radio-option-button {
+      padding: 8px 12px;
+    }
+    
+    .radio-visual {
+      width: 16px;
+      height: 16px;
+      margin-right: 8px;
+    }
+    
+    .radio-dot {
+      width: 8px;
+      height: 8px;
+    }
+    
+    .radio-option-text {
+      font-size: 12px;
+    }
+  }
+  
+  /* High contrast mode support */
+  @media (prefers-contrast: high) {
+    .radio-option-unselected {
+      border-color: #000000;
+    }
+    
+    .radio-visual-unselected {
+      border-color: #000000;
+    }
+    
+    .radio-option-text {
+      color: #000000;
+    }
+    
+    .radio-visual-selected {
+      background-color: #000000;
+      border-color: #000000;
+    }
+  }
+  
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    .radio-option-button,
+    .radio-visual {
+      transition: none;
+    }
+    
+    .radio-visual-selected {
+      animation: none;
+    }
+  }
+  
+  /* Dark mode support */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --radio-background-color: #1f2937;
+      --radio-border-color: #374151;
+      --radio-text-color: #f9fafb;
+      --radio-hover-border-color: #4b5563;
+      --radio-hover-bg-color: #374151;
+      --radio-selected-bg-color: #1e3a8a;
+      --radio-radio-border-color: #4b5563;
+    }
+  }
+  
+  /* Focus visible for better accessibility */
+  .radio-option-button:focus-visible {
+    outline: 2px solid var(--radio-primary-color, #3B82F6);
+    outline-offset: 2px;
+  }
+  
+  /* Keyboard navigation indicators */
+  .radio-option-button:focus:not(:hover) {
+    background-color: rgba(59, 130, 246, 0.05);
+  }
+  
+  /* Success state */
+  .radio-component.success .radio-option-selected {
+    border-color: #10b981;
+    background-color: #d1fae5;
+  }
+  
+  .radio-component.success .radio-visual-selected {
+    background-color: #10b981;
+    border-color: #10b981;
+  }
+  
+  /* Error state */
+  .radio-component.error .radio-option-button {
+    border-color: #ef4444;
+  }
+  
+  .radio-component.error .radio-visual-unselected {
+    border-color: #ef4444;
+  }
+  
+  /* Compact variant */
+  .radio-component.compact {
+    gap: 8px;
+  }
+  
+  .radio-component.compact .radio-option-button {
+    padding: 8px 12px;
+  }
+  
+  .radio-component.compact .radio-visual {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+  }
+  
+  .radio-component.compact .radio-option-text {
+    font-size: 13px;
+  }
+  
+  /* Large variant */
+  .radio-component.large {
+    gap: 16px;
+  }
+  
+  .radio-component.large .radio-option-button {
+    padding: 16px 20px;
+  }
+  
+  .radio-component.large .radio-visual {
+    width: 24px;
+    height: 24px;
+    margin-right: 16px;
+  }
+  
+  .radio-component.large .radio-option-text {
+    font-size: 16px;
+  }
+  
+  /* Print styles */
+  @media print {
+    .radio-component {
+      background: white;
+      color: black;
+    }
+    
+    .radio-option-button {
+      border-color: black;
+      background: white;
+    }
+    
+    .radio-visual-selected {
+      background: black;
+      border-color: black;
+    }
+  }

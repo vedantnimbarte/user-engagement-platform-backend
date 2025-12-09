@@ -1,0 +1,385 @@
+/* CSS Variables for customization */
+:root {
+    --star-rating-title-color: #000000;
+    --star-rating-description-color: #657488;
+    --star-rating-background-color: #ffffff;
+    --star-rating-inactive-bg: #F3E8FF;
+    --star-rating-active-bg: #C084FC;
+    --star-rating-inactive-fill: #C084FC;
+    --star-rating-active-fill: #ffffff;
+    --star-rating-label-color: #657488;
+  }
+  
+  /* Main component container */
+  .star-rating-component {
+    height: 74px;
+    width: 440px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    background-color: var(--star-rating-background-color, #ffffff);
+  }
+  
+  /* Star container */
+  .star-rating-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
+    transition: all 0.2s ease;
+  }
+  
+  /* Star button styling */
+  .star-rating-button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    outline: none;
+    border-radius: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 20px;
+    transition: all 0.2s ease;
+    font-family: inherit;
+  }
+  
+  .star-rating-button:focus {
+    outline: 2px solid #3B82F6;
+    outline-offset: 2px;
+  }
+  
+  /* Inactive state */
+  .star-rating-inactive {
+    background-color: var(--star-rating-inactive-bg, #F3E8FF);
+  }
+  
+  .star-rating-inactive .star-rating-icon {
+    fill: var(--star-rating-inactive-fill, #C084FC);
+    filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.1));
+  }
+  
+  /* Active state */
+  .star-rating-active {
+    background-color: var(--star-rating-active-bg, #C084FC);
+  }
+  
+  .star-rating-active .star-rating-icon {
+    fill: var(--star-rating-active-fill, #ffffff);
+    filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.1));
+  }
+  
+  /* Star icon styling */
+  .star-rating-icon {
+    width: 35px;
+    height: 35px;
+    transition: all 0.2s ease;
+  }
+  
+  /* Hover effects */
+  .star-rating-button:hover {
+    transform: scale(1.05);
+  }
+  
+  .star-rating-button:hover.star-rating-inactive {
+    background-color: #E9D5FF;
+  }
+  
+  .star-rating-button:hover.star-rating-active {
+    background-color: #A855F7;
+  }
+  
+  /* Active state animation */
+  @keyframes star-rating-select {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1.05); }
+  }
+  
+  .star-rating-active {
+    animation: star-rating-select 0.3s ease;
+  }
+  
+  /* Labels container */
+  .star-rating-labels {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 14px;
+  }
+  
+  .star-rating-label-min,
+  .star-rating-label-max {
+    font-weight: 500;
+    color: var(--star-rating-label-color, #657488);
+  }
+  
+  /* Disabled state */
+  .star-rating-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  
+  /* Loading state */
+  .star-rating-component.loading {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+  
+  /* Active button press effect */
+  .star-rating-button:active {
+    transform: scale(0.98);
+  }
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .star-rating-component {
+      width: 100%;
+      max-width: 440px;
+      padding: 0 16px;
+      box-sizing: border-box;
+    }
+    
+    .star-rating-container {
+      gap: 6px;
+    }
+    
+    .star-rating-button {
+      padding: 6px 16px;
+    }
+    
+    .star-rating-icon {
+      width: 30px;
+      height: 30px;
+    }
+  }
+  
+  @media (max-width: 640px) {
+    .star-rating-container {
+      gap: 4px;
+    }
+    
+    .star-rating-button {
+      padding: 4px 12px;
+    }
+    
+    .star-rating-icon {
+      width: 28px;
+      height: 28px;
+    }
+    
+    .star-rating-labels {
+      font-size: 13px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .star-rating-component {
+      height: 60px;
+      gap: 8px;
+    }
+    
+    .star-rating-container {
+      gap: 2px;
+    }
+    
+    .star-rating-button {
+      padding: 4px 8px;
+    }
+    
+    .star-rating-icon {
+      width: 24px;
+      height: 24px;
+    }
+    
+    .star-rating-labels {
+      font-size: 12px;
+    }
+  }
+  
+  /* High contrast mode support */
+  @media (prefers-contrast: high) {
+    .star-rating-inactive {
+      background-color: #ffffff;
+      border: 2px solid #000000;
+    }
+    
+    .star-rating-inactive .star-rating-icon {
+      fill: #000000;
+    }
+    
+    .star-rating-active {
+      background-color: #000000;
+      border: 2px solid #000000;
+    }
+    
+    .star-rating-active .star-rating-icon {
+      fill: #ffffff;
+    }
+  }
+  
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    .star-rating-button,
+    .star-rating-icon {
+      transition: none;
+    }
+    
+    .star-rating-button:hover {
+      transform: none;
+    }
+    
+    .star-rating-active {
+      animation: none;
+    }
+  }
+  
+  /* Dark mode support */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --star-rating-background-color: #1f2937;
+      --star-rating-inactive-bg: #374151;
+      --star-rating-active-bg: #7C3AED;
+      --star-rating-inactive-fill: #9CA3AF;
+      --star-rating-active-fill: #ffffff;
+      --star-rating-label-color: #D1D5DB;
+    }
+  }
+  
+  /* Focus visible for better accessibility */
+  .star-rating-button:focus-visible {
+    outline: 2px solid #3B82F6;
+    outline-offset: 2px;
+  }
+  
+  /* Color variants */
+  .star-rating-component.gold .star-rating-inactive {
+    background-color: #FEF3C7;
+  }
+  
+  .star-rating-component.gold .star-rating-inactive .star-rating-icon {
+    fill: #F59E0B;
+  }
+  
+  .star-rating-component.gold .star-rating-active {
+    background-color: #F59E0B;
+  }
+  
+  .star-rating-component.gold .star-rating-active .star-rating-icon {
+    fill: #ffffff;
+  }
+  
+  .star-rating-component.red .star-rating-inactive {
+    background-color: #FEE2E2;
+  }
+  
+  .star-rating-component.red .star-rating-inactive .star-rating-icon {
+    fill: #EF4444;
+  }
+  
+  .star-rating-component.red .star-rating-active {
+    background-color: #EF4444;
+  }
+  
+  .star-rating-component.red .star-rating-active .star-rating-icon {
+    fill: #ffffff;
+  }
+  
+  .star-rating-component.blue .star-rating-inactive {
+    background-color: #DBEAFE;
+  }
+  
+  .star-rating-component.blue .star-rating-inactive .star-rating-icon {
+    fill: #3B82F6;
+  }
+  
+  .star-rating-component.blue .star-rating-active {
+    background-color: #3B82F6;
+  }
+  
+  .star-rating-component.blue .star-rating-active .star-rating-icon {
+    fill: #ffffff;
+  }
+  
+  /* Success state */
+  .star-rating-component.success .star-rating-active {
+    background-color: #10B981;
+  }
+  
+  .star-rating-component.success .star-rating-active .star-rating-icon {
+    fill: #ffffff;
+  }
+  
+  /* Error state */
+  .star-rating-component.error .star-rating-button {
+    opacity: 0.6;
+  }
+  
+  /* Compact variant */
+  .star-rating-component.compact {
+    height: 60px;
+    width: 320px;
+    gap: 8px;
+  }
+  
+  .star-rating-component.compact .star-rating-button {
+    padding: 6px 12px;
+  }
+  
+  .star-rating-component.compact .star-rating-icon {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .star-rating-component.compact .star-rating-labels {
+    font-size: 12px;
+  }
+  
+  /* Large variant */
+  .star-rating-component.large {
+    height: 90px;
+    width: 520px;
+    gap: 12px;
+  }
+  
+  .star-rating-component.large .star-rating-button {
+    padding: 12px 24px;
+  }
+  
+  .star-rating-component.large .star-rating-icon {
+    width: 42px;
+    height: 42px;
+  }
+  
+  .star-rating-component.large .star-rating-labels {
+    font-size: 16px;
+  }
+  
+  /* Print styles */
+  @media print {
+    .star-rating-component {
+      background: white;
+      color: black;
+    }
+    
+    .star-rating-inactive {
+      background: white;
+      border: 1px solid black;
+    }
+    
+    .star-rating-inactive .star-rating-icon {
+      fill: black;
+    }
+    
+    .star-rating-active {
+      background: black;
+    }
+    
+    .star-rating-active .star-rating-icon {
+      fill: white;
+    }
+  }

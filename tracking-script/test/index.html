@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UserPlus Tracking Test Hub</title>
+    <link rel="icon" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/svgs/solid/user-tag.svg" type="image/svg+xml">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Add the userplus script -->
+    <script src="./userplus.js"></script>
+    <script>
+        // Initialize the tracking script
+        document.addEventListener('DOMContentLoaded', function() {
+            window.userplus.init("JHGFMZVCB4");
+            console.log("UserPlus initialized");
+        });
+    </script>
+    <style>
+        .event-log {
+            height: 250px;
+            overflow-y: auto;
+        }
+        /* Animations for visual feedback */
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+        .animate-status {
+            animation: pulse 1.5s infinite;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+<!-- Navigation -->
+<nav class="bg-indigo-600 text-white shadow-lg">
+    <div class="container mx-auto px-4 py-3">
+        <div class="flex justify-between items-center">
+            <div class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                </svg>
+                <span class="font-bold text-xl">UserPlus Tracking Test</span>
+            </div>
+            <div class="hidden md:flex space-x-4">
+                <a href="index.html" class="py-2 px-3 bg-indigo-700 rounded font-medium">Home</a>
+                <a href="products.html" class="py-2 px-3 hover:bg-indigo-700 rounded font-medium">Products</a>
+                <a href="profile.html" class="py-2 px-3 hover:bg-indigo-700 rounded font-medium">Profile</a>
+                <a href="about.html" class="py-2 px-3 hover:bg-indigo-700 rounded font-medium">About</a>
+            </div>
+            <div id="session-status" class="hidden md:flex items-center space-x-2">
+                <span id="status-indicator" class="h-3 w-3 rounded-full bg-green-400 animate-status"></span>
+                <span id="status-text">Active</span>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<div class="container mx-auto p-4">
+    <!-- Header Section -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">User Tracking Test Dashboard</h1>
+        <p class="text-gray-600">Test and verify all UserPlus tracking features</p>
+    </div>
+
+    <!-- Main Grid Layout -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- User Identification Card -->
+        <div class="bg-white rounded-lg shadow-md p-6 col-span-1">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+                User Identification
+            </h2>
+            <form id="user-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1" for="userId">User ID <span class="text-red-500">*</span></label>
+                    <input id="userId" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Enter user ID" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1" for="userName">Name</label>
+                    <input id="userName" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Enter name">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1" for="userEmail">Email</label>
+                    <input id="userEmail" type="email" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Enter email">
+                </div>
+                <button id="identify-button" type="submit" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition">
+                    Identify User
+                </button>
+                <div id="identify-feedback" class="hidden text-sm text-center p-2 rounded"></div>
+            </form>
+        </div>
+
+        <!-- Session Management Card -->
+        <div class="bg-white rounded-lg shadow-md p-6 col-span-1">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Session Controls
+            </h2>
+            <div class="space-y-4">
+                <div class="p-4 bg-gray-50 rounded-md">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-sm font-medium text-gray-700">Current Session State:</span>
+                        <span id="session-state-display" class="text-sm font-semibold bg-green-100 text-green-800 py-1 px-2 rounded">Active</span>
+                    </div>
+                    <div class="text-xs text-gray-500">
+                        Last updated: <span id="last-state-update">Just now</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <button id="simulate-idle" class="bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 transition">
+                        Simulate Idle
+                    </button>
+                    <button id="simulate-active" class="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition">
+                        Simulate Active
+                    </button>
+                </div>
+
+                <div class="text-sm text-gray-600 mt-2">
+                    <p class="mb-1">Idle timeout: 60 seconds</p>
+                    <p>The system automatically tracks user activity and transitions between active and idle states.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Custom Event Tracking Card -->
+        <div class="bg-white rounded-lg shadow-md p-6 col-span-1">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
+                </svg>
+                Custom Event Tracking
+            </h2>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1" for="event-name">Event Name</label>
+                    <input id="event-name" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="e.g., button_click, form_submit" value="custom_event">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1" for="event-properties">Event Properties (JSON)</label>
+                    <textarea id="event-properties" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" rows="3" placeholder='{"property1": "value1", "property2": "value2"}'>{
+  "category": "test",
+  "action": "click",
+  "label": "custom_button"
+}</textarea>
+                </div>
+                <button id="track-event-button" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition">
+                    Track Custom Event
+                </button>
+                <div id="event-feedback" class="hidden text-sm text-center p-2 rounded"></div>
+            </div>
+        </div>
+
+        <!-- Event Log Card (Full Width) -->
+        <div class="bg-white rounded-lg shadow-md p-6 col-span-1 md:col-span-3">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
+                Event Log
+            </h2>
+            <div class="flex justify-end mb-2">
+                <button id="clear-log" class="text-sm bg-gray-200 text-gray-700 py-1 px-3 rounded hover:bg-gray-300 transition">
+                    Clear Log
+                </button>
+            </div>
+            <div id="event-log" class="event-log bg-gray-50 border border-gray-200 rounded-md p-4 font-mono text-sm">
+                <div class="text-gray-400">[System] Waiting for events...</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="bg-gray-800 text-white py-8 mt-8">
+    <div class="container mx-auto px-4">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-4 md:mb-0">
+                <h3 class="text-lg font-semibold mb-2">UserPlus Tracking Test</h3>
+                <p class="text-gray-400 text-sm">A comprehensive testing environment for UserPlus tracking implementation</p>
+            </div>
+            <div class="flex space-x-4">
+                <a href="index.html" class="text-gray-300 hover:text-white transition">Home</a>
+                <a href="products.html" class="text-gray-300 hover:text-white transition">Products</a>
+                <a href="profile.html" class="text-gray-300 hover:text-white transition">Profile</a>
+                <a href="about.html" class="text-gray-300 hover:text-white transition">About</a>
+            </div>
+        </div>
+        <div class="border-t border-gray-700 mt-6 pt-6 text-center text-gray-400 text-sm">
+            &copy; 2025 UserPlus Testing Environment. All rights reserved.
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Global variable to store events
+    const eventHistory = [];
+
+    // Helper function to log events to the event log
+    function logEvent(type, message, details = null) {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString();
+        const eventLog = document.getElementById('event-log');
+
+        // Create log entry
+        const logEntry = document.createElement('div');
+        logEntry.className = 'py-1 border-b border-gray-200';
+
+        let detailsStr = '';
+        if (details) {
+            try {
+                detailsStr = typeof details === 'string' ? details : JSON.stringify(details);
+            } catch (e) {
+                detailsStr = '[Complex Object]';
+            }
+        }
+
+        // Set colors based on event type
+        let typeClass = 'text-gray-800';
+        if (type === 'success') typeClass = 'text-green-600';
+        if (type === 'error') typeClass = 'text-red-600';
+        if (type === 'warning') typeClass = 'text-yellow-600';
+        if (type === 'info') typeClass = 'text-blue-600';
+
+        logEntry.innerHTML = `
+                <span class="text-gray-500">[${timeString}]</span>
+                <span class="${typeClass} font-medium">${type.toUpperCase()}</span>:
+                <span>${message}</span>
+                ${detailsStr ? `<pre class="text-xs mt-1 pl-2 text-gray-600 overflow-x-auto">${detailsStr}</pre>` : ''}
+            `;
+
+        // Check if we need to clear the initial "waiting" message
+        if (eventLog.querySelector('.text-gray-400') && eventHistory.length === 0) {
+            eventLog.innerHTML = '';
+        }
+
+        // Add to log and history
+        eventLog.appendChild(logEntry);
+        eventHistory.push({ type, message, details, time: now });
+
+        // Auto-scroll to the bottom
+        eventLog.scrollTop = eventLog.scrollHeight;
+    }
+
+    // Update session state display
+    function updateSessionState(state) {
+        const stateDisplay = document.getElementById('session-state-display');
+        const statusIndicator = document.getElementById('status-indicator');
+        const statusText = document.getElementById('status-text');
+        const lastUpdate = document.getElementById('last-state-update');
+
+        // Update the time
+        lastUpdate.textContent = new Date().toLocaleTimeString();
+
+        // Update state display
+        if (state === 'active') {
+            stateDisplay.className = 'text-sm font-semibold bg-green-100 text-green-800 py-1 px-2 rounded';
+            stateDisplay.textContent = 'Active';
+            statusIndicator.className = 'h-3 w-3 rounded-full bg-green-400 animate-status';
+            statusText.textContent = 'Active';
+        } else if (state === 'idle') {
+            stateDisplay.className = 'text-sm font-semibold bg-yellow-100 text-yellow-800 py-1 px-2 rounded';
+            stateDisplay.textContent = 'Idle';
+            statusIndicator.className = 'h-3 w-3 rounded-full bg-yellow-400 animate-status';
+            statusText.textContent = 'Idle';
+        } else if (state === 'inactive') {
+            stateDisplay.className = 'text-sm font-semibold bg-red-100 text-red-800 py-1 px-2 rounded';
+            stateDisplay.textContent = 'Inactive';
+            statusIndicator.className = 'h-3 w-3 rounded-full bg-red-400 animate-status';
+            statusText.textContent = 'Inactive';
+        }
+    }
+
+    // Show feedback message
+    function showFeedback(elementId, type, message) {
+        const element = document.getElementById(elementId);
+        element.textContent = message;
+        element.classList.remove('hidden', 'bg-green-100', 'text-green-800', 'bg-red-100', 'text-red-800');
+
+        if (type === 'success') {
+            element.classList.add('bg-green-100', 'text-green-800');
+        } else {
+            element.classList.add('bg-red-100', 'text-red-800');
+        }
+
+        element.classList.remove('hidden');
+
+        // Hide after 3 seconds
+        setTimeout(() => {
+            element.classList.add('hidden');
+        }, 3000);
+    }
+
+    // Document ready function
+    document.addEventListener('DOMContentLoaded', function() {
+        // Log initial page load
+        logEvent('info', 'Page loaded', { page: window.location.pathname });
+
+        // Handle user identification form
+        document.getElementById('user-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const userId = document.getElementById('userId').value.trim();
+            const userName = document.getElementById('userName').value.trim();
+            const userEmail = document.getElementById('userEmail').value.trim();
+
+            if (!userId) {
+                showFeedback('identify-feedback', 'error', 'User ID is required');
+                logEvent('error', 'Identification failed', { reason: 'Missing User ID' });
+                return;
+            }
+
+            // Create user traits object
+            const userTraits = {
+                name: userName || undefined,
+                email: userEmail || undefined,
+                identified_at: new Date().toISOString()
+            };
+
+            try {
+                // Call userplus.identify method
+                if (window.userplus && typeof window.userplus.identify === 'function') {
+                    window.userplus.identify(userId, userTraits);
+                    showFeedback('identify-feedback', 'success', 'User identified successfully');
+                    logEvent('success', 'User identified', { id: userId, ...userTraits });
+                } else {
+                    throw new Error('UserPlus tracking not available');
+                }
+            } catch (error) {
+                showFeedback('identify-feedback', 'error', 'Error identifying user');
+                logEvent('error', 'Identification error', { message: error.message });
+            }
+        });
+
+        // Handle custom event tracking
+        document.getElementById('track-event-button').addEventListener('click', function() {
+            const eventName = document.getElementById('event-name').value.trim();
+            const eventPropertiesStr = document.getElementById('event-properties').value.trim();
+
+            if (!eventName) {
+                showFeedback('event-feedback', 'error', 'Event name is required');
+                logEvent('error', 'Custom event tracking failed', { reason: 'Missing event name' });
+                return;
+            }
+
+            let eventProperties;
+            try {
+                eventProperties = JSON.parse(eventPropertiesStr);
+            } catch (e) {
+                showFeedback('event-feedback', 'error', 'Invalid JSON properties');
+                logEvent('error', 'Custom event tracking failed', { reason: 'Invalid JSON', details: e.message });
+                return;
+            }
+
+            try {
+                // Call userplus.event method
+                if (window.userplus && typeof window.userplus.event === 'function') {
+                    window.userplus.event(eventName, eventProperties);
+                    showFeedback('event-feedback', 'success', 'Event tracked successfully');
+                    logEvent('success', 'Custom event tracked', { name: eventName, properties: eventProperties });
+                } else {
+                    throw new Error('UserPlus tracking not available');
+                }
+            } catch (error) {
+                showFeedback('event-feedback', 'error', 'Error tracking event');
+                logEvent('error', 'Event tracking error', { message: error.message });
+            }
+        });
+
+        // Simulate idle/active states
+        document.getElementById('simulate-idle').addEventListener('click', function() {
+            try {
+                if (window.userplus && typeof window.userplus.manageSession === 'function') {
+                    // Use the constants from UserPlus
+                    window.userplus.manageSession(2); // idle state
+                    updateSessionState('idle');
+                    logEvent('info', 'Session state changed', { state: 'idle' });
+                } else {
+                    throw new Error('UserPlus session management not available');
+                }
+            } catch (error) {
+                logEvent('error', 'Failed to change session state', { message: error.message });
+            }
+        });
+
+        document.getElementById('simulate-active').addEventListener('click', function() {
+            try {
+                if (window.userplus && typeof window.userplus.manageSession === 'function') {
+                    window.userplus.manageSession(1); // active state
+                    updateSessionState('active');
+                    logEvent('info', 'Session state changed', { state: 'active' });
+                } else {
+                    throw new Error('UserPlus session management not available');
+                }
+            } catch (error) {
+                logEvent('error', 'Failed to change session state', { message: error.message });
+            }
+        });
+
+        // Clear log button
+        document.getElementById('clear-log').addEventListener('click', function() {
+            document.getElementById('event-log').innerHTML = '<div class="text-gray-400">[System] Log cleared</div>';
+            logEvent('info', 'Event log cleared');
+        });
+
+        // Monitor for session state changes from the UserPlus library
+        // This is a mock since we don't have direct access to UserPlus state changes
+        const sessionStates = ['active', 'idle', 'inactive'];
+        let currentState = 'active';
+
+        // Listen for storage events to detect session state changes
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'userplus_session_state') {
+                const newState = e.newValue;
+                if (newState && newState !== currentState) {
+                    currentState = newState;
+                    updateSessionState(newState);
+                    logEvent('info', 'Session state changed automatically', { state: newState });
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>

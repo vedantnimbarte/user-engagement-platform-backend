@@ -1,0 +1,383 @@
+/* CSS Variables for customization */
+:root {
+    --rating-matrix-title-color: #000000;
+    --rating-matrix-description-color: #64748B;
+    --rating-matrix-background-color: #ffffff;
+    --rating-matrix-border-color: #E5E7EB;
+    --rating-matrix-text-color: #1F2429;
+    --rating-matrix-header-color: #657488;
+    --rating-matrix-row-even-bg: #F8FAFC;
+    --rating-matrix-row-odd-bg: #ffffff;
+    --rating-matrix-selected-ring-color: #3B82F6;
+    --rating-matrix-hover-bg-color: rgba(59, 130, 246, 0.1);
+  }
+  
+  /* Main component container */
+  .rating-matrix-component {
+    width: 100%;
+    background-color: var(--rating-matrix-background-color, #ffffff);
+    overflow-x: auto;
+  }
+  
+  /* Table styling */
+  .rating-matrix-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    font-family: inherit;
+  }
+  
+  /* Header row */
+  .rating-matrix-header-row {
+    background-color: var(--rating-matrix-background-color, #ffffff);
+  }
+  
+  /* Question header cell (empty top-left cell) */
+  .rating-matrix-question-header {
+    width: 200px;
+    text-align: left;
+    padding-bottom: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--rating-matrix-text-color, #1F2429);
+    min-width: 150px;
+  }
+  
+  /* Scale header cells */
+  .rating-matrix-header-cell {
+    text-align: center;
+    padding-bottom: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--rating-matrix-header-color, #657488);
+    white-space: nowrap;
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+  
+  /* Table rows */
+  .rating-matrix-row {
+    transition: background-color 0.2s ease;
+  }
+  
+  .rating-matrix-row-even {
+    background-color: var(--rating-matrix-row-even-bg, #F8FAFC);
+  }
+  
+  .rating-matrix-row-odd {
+    background-color: var(--rating-matrix-row-odd-bg, #ffffff);
+  }
+  
+  .rating-matrix-row:hover {
+    background-color: var(--rating-matrix-hover-bg-color, rgba(59, 130, 246, 0.05));
+  }
+  
+  /* Question cell */
+  .rating-matrix-question-cell {
+    padding: 16px 16px 16px 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--rating-matrix-text-color, #1F2429);
+    text-align: left;
+    vertical-align: middle;
+    border-right: 1px solid var(--rating-matrix-border-color, #E5E7EB);
+  }
+  
+  /* Rating cells */
+  .rating-matrix-cell {
+    text-align: center;
+    padding: 8px;
+    vertical-align: middle;
+  }
+  
+  /* Rating buttons */
+  .rating-matrix-button {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    outline: none;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .rating-matrix-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .rating-matrix-button:focus {
+    outline: 2px solid var(--rating-matrix-selected-ring-color, #3B82F6);
+    outline-offset: 2px;
+  }
+  
+  .rating-matrix-button:active {
+    transform: scale(0.95);
+  }
+  
+  /* Selected state */
+  .rating-matrix-selected {
+    box-shadow: 0 0 0 2px var(--rating-matrix-selected-ring-color, #3B82F6);
+    transform: scale(1.1);
+  }
+  
+  /* Rating value text */
+  .rating-matrix-value {
+    font-size: 14px;
+    transition: font-weight 0.2s ease;
+  }
+  
+  .rating-matrix-selected .rating-matrix-value {
+    font-weight: 600;
+  }
+  
+  /* Color classes for different rating values */
+  .rating-matrix-value-1 {
+    background-color: #FFE0E2;
+    color: #7F1D1D;
+  }
+  
+  .rating-matrix-value-2 {
+    background-color: #FFE7E2;
+    color: #92400E;
+  }
+  
+  .rating-matrix-value-3 {
+    background-color: #FFF1EF;
+    color: #92400E;
+  }
+  
+  .rating-matrix-value-4 {
+    background-color: #F3F7DC;
+    color: #365314;
+  }
+  
+  .rating-matrix-value-5 {
+    background-color: #CDF9E5;
+    color: #064E3B;
+  }
+  
+  /* Hover effects for different values */
+  .rating-matrix-value-1:hover {
+    background-color: #FEF2F2;
+  }
+  
+  .rating-matrix-value-2:hover {
+    background-color: #FEF3C7;
+  }
+  
+  .rating-matrix-value-3:hover {
+    background-color: #FFFBEB;
+  }
+  
+  .rating-matrix-value-4:hover {
+    background-color: #F7FEE7;
+  }
+  
+  .rating-matrix-value-5:hover {
+    background-color: #ECFDF5;
+  }
+  
+  /* Disabled state */
+  .rating-matrix-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  
+  /* Loading state */
+  .rating-matrix-component.loading {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .rating-matrix-component {
+      font-size: 14px;
+    }
+    
+    .rating-matrix-question-header {
+      width: 150px;
+      font-size: 13px;
+    }
+    
+    .rating-matrix-header-cell {
+      font-size: 11px;
+      padding-left: 4px;
+      padding-right: 4px;
+    }
+    
+    .rating-matrix-question-cell {
+      font-size: 13px;
+      padding: 12px 12px 12px 0;
+    }
+    
+    .rating-matrix-button {
+      width: 32px;
+      height: 32px;
+    }
+    
+    .rating-matrix-value {
+      font-size: 13px;
+    }
+  }
+  
+  @media (max-width: 640px) {
+    .rating-matrix-question-header {
+      width: 120px;
+      font-size: 12px;
+    }
+    
+    .rating-matrix-header-cell {
+      font-size: 10px;
+      padding-left: 2px;
+      padding-right: 2px;
+    }
+    
+    .rating-matrix-question-cell {
+      font-size: 12px;
+      padding: 10px 8px 10px 0;
+    }
+    
+    .rating-matrix-button {
+      width: 28px;
+      height: 28px;
+    }
+    
+    .rating-matrix-value {
+      font-size: 12px;
+    }
+    
+    .rating-matrix-cell {
+      padding: 6px 2px;
+    }
+  }
+  
+  /* High contrast mode support */
+  @media (prefers-contrast: high) {
+    .rating-matrix-button {
+      border: 2px solid #000000;
+    }
+    
+    .rating-matrix-selected {
+      background-color: #000000;
+      color: #ffffff;
+    }
+    
+    .rating-matrix-value-1,
+    .rating-matrix-value-2,
+    .rating-matrix-value-3,
+    .rating-matrix-value-4,
+    .rating-matrix-value-5 {
+      background-color: #ffffff;
+      color: #000000;
+      border: 2px solid #000000;
+    }
+  }
+  
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    .rating-matrix-button,
+    .rating-matrix-row {
+      transition: none;
+    }
+    
+    .rating-matrix-button:hover,
+    .rating-matrix-selected {
+      transform: none;
+    }
+  }
+  
+  /* Dark mode support */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --rating-matrix-background-color: #1f2937;
+      --rating-matrix-border-color: #374151;
+      --rating-matrix-text-color: #f9fafb;
+      --rating-matrix-header-color: #d1d5db;
+      --rating-matrix-row-even-bg: #374151;
+      --rating-matrix-row-odd-bg: #1f2937;
+    }
+  }
+  
+  /* Focus visible for better accessibility */
+  .rating-matrix-button:focus-visible {
+    outline: 2px solid var(--rating-matrix-selected-ring-color, #3B82F6);
+    outline-offset: 2px;
+  }
+  
+  /* Print styles */
+  @media print {
+    .rating-matrix-component {
+      background: white;
+      color: black;
+    }
+    
+    .rating-matrix-button {
+      border: 1px solid black;
+      background: white;
+      color: black;
+    }
+    
+    .rating-matrix-selected {
+      background: black;
+      color: white;
+    }
+  }
+  
+  /* Animation for selection */
+  @keyframes rating-matrix-select {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1.1); }
+  }
+  
+  .rating-matrix-selected {
+    animation: rating-matrix-select 0.3s ease;
+  }
+  
+  /* Success state */
+  .rating-matrix-component.success .rating-matrix-selected {
+    box-shadow: 0 0 0 2px #10b981;
+  }
+  
+  /* Error state */
+  .rating-matrix-component.error .rating-matrix-button {
+    opacity: 0.6;
+  }
+  
+  /* Compact variant */
+  .rating-matrix-component.compact .rating-matrix-question-cell {
+    padding: 8px 12px 8px 0;
+    font-size: 13px;
+  }
+  
+  .rating-matrix-component.compact .rating-matrix-button {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .rating-matrix-component.compact .rating-matrix-value {
+    font-size: 12px;
+  }
+  
+  /* Large variant */
+  .rating-matrix-component.large .rating-matrix-question-cell {
+    padding: 20px 20px 20px 0;
+    font-size: 16px;
+  }
+  
+  .rating-matrix-component.large .rating-matrix-button {
+    width: 44px;
+    height: 44px;
+  }
+  
+  .rating-matrix-component.large .rating-matrix-value {
+    font-size: 16px;
+  }

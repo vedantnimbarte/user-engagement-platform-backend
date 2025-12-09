@@ -1,0 +1,361 @@
+/* CSS Variables for customization */
+:root {
+    --survey-container-background: #ffffff;
+    --survey-container-border-color: #E6EAEF;
+    --survey-container-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    --survey-container-title-color: #363d44;
+    --survey-container-description-color: #657488;
+    --survey-container-branding-color: #9CA3AF;
+    --survey-container-branding-hover-color: #6B7280;
+    --survey-container-max-width: 500px;
+    --survey-container-border-radius: 16px;
+    --survey-container-border-width: 1.25px;
+  }
+  
+  /* Main survey container */
+  .survey-container {
+    width: 500px;
+    max-width: var(--survey-container-max-width, 500px);
+    background-color: var(--survey-container-background, #ffffff);
+    box-shadow: var(--survey-container-shadow, 0 25px 50px -12px rgba(0, 0, 0, 0.25));
+    border: var(--survey-container-border-width, 1.25px) solid var(--survey-container-border-color, #E6EAEF);
+    border-radius: var(--survey-container-border-radius, 16px);
+    overflow: hidden;
+    position: relative;
+    margin: 0 auto;
+    font-family: inherit;
+  }
+  
+  /* Content area */
+  .survey-container-content {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  /* Title styling */
+  .survey-container-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--survey-container-title-color, #363d44);
+    margin: 0;
+    line-height: 1.3;
+    text-align: center;
+  }
+  
+  /* Description styling */
+  .survey-container-description {
+    font-size: 14px;
+    color: var(--survey-container-description-color, #657488);
+    font-weight: 500;
+    margin: 0;
+    line-height: 1.5;
+    text-align: center;
+  }
+  
+  /* Section container */
+  .survey-container-section {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 446px;
+    max-width: 100%;
+    gap: 7px;
+    margin: 0 auto;
+  }
+  
+  /* Illustration container */
+  .survey-container-illustration {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 12px;
+  }
+  
+  /* Branding section */
+  .survey-container-branding {
+    padding: 16px 30px;
+    background-color: #F9FAFB;
+    border-top: 1px solid var(--survey-container-border-color, #E6EAEF);
+    text-align: center;
+  }
+  
+  .survey-container-branding-link {
+    font-size: 12px;
+    color: var(--survey-container-branding-color, #9CA3AF);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+  }
+  
+  .survey-container-branding-link:hover {
+    color: var(--survey-container-branding-hover-color, #6B7280);
+    text-decoration: underline;
+  }
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .survey-container {
+      width: 100%;
+      max-width: calc(100vw - 32px);
+      margin: 0 16px;
+      border-radius: 12px;
+    }
+    
+    .survey-container-content {
+      padding: 24px 20px;
+      gap: 14px;
+    }
+    
+    .survey-container-section {
+      width: 100%;
+      gap: 6px;
+    }
+    
+    .survey-container-title {
+      font-size: 18px;
+    }
+    
+    .survey-container-description {
+      font-size: 13px;
+    }
+    
+    .survey-container-branding {
+      padding: 12px 20px;
+    }
+  }
+  
+  @media (max-width: 640px) {
+    .survey-container {
+      margin: 0 12px;
+      border-radius: 8px;
+    }
+    
+    .survey-container-content {
+      padding: 20px 16px;
+      gap: 12px;
+    }
+    
+    .survey-container-title {
+      font-size: 16px;
+    }
+    
+    .survey-container-description {
+      font-size: 12px;
+    }
+    
+    .survey-container-branding {
+      padding: 10px 16px;
+    }
+    
+    .survey-container-branding-link {
+      font-size: 11px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .survey-container {
+      margin: 0 8px;
+    }
+    
+    .survey-container-content {
+      padding: 16px 12px;
+      gap: 10px;
+    }
+    
+    .survey-container-section {
+      gap: 5px;
+    }
+    
+    .survey-container-illustration {
+      gap: 10px;
+    }
+  }
+  
+  /* Dark mode support */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --survey-container-background: #1f2937;
+      --survey-container-border-color: #374151;
+      --survey-container-title-color: #f9fafb;
+      --survey-container-description-color: #d1d5db;
+      --survey-container-branding-color: #6b7280;
+      --survey-container-branding-hover-color: #9ca3af;
+      --survey-container-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+    
+    .survey-container-branding {
+      background-color: #374151;
+      border-top-color: #4b5563;
+    }
+  }
+  
+  /* High contrast mode support */
+  @media (prefers-contrast: high) {
+    .survey-container {
+      border-color: #000000;
+      border-width: 2px;
+    }
+    
+    .survey-container-title {
+      color: #000000;
+    }
+    
+    .survey-container-description {
+      color: #000000;
+    }
+    
+    .survey-container-branding {
+      border-top-color: #000000;
+    }
+    
+    .survey-container-branding-link {
+      color: #000000;
+    }
+  }
+  
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    .survey-container-branding-link {
+      transition: none;
+    }
+  }
+  
+  /* Print styles */
+  @media print {
+    .survey-container {
+      box-shadow: none;
+      border: 1px solid #000000;
+      background: white;
+      color: black;
+      width: 100%;
+      max-width: none;
+    }
+    
+    .survey-container-branding {
+      display: none;
+    }
+    
+    .survey-container-title,
+    .survey-container-description {
+      color: black;
+    }
+  }
+  
+  /* Animation for smooth content updates */
+  .survey-container-content {
+    transition: all 0.3s ease;
+  }
+  
+  /* Loading state */
+  .survey-container.loading {
+    opacity: 0.7;
+    pointer-events: none;
+  }
+  
+  .survey-container.loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Error state */
+  .survey-container.error {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 1px #ef4444, var(--survey-container-shadow);
+  }
+  
+  /* Success state */
+  .survey-container.success {
+    border-color: #10b981;
+    box-shadow: 0 0 0 1px #10b981, var(--survey-container-shadow);
+  }
+  
+  /* Compact variant */
+  .survey-container.compact {
+    width: 400px;
+    max-width: 400px;
+  }
+  
+  .survey-container.compact .survey-container-content {
+    padding: 20px;
+    gap: 12px;
+  }
+  
+  .survey-container.compact .survey-container-section {
+    width: 360px;
+    gap: 5px;
+  }
+  
+  .survey-container.compact .survey-container-title {
+    font-size: 18px;
+  }
+  
+  .survey-container.compact .survey-container-description {
+    font-size: 13px;
+  }
+  
+  /* Large variant */
+  .survey-container.large {
+    width: 600px;
+    max-width: 600px;
+  }
+  
+  .survey-container.large .survey-container-content {
+    padding: 40px;
+    gap: 20px;
+  }
+  
+  .survey-container.large .survey-container-section {
+    width: 520px;
+    gap: 10px;
+  }
+  
+  .survey-container.large .survey-container-title {
+    font-size: 24px;
+  }
+  
+  .survey-container.large .survey-container-description {
+    font-size: 16px;
+  }
+  
+  /* Minimal variant (no shadow, thinner border) */
+  .survey-container.minimal {
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    border-width: 1px;
+  }
+  
+  /* Flat variant (no shadow, no border radius) */
+  .survey-container.flat {
+    box-shadow: none;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
+  
+  /* Full width variant */
+  .survey-container.full-width {
+    width: 100%;
+    max-width: none;
+  }
+  
+  /* Center alignment utility */
+  .survey-container-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+  }

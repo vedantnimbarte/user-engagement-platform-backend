@@ -1,0 +1,247 @@
+/* CSS Variables for customization */
+:root {
+    --checkbox-title-color: #000000;
+    --checkbox-description-color: #64748B;
+    --checkbox-background-color: #ffffff;
+    --checkbox-primary-color: #3B82F6;
+    --checkbox-border-color: #E6EAEF;
+    --checkbox-text-color: #1F2429;
+    --checkbox-hover-border-color: #CBD5E1;
+    --checkbox-hover-bg-color: #F8FAFC;
+    --checkbox-selected-bg-color: #EBF5FF;
+  }
+  
+  /* Main component container */
+  .checkbox-component {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    background-color: var(--checkbox-background-color, #ffffff);
+  }
+  
+  /* Option button */
+  .checkbox-option-button {
+    width: 100%;
+    text-align: left;
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 1.25px solid;
+    background: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    outline: none;
+  }
+  
+  /* Unselected state */
+  .checkbox-option-unselected {
+    border-color: var(--checkbox-border-color, #E6EAEF);
+    background-color: transparent;
+  }
+  
+  .checkbox-option-unselected:hover {
+    border-color: var(--checkbox-hover-border-color, #CBD5E1);
+    background-color: var(--checkbox-hover-bg-color, #F8FAFC);
+  }
+  
+  /* Selected state */
+  .checkbox-option-selected {
+    border-color: var(--checkbox-primary-color, #3B82F6);
+    background-color: var(--checkbox-selected-bg-color, #EBF5FF);
+  }
+  
+  .checkbox-option-selected:hover {
+    border-color: var(--checkbox-primary-color, #3B82F6);
+    background-color: var(--checkbox-selected-bg-color, #EBF5FF);
+  }
+  
+  /* Focus state for accessibility */
+  .checkbox-option-button:focus {
+    outline: 2px solid var(--checkbox-primary-color, #3B82F6);
+    outline-offset: 2px;
+  }
+  
+  /* Visual checkbox element */
+  .checkbox-visual {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    margin-right: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+  }
+  
+  /* Unselected checkbox visual */
+  .checkbox-visual-unselected {
+    border: 1.25px solid var(--checkbox-hover-border-color, #CBD5E1);
+    background-color: transparent;
+  }
+  
+  /* Selected checkbox visual */
+  .checkbox-visual-selected {
+    background-color: var(--checkbox-primary-color, #3B82F6);
+    border: 1.25px solid var(--checkbox-primary-color, #3B82F6);
+  }
+  
+  /* Checkmark */
+  .checkbox-checkmark {
+    display: none;
+    width: 12px;
+    height: 12px;
+  }
+  
+  .checkbox-checkmark svg {
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* Option text */
+  .checkbox-option-text {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--checkbox-text-color, #1F2429);
+    line-height: 1.4;
+    user-select: none;
+  }
+  
+  /* Animation for smooth transitions */
+  .checkbox-option-button {
+    transform: translateY(0);
+  }
+  
+  .checkbox-option-button:active {
+    transform: translateY(1px);
+  }
+  
+  /* Hover effects for better interactivity */
+  .checkbox-visual-unselected {
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+  }
+  
+  .checkbox-option-unselected:hover .checkbox-visual-unselected {
+    border-color: var(--checkbox-primary-color, #3B82F6);
+    background-color: rgba(59, 130, 246, 0.05);
+  }
+  
+  /* Selected option enhanced styling */
+  .checkbox-option-selected .checkbox-visual-selected {
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+  }
+  
+  /* Responsive design */
+  @media (max-width: 640px) {
+    .checkbox-component {
+      gap: 10px;
+    }
+    
+    .checkbox-option-button {
+      padding: 10px 14px;
+    }
+    
+    .checkbox-visual {
+      width: 18px;
+      height: 18px;
+      margin-right: 10px;
+    }
+    
+    .checkbox-checkmark {
+      width: 10px;
+      height: 10px;
+    }
+    
+    .checkbox-option-text {
+      font-size: 13px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .checkbox-option-button {
+      padding: 8px 12px;
+    }
+    
+    .checkbox-visual {
+      width: 16px;
+      height: 16px;
+      margin-right: 8px;
+    }
+    
+    .checkbox-checkmark {
+      width: 8px;
+      height: 8px;
+    }
+    
+    .checkbox-option-text {
+      font-size: 12px;
+    }
+  }
+  
+  /* High contrast mode support */
+  @media (prefers-contrast: high) {
+    .checkbox-option-unselected {
+      border-color: #000000;
+    }
+    
+    .checkbox-visual-unselected {
+      border-color: #000000;
+    }
+    
+    .checkbox-option-text {
+      color: #000000;
+    }
+  }
+  
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    .checkbox-option-button,
+    .checkbox-visual {
+      transition: none;
+    }
+  }
+  
+  /* Dark mode support */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --checkbox-background-color: #1f2937;
+      --checkbox-border-color: #374151;
+      --checkbox-text-color: #f9fafb;
+      --checkbox-hover-border-color: #4b5563;
+      --checkbox-hover-bg-color: #374151;
+      --checkbox-selected-bg-color: #1e3a8a;
+    }
+  }
+  
+  /* Loading state (if needed) */
+  .checkbox-component.loading {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+  
+  .checkbox-component.loading .checkbox-option-button {
+    cursor: not-allowed;
+  }
+  
+  /* Error state */
+  .checkbox-component.error .checkbox-option-button {
+    border-color: #ef4444;
+  }
+  
+  .checkbox-component.error .checkbox-visual-unselected {
+    border-color: #ef4444;
+  }
+  
+  /* Success state */
+  .checkbox-component.success .checkbox-option-selected {
+    border-color: #10b981;
+    background-color: #d1fae5;
+  }
+  
+  .checkbox-component.success .checkbox-visual-selected {
+    background-color: #10b981;
+    border-color: #10b981;
+  }

@@ -1,0 +1,370 @@
+/* CSS Variables for customization */
+:root {
+    --yesno-title-color: #000000;
+    --yesno-description-color: #64748B;
+    --yesno-background-color: #ffffff;
+    --yesno-border-color: #E6EAEF;
+    --yesno-hover-border-color: #CBD5E1;
+    --yesno-hover-bg-color: #F8FAFC;
+    --yesno-yes-color: #10B981;
+    --yesno-yes-bg-color: #ECFDF5;
+    --yesno-no-color: #EF4444;
+    --yesno-no-bg-color: #FEF2F2;
+    --yesno-unselected-opacity: 0.5;
+  }
+  
+  /* Main component container */
+  .yesno-component {
+    height: 44px;
+    width: 440px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--yesno-background-color, #ffffff);
+  }
+  
+  /* Button container */
+  .yesno-button-container {
+    display: flex;
+    gap: 16px;
+    width: 100%;
+    padding: 0 60px;
+  }
+  
+  /* Base button styling */
+  .yesno-button {
+    flex: 1;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    border: 1.5px solid;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    cursor: pointer;
+    outline: none;
+    background: none;
+  }
+  
+  /* Button content wrapper */
+  .yesno-button-content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  /* Button text */
+  .yesno-button-text {
+    user-select: none;
+  }
+  
+  /* Icon containers */
+  .yesno-yes-icon,
+  .yesno-no-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+  }
+  
+  /* Default state (no selection) */
+  .yesno-button-default {
+    border-color: var(--yesno-border-color, #E6EAEF);
+    background-color: var(--yesno-background-color, #ffffff);
+    color: #374151;
+  }
+  
+  .yesno-button-default:hover {
+    border-color: var(--yesno-hover-border-color, #CBD5E1);
+    background-color: var(--yesno-hover-bg-color, #F8FAFC);
+  }
+  
+  /* Yes button selected state */
+  .yesno-button-yes-selected {
+    border-color: var(--yesno-yes-color, #10B981);
+    background-color: var(--yesno-yes-bg-color, #ECFDF5);
+    color: var(--yesno-yes-color, #10B981);
+  }
+  
+  /* No button selected state */
+  .yesno-button-no-selected {
+    border-color: var(--yesno-no-color, #EF4444);
+    background-color: var(--yesno-no-bg-color, #FEF2F2);
+    color: var(--yesno-no-color, #EF4444);
+  }
+  
+  /* Unselected state (when other option is selected) */
+  .yesno-button-unselected {
+    border-color: var(--yesno-border-color, #E6EAEF);
+    background-color: var(--yesno-background-color, #ffffff);
+    color: #374151;
+    opacity: var(--yesno-unselected-opacity, 0.5);
+  }
+  
+  /* Focus states for accessibility */
+  .yesno-button:focus {
+    outline: 2px solid #3B82F6;
+    outline-offset: 2px;
+  }
+  
+  /* Active state */
+  .yesno-button:active {
+    transform: scale(0.98);
+  }
+  
+  /* Selection animation */
+  @keyframes yesno-select {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+  
+  .yesno-button-yes-selected,
+  .yesno-button-no-selected {
+    animation: yesno-select 0.3s ease;
+  }
+  
+  /* Disabled state */
+  .yesno-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  
+  /* Loading state */
+  .yesno-component.loading {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+  
+  /* Hover effects for selected states */
+  .yesno-button-yes-selected:hover {
+    background-color: #D1FAE5;
+    border-color: #059669;
+  }
+  
+  .yesno-button-no-selected:hover {
+    background-color: #FEE2E2;
+    border-color: #DC2626;
+  }
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .yesno-component {
+      width: 100%;
+      max-width: 440px;
+      padding: 0 16px;
+      box-sizing: border-box;
+    }
+    
+    .yesno-button-container {
+      padding: 0 40px;
+      gap: 12px;
+    }
+    
+    .yesno-button {
+      font-size: 15px;
+      height: 45px;
+    }
+  }
+  
+  @media (max-width: 640px) {
+    .yesno-button-container {
+      padding: 0 20px;
+      gap: 10px;
+    }
+    
+    .yesno-button {
+      font-size: 14px;
+      height: 42px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .yesno-component {
+      height: 40px;
+    }
+    
+    .yesno-button-container {
+      padding: 0 10px;
+      gap: 8px;
+    }
+    
+    .yesno-button {
+      font-size: 13px;
+      height: 40px;
+    }
+    
+    .yesno-button-content {
+      gap: 6px;
+    }
+    
+    .yesno-yes-icon,
+    .yesno-no-icon {
+      width: 16px;
+      height: 16px;
+    }
+    
+    .yesno-yes-icon svg,
+    .yesno-no-icon svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+  
+  /* High contrast mode support */
+  @media (prefers-contrast: high) {
+    .yesno-button-default {
+      border-color: #000000;
+      border-width: 2px;
+    }
+    
+    .yesno-button-yes-selected {
+      background-color: #000000;
+      color: #ffffff;
+      border-color: #000000;
+    }
+    
+    .yesno-button-no-selected {
+      background-color: #ffffff;
+      color: #000000;
+      border-color: #000000;
+    }
+    
+    .yesno-yes-icon svg path {
+      stroke: #ffffff;
+    }
+    
+    .yesno-no-icon svg path {
+      stroke: #000000;
+    }
+  }
+  
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    .yesno-button {
+      transition: none;
+    }
+    
+    .yesno-button:active {
+      transform: none;
+    }
+    
+    .yesno-button-yes-selected,
+    .yesno-button-no-selected {
+      animation: none;
+    }
+  }
+  
+  /* Dark mode support */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --yesno-background-color: #1f2937;
+      --yesno-border-color: #374151;
+      --yesno-hover-border-color: #4b5563;
+      --yesno-hover-bg-color: #374151;
+      --yesno-yes-bg-color: #064E3B;
+      --yesno-no-bg-color: #7F1D1D;
+    }
+  }
+  
+  /* Focus visible for better accessibility */
+  .yesno-button:focus-visible {
+    outline: 2px solid #3B82F6;
+    outline-offset: 2px;
+  }
+  
+  /* Alternative color schemes */
+  .yesno-component.success-danger .yesno-button-yes-selected {
+    border-color: #10B981;
+    background-color: #ECFDF5;
+    color: #10B981;
+  }
+  
+  .yesno-component.success-danger .yesno-button-no-selected {
+    border-color: #EF4444;
+    background-color: #FEF2F2;
+    color: #EF4444;
+  }
+  
+  .yesno-component.blue-orange .yesno-button-yes-selected {
+    border-color: #3B82F6;
+    background-color: #EBF8FF;
+    color: #3B82F6;
+  }
+  
+  .yesno-component.blue-orange .yesno-button-no-selected {
+    border-color: #F97316;
+    background-color: #FFF7ED;
+    color: #F97316;
+  }
+  
+  /* Compact variant */
+  .yesno-component.compact {
+    height: 36px;
+    width: 320px;
+  }
+  
+  .yesno-component.compact .yesno-button-container {
+    padding: 0 40px;
+    gap: 12px;
+  }
+  
+  .yesno-component.compact .yesno-button {
+    height: 36px;
+    font-size: 14px;
+  }
+  
+  /* Large variant */
+  .yesno-component.large {
+    height: 60px;
+    width: 520px;
+  }
+  
+  .yesno-component.large .yesno-button-container {
+    padding: 0 80px;
+    gap: 20px;
+  }
+  
+  .yesno-component.large .yesno-button {
+    height: 60px;
+    font-size: 18px;
+  }
+  
+  .yesno-component.large .yesno-yes-icon,
+  .yesno-component.large .yesno-no-icon {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .yesno-component.large .yesno-yes-icon svg,
+  .yesno-component.large .yesno-no-icon svg {
+    width: 24px;
+    height: 24px;
+  }
+  
+  /* Print styles */
+  @media print {
+    .yesno-component {
+      background: white;
+      color: black;
+    }
+    
+    .yesno-button {
+      border-color: black;
+      background: white;
+      color: black;
+    }
+    
+    .yesno-button-yes-selected,
+    .yesno-button-no-selected {
+      background: black;
+      color: white;
+      border-color: black;
+    }
+  }

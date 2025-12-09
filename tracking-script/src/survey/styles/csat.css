@@ -1,0 +1,183 @@
+/* CSS Variables for customization */
+:root {
+    --csat-title-color: #000000;
+    --csat-description-color: #657488;
+    --csat-background-color: #ffffff;
+  }
+  
+  /* Main container */
+  .csat-container {
+    height: 74px;
+    width: 440px;
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    background-color: var(--csat-background-color, #ffffff);
+  }
+  
+  /* Rating scale container */
+  .csat-rating-scale {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 0 4px;
+  }
+  
+  /* Rating buttons */
+  .csat-rating-button {
+    width: 82px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    font-weight: 500;
+    border-radius: 5.09px;
+    padding: 5.09px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+  }
+  
+  .csat-rating-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .csat-rating-button:focus {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+  }
+  
+  .csat-rating-button.csat-rating-selected {
+    font-weight: bold;
+    transform: scale(1.1);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Emoji container */
+  .csat-emoji-container {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .csat-emoji-container svg {
+    width: 37px;
+    height: 37px;
+    transition: transform 0.2s ease;
+  }
+  
+  .csat-rating-button:hover .csat-emoji-container svg {
+    transform: scale(1.1);
+  }
+  
+  .csat-rating-button.csat-rating-selected .csat-emoji-container svg {
+    transform: scale(1.2);
+  }
+  
+  /* Color classes for different rating values */
+  .csat-rating-1 {
+    background-color: #FFE0E2;
+  }
+  
+  .csat-rating-2 {
+    background-color: #FFE7E2;
+  }
+  
+  .csat-rating-3 {
+    background-color: #FFF1EF;
+  }
+  
+  .csat-rating-4 {
+    background-color: #F3F7DC;
+  }
+  
+  .csat-rating-5 {
+    background-color: #CDF9E5;
+  }
+  
+  /* Labels container */
+  .csat-labels {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 12px;
+  }
+  
+  .csat-label-min,
+  .csat-label-max {
+    font-weight: 500;
+    color: var(--csat-description-color, #657488);
+  }
+  
+  /* Title and subtitle styles (if you want to include them) */
+  .csat-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--csat-title-color, #000000);
+    margin-bottom: 4px;
+    text-align: center;
+  }
+  
+  .csat-subtitle {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--csat-description-color, #657488);
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  
+  /* Responsive design */
+  @media (max-width: 480px) {
+    .csat-container {
+      width: 100%;
+      max-width: 440px;
+      padding: 0 16px;
+      box-sizing: border-box;
+    }
+    
+    .csat-rating-scale {
+      gap: 4px;
+      padding: 0 2px;
+    }
+    
+    .csat-rating-button {
+      width: 70px;
+      height: 45px;
+      font-size: 15px;
+    }
+    
+    .csat-emoji-container {
+      width: 35px;
+      height: 35px;
+    }
+    
+    .csat-emoji-container svg {
+      width: 32px;
+      height: 32px;
+    }
+  }
+  
+  @media (max-width: 360px) {
+    .csat-rating-button {
+      width: 60px;
+      height: 40px;
+    }
+    
+    .csat-emoji-container {
+      width: 30px;
+      height: 30px;
+    }
+    
+    .csat-emoji-container svg {
+      width: 28px;
+      height: 28px;
+    }
+  }

@@ -1,0 +1,26 @@
+project-root/
+├── src/
+│   ├── api/
+│   │   ├── controllers/
+│   │   │   └── index.js
+│   │   ├── middlewares/
+│   │   │   └── index.js
+│   │   ├── routes/
+│   │   │   └── index.js
+│   │   ├── services/
+│   │   │   └── index.js
+│   │   └── utils/
+│   │       └── index.js
+│   ├── config/
+│   │   ├── database.js
+│   │   └── index.js
+│   ├── utils/
+│   │   ├── logger.js
+│   │   └── response.js
+│   └── app.js
+├── tests/
+│   └── unit/
+├── .env.example
+├── .gitignore
+├── index.js
+└── package.json

@@ -1,0 +1,323 @@
+/* CSS Variables for customization */
+:root {
+    --headline-title-color: #000000;
+    --headline-description-color: #64748B;
+    --headline-background-color: #ffffff;
+    --headline-primary-color: #3B82F6;
+    --headline-primary-dark-color: #2563EB;
+    --headline-secondary-color: #475569;
+    --headline-secondary-bg-color: #F1F5F9;
+    --headline-secondary-border-color: #E2E8F0;
+    --headline-secondary-hover-bg-color: #ffffff;
+  }
+  
+  /* Main headline component container */
+  .headline-component {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    max-width: 320px;
+    margin-top: 4px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: var(--headline-background-color, #ffffff);
+  }
+  
+  /* Base button styles */
+  .headline-primary-button,
+  .headline-secondary-button {
+    flex: 1;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    outline: none;
+    font-size: 14px;
+    line-height: 1.4;
+    text-align: center;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Primary button */
+  .headline-primary-button {
+    padding: 11px 16px;
+    color: white;
+    background: linear-gradient(to right, var(--headline-primary-color, #3B82F6), var(--headline-primary-dark-color, #2563EB));
+    box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.3);
+    transform: translateY(0);
+  }
+  
+  .headline-primary-button:hover,
+  .headline-primary-hover {
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+    transform: translateY(-2px);
+    background: linear-gradient(to right, var(--headline-primary-dark-color, #2563EB), #1d4ed8);
+  }
+  
+  /* Secondary button */
+  .headline-secondary-button {
+    padding: 10px 16px;
+    border: 1px solid var(--headline-secondary-border-color, #E2E8F0);
+    background-color: var(--headline-secondary-bg-color, #F1F5F9);
+    color: var(--headline-secondary-color, #475569);
+  }
+  
+  .headline-secondary-button:hover,
+  .headline-secondary-hover {
+    background-color: var(--headline-secondary-hover-bg-color, #ffffff);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border-color: #CBD5E1;
+  }
+  
+  /* Focus states */
+  .headline-primary-button:focus,
+  .headline-secondary-button:focus {
+    box-shadow: 0 0 0 2px var(--headline-primary-color, #3B82F6), 0 0 0 4px rgba(59, 130, 246, 0.2);
+  }
+  
+  .headline-primary-button:focus-visible,
+  .headline-secondary-button:focus-visible {
+    outline: 2px solid var(--headline-primary-color, #3B82F6);
+    outline-offset: 2px;
+  }
+  
+  /* Active states */
+  .headline-primary-button:active,
+  .headline-secondary-button:active {
+    transform: scale(0.98);
+  }
+  
+  /* Disabled state */
+  .headline-disabled {
+    opacity: 0.6;
+    cursor: not-allowed !important;
+    pointer-events: none;
+  }
+  
+  .headline-primary-button:disabled,
+  .headline-secondary-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  
+  /* Loading state */
+  .headline-component.loading .headline-primary-button,
+  .headline-component.loading .headline-secondary-button {
+    position: relative;
+    color: transparent;
+    pointer-events: none;
+  }
+  
+  .headline-component.loading .headline-primary-button::after,
+  .headline-component.loading .headline-secondary-button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 16px;
+    height: 16px;
+    margin: -8px 0 0 -8px;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: headline-spin 1s linear infinite;
+  }
+  
+  .headline-component.loading .headline-primary-button::after {
+    border-color: white;
+    border-right-color: transparent;
+  }
+  
+  .headline-component.loading .headline-secondary-button::after {
+    border-color: var(--headline-secondary-color, #475569);
+    border-right-color: transparent;
+  }
+  
+  @keyframes headline-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  /* Compact variant */
+  .headline-component.compact {
+    gap: 6px;
+    margin-top: 2px;
+  }
+  
+  .headline-component.compact .headline-primary-button,
+  .headline-component.compact .headline-secondary-button {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+  
+  /* Large variant */
+  .headline-component.large {
+    gap: 14px;
+    max-width: 400px;
+  }
+  
+  .headline-component.large .headline-primary-button,
+  .headline-component.large .headline-secondary-button {
+    padding: 14px 20px;
+    font-size: 16px;
+  }
+  
+  /* Full width variant */
+  .headline-component.full-width {
+    max-width: 100%;
+  }
+  
+  .headline-component.full-width .headline-primary-button,
+  .headline-component.full-width .headline-secondary-button {
+    flex: 1;
+  }
+  
+  /* Stacked variant for mobile-first design */
+  .headline-component.stacked {
+    flex-direction: column;
+  }
+  
+  /* Responsive design */
+  @media (min-width: 640px) {
+    .headline-component:not(.stacked) {
+      flex-direction: row;
+    }
+  }
+  
+  @media (max-width: 640px) {
+    .headline-component {
+      max-width: 100%;
+      flex-direction: column;
+    }
+    
+    .headline-primary-button,
+    .headline-secondary-button {
+      padding: 14px 16px;
+      font-size: 16px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .headline-component {
+      gap: 8px;
+    }
+    
+    .headline-primary-button,
+    .headline-secondary-button {
+      padding: 12px 14px;
+      font-size: 15px;
+    }
+  }
+  
+  /* High contrast mode support */
+  @media (prefers-contrast: high) {
+    .headline-primary-button {
+      background: #000000;
+      border: 2px solid #000000;
+    }
+    
+    .headline-secondary-button {
+      border: 2px solid #000000;
+      background: #ffffff;
+      color: #000000;
+    }
+    
+    .headline-secondary-button:hover {
+      background: #f0f0f0;
+    }
+  }
+  
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    .headline-primary-button,
+    .headline-secondary-button {
+      transition: none;
+    }
+    
+    .headline-primary-hover,
+    .headline-secondary-hover {
+      transform: none;
+    }
+    
+    .headline-component.loading .headline-primary-button::after,
+    .headline-component.loading .headline-secondary-button::after {
+      animation: none;
+    }
+  }
+  
+  /* Dark mode support */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --headline-background-color: #1f2937;
+      --headline-secondary-bg-color: #374151;
+      --headline-secondary-border-color: #4b5563;
+      --headline-secondary-color: #d1d5db;
+      --headline-secondary-hover-bg-color: #4b5563;
+    }
+  }
+  
+  /* Print styles */
+  @media print {
+    .headline-component {
+      background: white;
+      color: black;
+    }
+    
+    .headline-primary-button,
+    .headline-secondary-button {
+      background: white;
+      color: black;
+      border: 1px solid black;
+      box-shadow: none;
+    }
+  }
+  
+  /* Hover effects for different interaction patterns */
+  .headline-primary-button:hover:not(:disabled) {
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+    transform: translateY(-2px);
+  }
+  
+  .headline-secondary-button:hover:not(:disabled) {
+    transform: translateY(-1px);
+  }
+  
+  /* Enhanced focus styles for accessibility */
+  .headline-primary-button:focus-within,
+  .headline-secondary-button:focus-within {
+    box-shadow: 0 0 0 2px var(--headline-primary-color, #3B82F6), 0 0 0 4px rgba(59, 130, 246, 0.2);
+  }
+  
+  /* Success state */
+  .headline-component.success .headline-primary-button {
+    background: linear-gradient(to right, #10b981, #059669);
+    box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.3);
+  }
+  
+  .headline-component.success .headline-primary-button:hover {
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+  }
+  
+  /* Error state */
+  .headline-component.error .headline-primary-button {
+    background: linear-gradient(to right, #ef4444, #dc2626);
+    box-shadow: 0 4px 14px 0 rgba(239, 68, 68, 0.3);
+  }
+  
+  .headline-component.error .headline-secondary-button {
+    border-color: #ef4444;
+    color: #ef4444;
+  }
+  
+  /* Warning state */
+  .headline-component.warning .headline-primary-button {
+    background: linear-gradient(to right, #f59e0b, #d97706);
+    box-shadow: 0 4px 14px 0 rgba(245, 158, 11, 0.3);
+  }

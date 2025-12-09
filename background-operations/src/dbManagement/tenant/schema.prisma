@@ -1,0 +1,2054 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("TENANT_DB_URL")
+}
+
+model attribute_groups {
+  id                                       Int             @id(map: "attribute_group_id_pkey") @default(autoincrement()) @db.SmallInt
+  name                                     String          @unique(map: "ukey_attribute_groups_name")
+  key                                      String?         @unique(map: "ukey_attribute_groups_key") @db.VarChar(30)
+  status                                   Int             @default(1) @db.SmallInt
+  created_at                               DateTime        @default(now()) @db.Timestamptz(6)
+  created_by                               String?         @db.Uuid
+  updated_at                               DateTime?       @db.Timestamptz(6)
+  updated_by                               String?         @db.Uuid
+  deleted_at                               DateTime?       @db.Timestamptz(6)
+  deleted_by                               String?         @db.Uuid
+  users_attribute_groups_created_byTousers users?          @relation("attribute_groups_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_attribute_groups_created_by_users")
+  users_attribute_groups_deleted_byTousers users?          @relation("attribute_groups_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_attribute_groups_deleted_by_users")
+  users_attribute_groups_updated_byTousers users?          @relation("attribute_groups_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_attribute_groups_updated_by_users")
+  up_attributes                            up_attributes[]
+}
+
+model browsers {
+  id                            String                          @id(map: "browser_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                          String                          @unique(map: "ukey_browsers_name") @db.VarChar(255)
+  user_session_activities       user_session_activities[]
+  user_session_activities_lives user_session_activities_lives[]
+}
+
+model builder_events {
+  id                                     String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                                   String    @db.VarChar(100)
+  listener_id                            String    @db.Uuid
+  expected_data                          Json?     @db.Json
+  configuration                          Json?     @db.Json
+  status                                 Int       @default(1) @db.SmallInt
+  created_at                             DateTime  @default(now()) @db.Timestamptz(6)
+  created_by                             String    @db.Uuid
+  updated_at                             DateTime? @db.Timestamptz(6)
+  updated_by                             String?   @db.Uuid
+  deleted_at                             DateTime? @db.Timestamptz(6)
+  deleted_by                             String?   @db.Uuid
+  selector                               String?
+  users_builder_events_created_byTousers users     @relation("builder_events_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_builder_events_created_by_users")
+  users_builder_events_deleted_byTousers users?    @relation("builder_events_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_builder_events_deleted_by_users")
+  users_builder_events_updated_byTousers users?    @relation("builder_events_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_builder_events_updated_by_users")
+}
+
+model checklist_congratulations_content_lives {
+  checklist_id                                                    String          @unique(map: "ukey_checklist_congratulations_content_lives_checklist") @db.Uuid
+  is_congratulations_content_visible                              Boolean         @default(false)
+  emoji                                                           String?
+  image_url                                                       String?
+  title                                                           String?         @db.VarChar(50)
+  content                                                         String?
+  created_at                                                      DateTime        @default(now()) @db.Timestamptz(6)
+  created_by                                                      String          @db.Uuid
+  updated_at                                                      DateTime?       @db.Timestamptz(6)
+  updated_by                                                      String?         @db.Uuid
+  is_animation_enabled                                            Boolean?        @default(false)
+  checklist_lives                                                 checklist_lives @relation(fields: [checklist_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_checklist_congratulations_content_lives_checklist_id_checkli")
+  users_checklist_congratulations_content_lives_created_byTousers users           @relation("checklist_congratulations_content_lives_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_checklist_congratulations_content_lives_created_by_users")
+  users_checklist_congratulations_content_lives_updated_byTousers users?          @relation("checklist_congratulations_content_lives_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_checklist_congratulations_content_lives_updated_by_users")
+}
+
+model checklist_congratulations_contents {
+  checklist_id                                               String     @unique(map: "ukey_checklist_congratulations_contents_checklist") @db.Uuid
+  is_congratulations_content_visible                         Boolean    @default(false)
+  emoji                                                      String?
+  image_url                                                  String?
+  title                                                      String?    @db.VarChar(50)
+  content                                                    String?
+  created_at                                                 DateTime   @default(now()) @db.Timestamptz(6)
+  created_by                                                 String     @db.Uuid
+  updated_at                                                 DateTime?  @db.Timestamptz(6)
+  updated_by                                                 String?    @db.Uuid
+  is_animation_enabled                                       Boolean?   @default(false)
+  checklists                                                 checklists @relation(fields: [checklist_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_checklist_congratulations_contents_checklist_id_checklists")
+  users_checklist_congratulations_contents_created_byTousers users      @relation("checklist_congratulations_contents_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_checklist_congratulations_contents_created_by_users")
+  users_checklist_congratulations_contents_updated_byTousers users?     @relation("checklist_congratulations_contents_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_checklist_congratulations_contents_updated_by_users")
+}
+
+model checklist_item_lives {
+  id                                           String              @id(map: "checklist_item_live_pkey") @db.Uuid
+  checklist_id                                 String              @db.Uuid
+  title                                        String?             @db.VarChar(255)
+  is_go_to_page_enabled                        Boolean             @default(true)
+  is_launch_flow_enabled                       Boolean             @default(false)
+  go_to_page_url                               String?
+  product_tour_id                              String?             @db.Uuid
+  is_mark_completed_on_flow_start              Boolean             @default(false)
+  is_mark_completed_on_condition               Boolean             @default(false)
+  conditional_operator                         String?             @db.VarChar(5)
+  checklist_item_conditions                    Json?               @db.Json
+  sort_order                                   Int                 @db.SmallInt
+  created_at                                   DateTime            @default(now()) @db.Timestamptz(6)
+  created_by                                   String              @db.Uuid
+  updated_at                                   DateTime?           @db.Timestamptz(6)
+  updated_by                                   String?             @db.Uuid
+  checklist_lives                              checklist_lives     @relation(fields: [checklist_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_checklist_item_lives_checklist_id_checklist_lives")
+  users_checklist_item_lives_created_byTousers users               @relation("checklist_item_lives_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_checklist_item_lives_created_by_users")
+  product_tour_lives                           product_tour_lives? @relation(fields: [product_tour_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_checklist_item_lives_product_tour_id_product_tour_lives")
+  users_checklist_item_lives_updated_byTousers users?              @relation("checklist_item_lives_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_checklist_item_lives_updated_by_users")
+
+  @@index([checklist_id], map: "idx_checklist_item_lives_checklist_id")
+}
+
+model checklist_items {
+  id                                      String         @id(map: "checklist_item_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  checklist_id                            String         @db.Uuid
+  title                                   String?        @db.VarChar(255)
+  is_go_to_page_enabled                   Boolean        @default(true)
+  is_launch_flow_enabled                  Boolean        @default(false)
+  go_to_page_url                          String?
+  product_tour_id                         String?        @db.Uuid
+  is_mark_completed_on_flow_start         Boolean        @default(false)
+  is_mark_completed_on_condition          Boolean        @default(false)
+  conditional_operator                    String?        @db.VarChar(5)
+  checklist_item_conditions               Json?          @db.Json
+  sort_order                              Int            @db.SmallInt
+  created_at                              DateTime       @default(now()) @db.Timestamptz(6)
+  created_by                              String         @db.Uuid
+  updated_at                              DateTime?      @db.Timestamptz(6)
+  updated_by                              String?        @db.Uuid
+  checklists                              checklists     @relation(fields: [checklist_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_checklist_items_checklist_id_checklists")
+  users_checklist_items_created_byTousers users          @relation("checklist_items_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_checklist_items_created_by_users")
+  product_tours                           product_tours? @relation(fields: [product_tour_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_checklist_items_product_tour_id_product_tours")
+  users_checklist_items_updated_byTousers users?         @relation("checklist_items_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_checklist_items_updated_by_users")
+
+  @@index([checklist_id], map: "idx_checklist_items_checklist_id")
+}
+
+model checklist_lives {
+  id                                      String                                   @id(map: "checklist_live_pkey") @db.Uuid
+  name                                    String                                   @db.VarChar(100)
+  description                             String?
+  content_title                           String?                                  @db.VarChar(50)
+  content_description                     String?                                  @db.VarChar(60)
+  is_beacon_enabled                       Boolean                                  @default(true)
+  beacon_text                             String?                                  @db.VarChar(30)
+  has_dismiss_link                        Boolean                                  @default(true)
+  prompt_text                             String?                                  @db.VarChar(50)
+  cancel_button_text                      String?                                  @db.VarChar(50)
+  confirm_button_text                     String?                                  @db.VarChar(50)
+  is_segment_all_users                    Boolean                                  @default(true)
+  segment_id                              String?                                  @db.Uuid
+  is_environment_all                      Boolean                                  @default(true)
+  selected_environments                   Json?                                    @db.Json
+  status                                  Int                                      @default(1) @db.SmallInt
+  created_at                              DateTime                                 @default(now()) @db.Timestamptz(6)
+  created_by                              String                                   @db.Uuid
+  updated_at                              DateTime?                                @db.Timestamptz(6)
+  updated_by                              String?                                  @db.Uuid
+  deleted_at                              DateTime?                                @db.Timestamptz(6)
+  deleted_by                              String?                                  @db.Uuid
+  has_goal                                Boolean                                  @default(false)
+  goal_id                                 String?                                  @db.Uuid
+  design                                  Json?                                    @db.Json
+  is_anonymous_user                       Boolean?
+  is_identified_user                      Boolean?
+  checklist_congratulations_content_lives checklist_congratulations_content_lives?
+  checklist_item_lives                    checklist_item_lives[]
+  users_checklist_lives_created_byTousers users                                    @relation("checklist_lives_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_checklist_lives_created_by_users")
+  users_checklist_lives_deleted_byTousers users?                                   @relation("checklist_lives_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_checklist_lives_deleted_by_users")
+  goal                                    goal?                                    @relation(fields: [goal_id], references: [goal_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_checklist_lives_goal_id_goal")
+  segments                                segments?                                @relation(fields: [segment_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_checklist_lives_segment_id_segments")
+  users_checklist_lives_updated_byTousers users?                                   @relation("checklist_lives_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_checklist_lives_updated_by_users")
+  checklist_trigger_lives                 checklist_trigger_lives?
+
+  @@index([status], map: "idx_checklist_lives_status")
+}
+
+model checklist_trigger_lives {
+  checklist_id                                    String            @id(map: "checklist_trigger_live_checklist_id_ukey") @db.Uuid
+  is_all_pages                                    Boolean           @default(true)
+  conditional_operator                            String?           @db.VarChar(5)
+  checklist_trigger_conditions                    Json?             @db.Json
+  display_trigger_id                              Int?              @db.SmallInt
+  display_trigger_value                           String?           @db.VarChar(255)
+  created_at                                      DateTime          @default(now()) @db.Timestamptz(6)
+  created_by                                      String            @db.Uuid
+  updated_at                                      DateTime?         @db.Timestamptz(6)
+  updated_by                                      String?           @db.Uuid
+  event_name                                      String?           @db.VarChar(255)
+  is_triggered_by_event                           Boolean?          @default(false)
+  checklist_lives                                 checklist_lives   @relation(fields: [checklist_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_checklist_trigger_lives_checklist_id_checklist_lives")
+  users_checklist_trigger_lives_created_byTousers users             @relation("checklist_trigger_lives_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_checklist_trigger_lives_created_by_users")
+  display_triggers                                display_triggers? @relation(fields: [display_trigger_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_checklist_trigger_lives_display_trigger_id_display_triggers")
+  users_checklist_trigger_lives_updated_byTousers users?            @relation("checklist_trigger_lives_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_checklist_trigger_lives_updated_by_users")
+}
+
+model checklist_triggers {
+  checklist_id                               String            @id(map: "checklist_trigger_checklist_id_ukey") @db.Uuid
+  is_all_pages                               Boolean           @default(true)
+  conditional_operator                       String?           @db.VarChar(5)
+  checklist_trigger_conditions               Json?             @db.Json
+  display_trigger_id                         Int?              @db.SmallInt
+  display_trigger_value                      String?           @db.VarChar(255)
+  created_at                                 DateTime          @default(now()) @db.Timestamptz(6)
+  created_by                                 String            @db.Uuid
+  updated_at                                 DateTime?         @db.Timestamptz(6)
+  updated_by                                 String?           @db.Uuid
+  event_name                                 String?           @db.VarChar(255)
+  is_triggered_by_event                      Boolean?          @default(false)
+  checklists                                 checklists        @relation(fields: [checklist_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_checklist_triggers_checklist_id_checklists")
+  users_checklist_triggers_created_byTousers users             @relation("checklist_triggers_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_checklist_triggers_created_by_users")
+  display_triggers                           display_triggers? @relation(fields: [display_trigger_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_checklist_triggers_display_trigger_id_display_triggers")
+  users_checklist_triggers_updated_byTousers users?            @relation("checklist_triggers_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_checklist_triggers_updated_by_users")
+}
+
+model checklists {
+  id                                 String                              @id(map: "checklist_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                               String                              @db.VarChar(100)
+  description                        String?
+  content_title                      String?                             @db.VarChar(50)
+  content_description                String?                             @db.VarChar(60)
+  beacon_is_beacon_enabledstatus     Boolean                             @default(true)
+  beacon_text                        String?                             @db.VarChar(30)
+  has_dismiss_link                   Boolean                             @default(true)
+  prompt_text                        String?                             @db.VarChar(50)
+  cancel_button_text                 String?                             @db.VarChar(50)
+  confirm_button_text                String?                             @db.VarChar(50)
+  is_segment_all_users               Boolean                             @default(true)
+  segment_id                         String?                             @db.Uuid
+  is_environment_all                 Boolean                             @default(true)
+  selected_environments              Json?                               @db.Json
+  status                             Int                                 @default(1) @db.SmallInt
+  created_at                         DateTime                            @default(now()) @db.Timestamptz(6)
+  created_by                         String                              @db.Uuid
+  updated_at                         DateTime?                           @db.Timestamptz(6)
+  updated_by                         String?                             @db.Uuid
+  deleted_at                         DateTime?                           @db.Timestamptz(6)
+  deleted_by                         String?                             @db.Uuid
+  has_goal                           Boolean                             @default(false)
+  goal_id                            String?                             @db.Uuid
+  design                             Json?                               @db.Json
+  is_anonymous_user                  Boolean?
+  is_identified_user                 Boolean?
+  checklist_congratulations_contents checklist_congratulations_contents?
+  checklist_items                    checklist_items[]
+  checklist_triggers                 checklist_triggers?
+  users_checklists_created_byTousers users                               @relation("checklists_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_checklists_created_by_users")
+  users_checklists_deleted_byTousers users?                              @relation("checklists_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_checklists_deleted_by_users")
+  goal                               goal?                               @relation(fields: [goal_id], references: [goal_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_checklists_goal_id_goal")
+  segments                           segments?                           @relation(fields: [segment_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_checklists_segment_id_segments")
+  users_checklists_updated_byTousers users?                              @relation("checklists_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_checklists_updated_by_users")
+  user_progress_checklist_lives      user_progress_checklist_lives[]
+  user_progress_checklists           user_progress_checklists[]
+
+  @@index([status], map: "idx_checklists_status")
+}
+
+model common {
+  id    String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  key   String @db.VarChar
+  value Json?  @db.Json
+}
+
+model condition_groups {
+  id                                       Int             @id(map: "condition_group_id_pkey") @default(autoincrement()) @db.SmallInt
+  name                                     String?         @unique(map: "ukey_condition_groups_condition_group") @db.VarChar(30)
+  description                              String?
+  status                                   Int             @default(1) @db.SmallInt
+  created_at                               DateTime        @default(now()) @db.Timestamptz(6)
+  created_by                               String?         @db.Uuid
+  updated_at                               DateTime?       @db.Timestamptz(6)
+  updated_by                               String?         @db.Uuid
+  deleted_at                               DateTime?       @db.Timestamptz(6)
+  deleted_by                               String?         @db.Uuid
+  users_condition_groups_created_byTousers users?          @relation("condition_groups_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_condition_groups_created_by_users")
+  users_condition_groups_deleted_byTousers users?          @relation("condition_groups_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_condition_groups_deleted_by_users")
+  users_condition_groups_updated_byTousers users?          @relation("condition_groups_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_condition_groups_updated_by_users")
+  conditions                               conditions[]
+  up_attributes                            up_attributes[]
+}
+
+model conditions {
+  id                                 Int              @id(map: "condition_id_pkey") @default(autoincrement()) @db.SmallInt
+  condition_group_id                 Int              @db.SmallInt
+  name                               String?          @db.VarChar(30)
+  symbol                             String?          @db.VarChar(10)
+  script                             String?
+  status                             Int              @default(1) @db.SmallInt
+  created_at                         DateTime         @default(now()) @db.Timestamptz(6)
+  created_by                         String?          @db.Uuid
+  updated_at                         DateTime?        @db.Timestamptz(6)
+  updated_by                         String?          @db.Uuid
+  deleted_at                         DateTime?        @db.Timestamptz(6)
+  deleted_by                         String?          @db.Uuid
+  condition_groups                   condition_groups @relation(fields: [condition_group_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_conditions_condition_group_id_condition_groups")
+  users_conditions_created_byTousers users?           @relation("conditions_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_conditions_created_by_users")
+  users_conditions_deleted_byTousers users?           @relation("conditions_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_conditions_deleted_by_users")
+  users_conditions_updated_byTousers users?           @relation("conditions_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_conditions_updated_by_users")
+
+  @@unique([condition_group_id, name], map: "ukey_conditions_condition_group_id_name")
+}
+
+model countries {
+  id                            String                          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                          String                          @db.VarChar(100)
+  calling_code                  String?                         @db.VarChar(10)
+  flag_url                      String?                         @db.VarChar(255)
+  code                          String?                         @db.VarChar(10)
+  flag_emoji_unicode            String?                         @db.VarChar
+  user_session_activities       user_session_activities[]
+  user_session_activities_lives user_session_activities_lives[]
+}
+
+model currencies {
+  id                            String                          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                          String                          @db.VarChar(100)
+  code                          String?                         @db.VarChar(50)
+  symbol                        String?                         @db.VarChar(50)
+  user_session_activities       user_session_activities[]
+  user_session_activities_lives user_session_activities_lives[]
+}
+
+model data_types {
+  id                                 Int             @id(map: "data_type_id_pkey") @default(autoincrement()) @db.SmallInt
+  name                               String          @unique(map: "ukey_data_types_name") @db.VarChar(30)
+  key                                String          @unique(map: "ukey_data_types_key") @db.VarChar(30)
+  description                        String?
+  status                             Int             @default(1) @db.SmallInt
+  created_at                         DateTime        @default(now()) @db.Timestamptz(6)
+  created_by                         String?         @db.Uuid
+  updated_at                         DateTime?       @db.Timestamptz(6)
+  updated_by                         String?         @db.Uuid
+  deleted_at                         DateTime?       @db.Timestamptz(6)
+  deleted_by                         String?         @db.Uuid
+  users_data_types_created_byTousers users?          @relation("data_types_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_data_types_created_by_users")
+  users_data_types_deleted_byTousers users?          @relation("data_types_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_data_types_deleted_by_users")
+  users_data_types_updated_byTousers users?          @relation("data_types_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_data_types_updated_by_users")
+  up_attributes                      up_attributes[]
+}
+
+model demo_lives {
+  id                                 String                     @id(map: "demo_live_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title                              String                     @db.VarChar(255)
+  description                        String?
+  page_width                         Int?
+  page_height                        Int?
+  branding_button_type               String?                    @db.Char(255)
+  appearance                         Json?                      @db.Json
+  branding_button                    Json?                      @db.Json
+  link                               String?
+  original_media                     Json?                      @db.Json
+  status                             Int                        @default(1) @db.SmallInt
+  created_at                         DateTime                   @default(now()) @db.Timestamptz(6)
+  created_by                         String                     @db.Uuid
+  updated_at                         DateTime?                  @db.Timestamptz(6)
+  updated_by                         String?                    @db.Uuid
+  deleted_at                         DateTime?                  @db.Timestamptz(6)
+  deleted_by                         String?                    @db.Uuid
+  users_demo_lives_created_byTousers users                      @relation("demo_lives_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_demo_lives_created_by_users")
+  users_demo_lives_deleted_byTousers users?                     @relation("demo_lives_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_demo_lives_deleted_by_users")
+  users_demo_lives_updated_byTousers users?                     @relation("demo_lives_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_demo_lives_updated_by_users")
+  demo_step_hotspot_lives            demo_step_hotspot_lives[]
+  demo_step_lives                    demo_step_lives[]
+  helper_item_lives                  helper_item_lives[]
+  helper_items                       helper_items[]
+  user_progress_demo_lives           user_progress_demo_lives[]
+  user_progress_demos                user_progress_demos[]
+}
+
+model demo_processings {
+  id             String    @id(map: "demo_processing_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  demo_id        String    @db.Uuid
+  video_url      String?
+  mimetype       String?   @db.VarChar(255)
+  height         Int?      @db.SmallInt
+  width          Int?      @db.SmallInt
+  info           Json?     @db.Json
+  status         Int       @default(12) @db.SmallInt
+  processed_data Json?     @db.Json
+  created_at     DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at     DateTime? @db.Timestamptz(6)
+  demos          demos     @relation(fields: [demo_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_demo_processings_demo_id_demos")
+}
+
+model demo_step_hotspot_lives {
+  id              String          @id(map: "demo_step_hotspot_live_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  demo_step_id    String          @db.Uuid
+  demo_id         String          @db.Uuid
+  hotspot_name    String?         @db.VarChar(255)
+  hotspot_info    Json?           @db.Json
+  sort_order      Int             @db.SmallInt
+  demo_lives      demo_lives      @relation(fields: [demo_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_demo_step_hotspot_lives_demo_id_demo_lives")
+  demo_step_lives demo_step_lives @relation(fields: [demo_step_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_demo_step_hotspot_lives_demo_step_id_demo_step_lives")
+}
+
+model demo_step_hotspots {
+  id           String     @id(map: "demo_step_hotspot_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  demo_step_id String     @db.Uuid
+  demo_id      String     @db.Uuid
+  name         String?    @db.VarChar(255)
+  info         Json?      @db.Json
+  sort_order   Int        @db.SmallInt
+  demos        demos      @relation(fields: [demo_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_demo_step_hotspots_demo_id_demos")
+  demo_steps   demo_steps @relation(fields: [demo_step_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_demo_step_hotspots_demo_step_id_demo_steps")
+}
+
+model demo_step_lives {
+  id                      String                    @id(map: "demo_step_live_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  demo_id                 String                    @db.Uuid
+  name                    String?                   @db.VarChar(255)
+  media_type              String?                   @db.VarChar(255)
+  media_url               String?
+  thumbnail_url           String?
+  sort_order              Int?                      @db.SmallInt
+  overlay_info            Json?                     @db.Json
+  text_to_speech          Json?                     @db.Json
+  is_voiceover            Boolean?                  @default(false)
+  video_start             Float                     @default(0)
+  video_end               Float                     @default(1)
+  demo_step_hotspot_lives demo_step_hotspot_lives[]
+  demo_lives              demo_lives                @relation(fields: [demo_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_demo_step_lives_demo_id_demo_lives")
+}
+
+model demo_steps {
+  id                 String               @id(map: "demo_step_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  demo_id            String               @db.Uuid
+  name               String?              @db.VarChar(255)
+  media_type         String?              @db.VarChar(255)
+  media_url          String?
+  thumbnail_url      String?
+  sort_order         Int?                 @db.SmallInt
+  overlay_info       Json?                @db.Json
+  text_to_speech     Json?                @db.Json
+  is_voiceover       Boolean?             @default(false)
+  video_start        Float                @default(0)
+  video_end          Float                @default(1)
+  demo_step_hotspots demo_step_hotspots[]
+  demos              demos                @relation(fields: [demo_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_demo_steps_demo_id_demos")
+}
+
+model demos {
+  id                            String               @id(map: "demo_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title                         String               @db.VarChar(255)
+  description                   String?
+  page_width                    Int?
+  page_height                   Int?
+  branding_button_type          String?              @db.Char(255)
+  appearance                    Json?                @db.Json
+  branding_button               Json?                @db.Json
+  link                          String?
+  original_media                Json?                @db.Json
+  status                        Int                  @default(4) @db.SmallInt
+  created_at                    DateTime             @default(now()) @db.Timestamptz(6)
+  created_by                    String               @db.Uuid
+  updated_at                    DateTime?            @db.Timestamptz(6)
+  updated_by                    String?              @db.Uuid
+  deleted_at                    DateTime?            @db.Timestamptz(6)
+  deleted_by                    String?              @db.Uuid
+  demo_processings              demo_processings[]
+  demo_step_hotspots            demo_step_hotspots[]
+  demo_steps                    demo_steps[]
+  users_demos_created_byTousers users                @relation("demos_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_demos_created_by_users")
+  users_demos_deleted_byTousers users?               @relation("demos_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_demos_deleted_by_users")
+  users_demos_updated_byTousers users?               @relation("demos_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_demos_updated_by_users")
+}
+
+model device_types {
+  id                            String                          @id(map: "device_type_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                          String                          @unique(map: "ukey_device_type_name") @db.VarChar(255)
+  user_session_activities       user_session_activities[]
+  user_session_activities_lives user_session_activities_lives[]
+}
+
+model display_frequencies {
+  id                                          Int                          @id(map: "display_frequency_id_pkey") @default(autoincrement()) @db.SmallInt
+  type                                        String                       @unique(map: "ukey_display_frequencies_type")
+  status                                      Int                          @default(1) @db.SmallInt
+  created_at                                  DateTime                     @default(now()) @db.Timestamptz(6)
+  created_by                                  String?                      @db.Uuid
+  updated_at                                  DateTime?                    @db.Timestamptz(6)
+  updated_by                                  String?                      @db.Uuid
+  deleted_at                                  DateTime?                    @db.Timestamptz(6)
+  deleted_by                                  String?                      @db.Uuid
+  users_display_frequencies_created_byTousers users?                       @relation("display_frequencies_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_display_frequencies_created_by_users")
+  users_display_frequencies_deleted_byTousers users?                       @relation("display_frequencies_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_display_frequencies_deleted_by_users")
+  users_display_frequencies_updated_byTousers users?                       @relation("display_frequencies_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_display_frequencies_updated_by_users")
+  product_tour_trigger_lives                  product_tour_trigger_lives[]
+  product_tour_triggers                       product_tour_triggers[]
+}
+
+model display_triggers {
+  id                                       Int                          @id(map: "display_trigger_id_pkey") @default(autoincrement()) @db.SmallInt
+  type                                     String                       @unique(map: "ukey_display_triggers_type") @db.VarChar(30)
+  status                                   Int                          @default(1) @db.SmallInt
+  created_at                               DateTime                     @default(now()) @db.Timestamptz(6)
+  created_by                               String?                      @db.Uuid
+  updated_at                               DateTime?                    @db.Timestamptz(6)
+  updated_by                               String?                      @db.Uuid
+  deleted_at                               DateTime?                    @db.Timestamptz(6)
+  deleted_by                               String?                      @db.Uuid
+  checklist_trigger_lives                  checklist_trigger_lives[]
+  checklist_triggers                       checklist_triggers[]
+  users_display_triggers_created_byTousers users?                       @relation("display_triggers_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_display_triggers_created_by_users")
+  users_display_triggers_deleted_byTousers users?                       @relation("display_triggers_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_display_triggers_deleted_by_users")
+  users_display_triggers_updated_byTousers users?                       @relation("display_triggers_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_display_triggers_updated_by_users")
+  product_tour_trigger_lives               product_tour_trigger_lives[]
+  product_tour_triggers                    product_tour_triggers[]
+  survey_trigger_lives                     survey_trigger_lives[]
+  survey_triggers                          survey_triggers[]
+}
+
+model domains {
+  id                               String                             @id(map: "domain_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                             String
+  status                           Int                                @default(1) @db.SmallInt
+  created_at                       DateTime                           @default(now()) @db.Timestamptz(6)
+  created_by                       String                             @db.Uuid
+  updated_at                       DateTime?                          @db.Timestamptz(6)
+  updated_by                       String?                            @db.Uuid
+  deleted_at                       DateTime?                          @db.Timestamptz(6)
+  deleted_by                       String?                            @db.Uuid
+  is_script_installed              Boolean?                           @default(false)
+  script_installed_at              DateTime?                          @db.Timestamptz(6)
+  is_system                        Boolean                            @default(false)
+  main_domain                      String?                            @db.VarChar
+  sub_domain                       String?                            @db.VarChar
+  users_domains_created_byTousers  users                              @relation("domains_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_domains_created_by_users")
+  users_domains_deleted_byTousers  users?                             @relation("domains_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_domains_deleted_by_users")
+  users_domains_updated_byTousers  users?                             @relation("domains_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_domains_updated_by_users")
+  event_tracking_lives             event_tracking_lives[]
+  event_trackings                  event_trackings[]
+  helper_lives                     helper_lives[]
+  helpers                          helpers[]
+  product_tour_lives               product_tour_lives[]
+  product_tours                    product_tours[]
+  user_progress_checklist_lives    user_progress_checklist_lives[]
+  user_progress_checklists         user_progress_checklists[]
+  user_progress_demo_lives         user_progress_demo_lives[]
+  user_progress_demos              user_progress_demos[]
+  user_progress_helper_lives       user_progress_helper_lives[]
+  user_progress_helpers            user_progress_helpers[]
+  user_progress_product_tour_lives user_progress_product_tour_lives[]
+  user_progress_product_tours      user_progress_product_tours[]
+  user_progress_survey_lives       user_progress_survey_lives[]
+  user_progress_surveys            user_progress_surveys[]
+  user_session_activities          user_session_activities[]
+  user_session_activities_lives    user_session_activities_lives[]
+  user_tracked_data_lives          user_tracked_data_lives[]
+  user_tracked_datas               user_tracked_datas[]
+
+  @@index([is_system], map: "idx_domains_is_system")
+  @@index([status], map: "idx_domains_status")
+}
+
+model email_templates {
+  id                                      String    @id(map: "email_template_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  marketplace_template_id                 String?   @db.Uuid
+  name                                    String    @db.VarChar(255)
+  description                             String?
+  content                                 String?
+  status                                  Int       @default(1) @db.SmallInt
+  created_at                              DateTime  @default(now()) @db.Timestamptz(6)
+  created_by                              String    @db.Uuid
+  updated_at                              DateTime? @db.Timestamptz(6)
+  updated_by                              String?   @db.Uuid
+  deleted_at                              DateTime? @db.Timestamptz(6)
+  deleted_by                              String?   @db.Uuid
+  users_email_templates_created_byTousers users     @relation("email_templates_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_email_templates_created_by_users")
+  users_email_templates_deleted_byTousers users?    @relation("email_templates_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_email_templates_deleted_by_users")
+  users_email_templates_updated_byTousers users?    @relation("email_templates_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_email_templates_updated_by_users")
+}
+
+model event_tracking_lives {
+  id                                               String                        @id(map: "event_tracking_live_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  session_id                                       String                        @db.Uuid
+  tracked_data                                     Json                          @db.Json
+  event_id                                         String                        @db.Uuid
+  fired_at                                         DateTime                      @default(now()) @db.Timestamptz(6)
+  domain_id                                        String?                       @db.Uuid
+  pin_event_id                                     String?                       @db.Uuid
+  domains                                          domains?                      @relation(fields: [domain_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_event_tracking_lives_domain_id_domains")
+  events_event_tracking_lives_event_idToevents     events                        @relation("event_tracking_lives_event_idToevents", fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_event_tracking_lives_event_id_events")
+  events_event_tracking_lives_pin_event_idToevents events?                       @relation("event_tracking_lives_pin_event_idToevents", fields: [pin_event_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_event_tracking_lives_pin_event_id_events")
+  user_session_activities_lives                    user_session_activities_lives @relation(fields: [session_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_event_tracking_lives_session_id_user_session_activities_live")
+}
+
+model event_trackings {
+  id                                          String                  @id(map: "event_tracking_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  session_id                                  String                  @db.Uuid
+  tracked_data                                Json                    @db.Json
+  event_id                                    String                  @db.Uuid
+  fired_at                                    DateTime                @default(now()) @db.Timestamptz(6)
+  domain_id                                   String?                 @db.Uuid
+  pin_event_id                                String?                 @db.Uuid
+  domains                                     domains?                @relation(fields: [domain_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_event_trackings_domain_id_domains")
+  events_event_trackings_event_idToevents     events                  @relation("event_trackings_event_idToevents", fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_event_trackings_event_id_events")
+  events_event_trackings_pin_event_idToevents events?                 @relation("event_trackings_pin_event_idToevents", fields: [pin_event_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_event_trackings_pin_event_id_events")
+  user_session_activities                     user_session_activities @relation(fields: [session_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_event_trackings_session_id_user_session_activities")
+
+  @@index([domain_id], map: "idx_event_trackings_domain_id")
+  @@index([event_id], map: "idx_event_trackings_event_id")
+  @@index([fired_at], map: "idx_event_trackings_fired_at")
+  @@index([session_id], map: "idx_event_trackings_session_id")
+}
+
+model events {
+  id                                                             String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                                                           String                 @db.VarChar(255)
+  type                                                           String                 @default("custom") @db.VarChar(20)
+  configuration                                                  Json?                  @db.Json
+  event_tracking_lives_event_tracking_lives_event_idToevents     event_tracking_lives[] @relation("event_tracking_lives_event_idToevents")
+  event_tracking_lives_event_tracking_lives_pin_event_idToevents event_tracking_lives[] @relation("event_tracking_lives_pin_event_idToevents")
+  event_trackings_event_trackings_event_idToevents               event_trackings[]      @relation("event_trackings_event_idToevents")
+  event_trackings_event_trackings_pin_event_idToevents           event_trackings[]      @relation("event_trackings_pin_event_idToevents")
+}
+
+model feature_types {
+  id                                    String         @id(map: "feature_type_pkey") @db.Uuid
+  name                                  String         @unique(map: "ukey_feature_types_name") @db.VarChar(20)
+  can_create                            Boolean?
+  can_read                              Boolean?
+  can_update                            Boolean?
+  can_delete                            Boolean?
+  can_action                            Boolean?
+  status                                Int            @default(1) @db.SmallInt
+  created_at                            DateTime       @default(now()) @db.Timestamptz(6)
+  updated_at                            DateTime?      @db.Timestamptz(6)
+  deleted_at                            DateTime?      @db.Timestamptz(6)
+  created_by                            String?        @db.Uuid
+  updated_by                            String?        @db.Uuid
+  deleted_by                            String?        @db.Uuid
+  can_export                            Boolean?       @default(false)
+  can_import                            Boolean?       @default(false)
+  users_feature_types_created_byTousers users?         @relation("feature_types_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_feature_types_created_by_users")
+  users_feature_types_deleted_byTousers users?         @relation("feature_types_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_feature_types_deleted_by_users")
+  users_feature_types_updated_byTousers users?         @relation("feature_types_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_feature_types_updated_by_users")
+  sub_features                          sub_features[]
+}
+
+model features {
+  id             String         @id @db.Uuid
+  application_id String?        @db.Uuid
+  key            String?        @db.VarChar
+  status         Int?           @db.SmallInt
+  limit          Int?
+  name           String?        @db.VarChar
+  sub_features   sub_features[]
+}
+
+model fonts {
+  id                            Int       @id @default(autoincrement()) @db.SmallInt
+  name                          String    @unique(map: "ukey_fonts_name") @db.VarChar(255)
+  url                           String?   @db.VarChar(255)
+  status                        Int       @default(1) @db.SmallInt
+  created_at                    DateTime  @default(now()) @db.Timestamptz(6)
+  created_by                    String?   @db.Uuid
+  updated_at                    DateTime? @db.Timestamptz(6)
+  updated_by                    String?   @db.Uuid
+  deleted_at                    DateTime? @db.Timestamptz(6)
+  deleted_by                    String?   @db.Uuid
+  users_fonts_created_byTousers users?    @relation("fonts_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_fonts_created_by_users")
+  users_fonts_deleted_byTousers users?    @relation("fonts_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_fonts_deleted_by_users")
+  users_fonts_updated_byTousers users?    @relation("fonts_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_fonts_updated_by_users")
+}
+
+model goal {
+  goal_id                      String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  goal_name                    String               @db.VarChar(255)
+  description                  String?
+  conditional_operator         String               @db.VarChar(5)
+  status                       Int                  @default(1) @db.SmallInt
+  created_at                   DateTime             @default(now()) @db.Timestamptz(6)
+  created_by                   String               @db.Uuid
+  updated_at                   DateTime?            @db.Timestamptz(6)
+  updated_by                   String?              @db.Uuid
+  goal_conditions              Json[]               @db.Json
+  deleted_at                   DateTime?            @db.Timestamptz(6)
+  deleted_by                   String?              @db.Uuid
+  checklist_lives              checklist_lives[]
+  checklists                   checklists[]
+  users_goal_created_byTousers users                @relation("goal_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_goal_created_by_users")
+  users_goal_deleted_byTousers users?               @relation("goal_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_goal_deleted_by_users")
+  users_goal_updated_byTousers users?               @relation("goal_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_goal_updated_by_users")
+  product_tour_lives           product_tour_lives[]
+  product_tours                product_tours[]
+  survey_lives                 survey_lives[]
+  surveys                      surveys[]
+}
+
+model helper_group_item_lives {
+  id                String              @id(map: "helper_group_item_live_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  helper_id         String              @db.Uuid
+  title             String              @db.VarChar(255)
+  description       String?             @db.VarChar(255)
+  sort_order        Int                 @db.SmallInt
+  logo              String?             @db.VarChar
+  helper_lives      helper_lives        @relation(fields: [helper_id], references: [helper_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_helper_group_item_lives_helper_id_helper_lives")
+  helper_item_lives helper_item_lives[]
+}
+
+model helper_group_items {
+  id           String         @id(map: "helper_group_item_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  helper_id    String         @db.Uuid
+  title        String         @db.VarChar(255)
+  description  String?        @db.VarChar(255)
+  sort_order   Int            @db.SmallInt
+  logo         String?        @db.VarChar
+  helpers      helpers        @relation(fields: [helper_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_helper_group_items_helper_id_helpers")
+  helper_items helper_items[]
+}
+
+model helper_item_lives {
+  id                      String                   @id(map: "helper_item_live_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  helper_id               String                   @db.Uuid
+  group_item_id           String?                  @db.Uuid
+  title                   String                   @db.VarChar(255)
+  description             String?                  @db.VarChar(255)
+  sort_order              Int                      @db.SmallInt
+  product_tour_id         String?                  @db.Uuid
+  survey_id               String?                  @db.Uuid
+  demo_id                 String?                  @db.Uuid
+  url                     String?
+  open_in_new_tab         Boolean?                 @default(false)
+  logo                    String?                  @db.VarChar
+  demo_lives              demo_lives?              @relation(fields: [demo_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_helper_item_lives_demo_id_demo_lives")
+  helper_group_item_lives helper_group_item_lives? @relation(fields: [group_item_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_helper_item_lives_group_item_id_helper_group_item_lives")
+  helper_lives            helper_lives             @relation(fields: [helper_id], references: [helper_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_helper_item_lives_helper_id_helper_lives")
+  product_tour_lives      product_tour_lives?      @relation(fields: [product_tour_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_helper_item_lives_product_tour_id_product_tour_lives")
+  survey_lives            survey_lives?            @relation(fields: [survey_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_helper_item_lives_survey_id_survey_lives")
+}
+
+model helper_items {
+  id                 String              @id(map: "helper_item_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  helper_id          String              @db.Uuid
+  group_item_id      String?             @db.Uuid
+  title              String              @db.VarChar(255)
+  description        String?             @db.VarChar(255)
+  sort_order         Int                 @db.SmallInt
+  product_tour_id    String?             @db.Uuid
+  survey_id          String?             @db.Uuid
+  demo_id            String?             @db.Uuid
+  url                String?
+  open_in_new_tab    Boolean?            @default(false)
+  logo               String?             @db.VarChar
+  demo_lives         demo_lives?         @relation(fields: [demo_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_helper_items_demo_id_demo_lives")
+  helper_group_items helper_group_items? @relation(fields: [group_item_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_helper_items_group_item_id_helper_group_items")
+  helpers            helpers             @relation(fields: [helper_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_helper_items_helper_id_helpers")
+  product_tour_lives product_tour_lives? @relation(fields: [product_tour_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_helper_items_product_tour_id_product_tour_lives")
+  survey_lives       survey_lives?       @relation(fields: [survey_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_helper_items_survey_id_survey_lives")
+}
+
+model helper_lives {
+  helper_id                            String                    @id(map: "helper_live_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                                 String                    @db.VarChar(255)
+  description                          String?                   @db.VarChar(255)
+  logo                                 String?                   @db.VarChar
+  content_title                        String                    @db.VarChar(255)
+  content_description                  String?                   @db.VarChar(255)
+  is_for_all_users                     Boolean                   @default(true)
+  segment_id                           String?                   @db.Uuid
+  domain_id                            String                    @db.Uuid
+  status                               Int                       @default(1) @db.SmallInt
+  design                               Json?                     @db.Json
+  is_anonymous_user                    Boolean                   @default(false)
+  is_identified_user                   Boolean                   @default(false)
+  is_wildcard                          Boolean                   @default(false)
+  remove_branding                      Boolean                   @default(false)
+  hide_feature_icon                    Boolean                   @default(false)
+  is_default_open                      Boolean                   @default(false)
+  created_at                           DateTime                  @default(now()) @db.Timestamptz(6)
+  created_by                           String                    @db.Uuid
+  updated_at                           DateTime?                 @db.Timestamptz(6)
+  updated_by                           String?                   @db.Uuid
+  deleted_at                           DateTime?                 @db.Timestamptz(6)
+  deleted_by                           String?                   @db.Uuid
+  bubble_text                          String?
+  disable_search                       Boolean?                  @default(false)
+  helper_group_item_lives              helper_group_item_lives[]
+  helper_item_lives                    helper_item_lives[]
+  users_helper_lives_created_byTousers users                     @relation("helper_lives_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_helper_lives_created_by_users")
+  users_helper_lives_deleted_byTousers users?                    @relation("helper_lives_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_helper_lives_deleted_by_users")
+  domains                              domains                   @relation(fields: [domain_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_helper_lives_domain_id_domains")
+  segments                             segments?                 @relation(fields: [segment_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_helper_lives_segment_id_segments")
+  users_helper_lives_updated_byTousers users?                    @relation("helper_lives_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_helper_lives_updated_by_users")
+  helper_trigger_lives                 helper_trigger_lives?
+}
+
+model helper_trigger_lives {
+  helper_id        String       @id(map: "helper_trigger_live_pkey") @db.Uuid
+  trigger_by_event Boolean?
+  event_name       String?      @db.VarChar(255)
+  helper_lives     helper_lives @relation(fields: [helper_id], references: [helper_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_helper_trigger_lives_helper_id_helper_lives")
+}
+
+model helper_triggers {
+  helper_id        String   @id(map: "helper_trigger_pkey") @db.Uuid
+  trigger_by_event Boolean?
+  event_name       String?  @db.VarChar(255)
+  helpers          helpers  @relation(fields: [helper_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_helper_triggers_helper_id_helpers")
+}
+
+model helpers {
+  id                              String                       @id(map: "helper_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                            String                       @db.VarChar(255)
+  description                     String?                      @db.VarChar(255)
+  logo                            String?                      @db.VarChar
+  content_title                   String?                      @db.VarChar(255)
+  content_description             String?                      @db.VarChar(255)
+  is_for_all_users                Boolean                      @default(true)
+  segment_id                      String?                      @db.Uuid
+  domain_id                       String?                      @db.Uuid
+  status                          Int                          @default(4) @db.SmallInt
+  design                          Json?                        @db.Json
+  is_anonymous_user               Boolean                      @default(false)
+  is_identified_user              Boolean                      @default(false)
+  is_wildcard                     Boolean                      @default(false)
+  remove_branding                 Boolean                      @default(false)
+  hide_feature_icon               Boolean                      @default(false)
+  is_default_open                 Boolean                      @default(false)
+  created_at                      DateTime                     @default(now()) @db.Timestamptz(6)
+  created_by                      String                       @db.Uuid
+  updated_at                      DateTime?                    @db.Timestamptz(6)
+  updated_by                      String?                      @db.Uuid
+  deleted_at                      DateTime?                    @db.Timestamptz(6)
+  deleted_by                      String?                      @db.Uuid
+  bubble_text                     String?
+  disable_search                  Boolean                      @default(false)
+  helper_group_items              helper_group_items[]
+  helper_items                    helper_items[]
+  helper_triggers                 helper_triggers?
+  users_helpers_created_byTousers users                        @relation("helpers_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_helpers_created_by_users")
+  users_helpers_deleted_byTousers users?                       @relation("helpers_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_helpers_deleted_by_users")
+  domains                         domains?                     @relation(fields: [domain_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_helpers_domain_id_domains")
+  segments                        segments?                    @relation(fields: [segment_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_helpers_segment_id_segments")
+  users_helpers_updated_byTousers users?                       @relation("helpers_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_helpers_updated_by_users")
+  user_progress_helper_lives      user_progress_helper_lives[]
+  user_progress_helpers           user_progress_helpers[]
+}
+
+model input_types {
+  id                                  String    @id(map: "input_type_pkey") @db.Uuid
+  type                                String?   @unique(map: "ukey_input_types_type") @db.VarChar(30)
+  key                                 String?   @unique(map: "ukey_input_types_key") @db.VarChar(30)
+  is_multi_select                     Boolean?  @default(false)
+  status                              Int       @default(1) @db.SmallInt
+  created_at                          DateTime  @default(now()) @db.Timestamptz(6)
+  created_by                          String?   @db.Uuid
+  updated_at                          DateTime? @db.Timestamptz(6)
+  updated_by                          String?   @db.Uuid
+  deleted_at                          DateTime? @db.Timestamptz(6)
+  deleted_by                          String?   @db.Uuid
+  users_input_types_created_byTousers users?    @relation("input_types_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_input_types_created_by_users")
+  users_input_types_deleted_byTousers users?    @relation("input_types_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_input_types_deleted_by_users")
+  users_input_types_updated_byTousers users?    @relation("input_types_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_input_types_updated_by_users")
+}
+
+model integrations {
+  id                                   String    @id(map: "integration_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  status                               Int       @default(3) @db.SmallInt
+  data                                 Json?     @db.Json
+  platform_id                          String    @unique(map: "ukey_integrations_platform_id") @db.Uuid
+  created_at                           DateTime  @db.Timestamptz(6)
+  created_by                           String    @db.Uuid
+  updated_at                           DateTime? @db.Timestamptz(6)
+  updated_by                           String?   @db.Uuid
+  deleted_at                           DateTime? @db.Timestamptz(6)
+  deleted_by                           String?   @db.Uuid
+  users_integrations_created_byTousers users     @relation("integrations_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_integrations_created_by_users")
+  users_integrations_deleted_byTousers users?    @relation("integrations_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_integrations_deleted_by_users")
+  users_integrations_updated_byTousers users?    @relation("integrations_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_integrations_updated_by_users")
+}
+
+model kb_articles {
+  id                                  String        @id(map: "ug_article_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title                               String        @db.VarChar(255)
+  space_id                            String        @db.Uuid
+  parent_id                           String?       @db.Uuid
+  sort_order                          Int           @db.SmallInt
+  status                              Int           @default(4) @db.SmallInt
+  is_bookmarked                       Boolean?      @default(false)
+  current_version_id                  String?       @db.Uuid
+  link                                String?
+  created_at                          DateTime      @default(now()) @db.Timestamptz(6)
+  created_by                          String        @db.Uuid
+  updated_at                          DateTime?     @db.Timestamptz(6)
+  updated_by                          String?       @db.Uuid
+  deleted_at                          DateTime?     @db.Timestamptz(6)
+  deleted_by                          String?       @db.Uuid
+  users_kb_articles_created_byTousers users         @relation("kb_articles_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_kb_articles_created_by_users")
+  users_kb_articles_deleted_byTousers users?        @relation("kb_articles_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_kb_articles_deleted_by_users")
+  kb_articles                         kb_articles?  @relation("kb_articlesTokb_articles", fields: [parent_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_kb_articles_parent_id_kb_articles")
+  other_kb_articles                   kb_articles[] @relation("kb_articlesTokb_articles")
+  kb_spaces                           kb_spaces     @relation(fields: [space_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_kb_articles_space_id_kb_spaces")
+  users_kb_articles_updated_byTousers users?        @relation("kb_articles_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_kb_articles_updated_by_users")
+  kb_comments                         kb_comments[]
+  kb_versions                         kb_versions[]
+}
+
+model kb_comments {
+  id                                  String      @id(map: "ug_comment_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  comment                             String?     @db.VarChar(255)
+  article_id                          String      @db.Uuid
+  version_id                          String      @db.Uuid
+  line_number                         Int?        @db.SmallInt
+  start_position                      Int?        @db.SmallInt
+  end_position                        Int?        @db.SmallInt
+  is_resolved                         Boolean?    @default(false)
+  created_at                          DateTime    @default(now()) @db.Timestamptz(6)
+  created_by                          String      @db.Uuid
+  updated_at                          DateTime?   @db.Timestamptz(6)
+  updated_by                          String?     @db.Uuid
+  deleted_at                          DateTime?   @db.Timestamptz(6)
+  deleted_by                          String?     @db.Uuid
+  kb_articles                         kb_articles @relation(fields: [article_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_kb_comments_article_id_kb_articles")
+  users_kb_comments_created_byTousers users       @relation("kb_comments_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_kb_comments_created_by_users")
+  users_kb_comments_deleted_byTousers users?      @relation("kb_comments_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_kb_comments_deleted_by_users")
+  users_kb_comments_updated_byTousers users?      @relation("kb_comments_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_kb_comments_updated_by_users")
+  kb_versions                         kb_versions @relation(fields: [version_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_kb_comments_version_id_kb_versions")
+}
+
+model kb_space_users {
+  user_id    String    @db.Uuid
+  space_id   String    @db.Uuid
+  role       Int       @db.SmallInt
+  last_login DateTime? @db.Timestamptz(6)
+  kb_spaces  kb_spaces @relation(fields: [space_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_kb_space_users_space_id_kb_spaces")
+  users      users     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_kb_space_users_user_id_users")
+
+  @@unique([user_id, space_id], map: "ukey_kb_space_users_user_id_space_id")
+}
+
+model kb_spaces {
+  id                                String           @id(map: "ug_space_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                              String           @db.VarChar(255)
+  logo                              String?          @db.VarChar
+  status                            Int              @default(4) @db.SmallInt
+  created_at                        DateTime         @default(now()) @db.Timestamptz(6)
+  created_by                        String           @db.Uuid
+  updated_at                        DateTime?        @db.Timestamptz(6)
+  updated_by                        String?          @db.Uuid
+  deleted_at                        DateTime?        @db.Timestamptz(6)
+  deleted_by                        String?          @db.Uuid
+  kb_articles                       kb_articles[]
+  kb_space_users                    kb_space_users[]
+  users_kb_spaces_created_byTousers users            @relation("kb_spaces_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_kb_spaces_created_by_users")
+  users_kb_spaces_deleted_byTousers users?           @relation("kb_spaces_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_kb_spaces_deleted_by_users")
+  users_kb_spaces_updated_byTousers users?           @relation("kb_spaces_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_kb_spaces_updated_by_users")
+}
+
+model kb_versions {
+  id            String        @id(map: "ug_version_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  article_id    String        @db.Uuid
+  collaborators String[]      @db.Uuid
+  content_url   String        @db.VarChar(255)
+  content_hash  String        @db.VarChar(255)
+  mentions      String[]      @db.Uuid
+  status        Int           @default(4) @db.SmallInt
+  created_at    DateTime      @default(now()) @db.Timestamptz(6)
+  created_by    String        @db.Uuid
+  kb_comments   kb_comments[]
+  kb_articles   kb_articles   @relation(fields: [article_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_kb_versions_article_id_kb_articles")
+  users         users         @relation(fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_kb_versions_created_by_users")
+}
+
+model languages {
+  id   Int     @id(map: "locale_pkey") @default(autoincrement()) @db.SmallInt
+  name String  @db.VarChar(256)
+  code String? @db.VarChar(2)
+}
+
+model media_libraries {
+  id            String   @id(map: "media_library_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  url           String   @db.VarChar(255)
+  mime_type     String   @db.VarChar(255)
+  size          Int
+  type          String   @db.VarChar(255)
+  height        Int
+  width         Int
+  thumbnail_url String
+  original_name String   @db.VarChar(255)
+  created_at    DateTime @default(now()) @db.Timestamptz(6)
+}
+
+model operating_systems {
+  id                            String                          @id(map: "operating_system_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                          String                          @unique(map: "ukey_operating_systems_name")
+  user_session_activities       user_session_activities[]
+  user_session_activities_lives user_session_activities_lives[]
+}
+
+model pages {
+  id                                                                                  String                          @id(map: "page_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  url                                                                                 String                          @unique(map: "ukey_pages_url")
+  session_page_view_lives                                                             session_page_view_lives[]
+  session_page_views                                                                  session_page_views[]
+  user_session_activities_user_session_activities_entrance_page_idTopages             user_session_activities[]       @relation("user_session_activities_entrance_page_idTopages")
+  user_session_activities_user_session_activities_exit_page_idTopages                 user_session_activities[]       @relation("user_session_activities_exit_page_idTopages")
+  user_session_activities_lives_user_session_activities_lives_entrance_page_idTopages user_session_activities_lives[] @relation("user_session_activities_lives_entrance_page_idTopages")
+  user_session_activities_lives_user_session_activities_lives_exit_page_idTopages     user_session_activities_lives[] @relation("user_session_activities_lives_exit_page_idTopages")
+}
+
+model permission_sub_features {
+  role_id        String       @db.Uuid
+  sub_feature_id String       @db.Uuid
+  can_create     Boolean?
+  can_read       Boolean?
+  can_update     Boolean?
+  can_delete     Boolean?
+  can_action     Boolean?
+  created_at     DateTime     @default(now()) @db.Timestamptz(6)
+  updated_at     DateTime?    @db.Timestamptz(6)
+  created_by     String       @db.Uuid
+  updated_by     String?      @db.Uuid
+  id             String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  can_export     Boolean?
+  can_import     Boolean?
+  users          users        @relation(fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_permission_sub_features_created_by_users")
+  roles          roles        @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_permission_sub_features_role_id_roles")
+  sub_features   sub_features @relation(fields: [sub_feature_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_permission_sub_features_sub_feature_id_sub_features")
+}
+
+model positions {
+  id                                Int       @id(map: "position_id_pkey") @default(autoincrement()) @db.SmallInt
+  name                              String    @unique(map: "ukey_positions_name") @db.VarChar(30)
+  status                            Int       @default(1) @db.SmallInt
+  created_at                        DateTime  @default(now()) @db.Timestamptz(6)
+  created_by                        String?   @db.Uuid
+  updated_at                        DateTime? @db.Timestamptz(6)
+  updated_by                        String?   @db.Uuid
+  deleted_at                        DateTime? @db.Timestamptz(6)
+  deleted_by                        String?   @db.Uuid
+  users_positions_created_byTousers users?    @relation("positions_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_positions_created_by_users")
+  users_positions_deleted_byTousers users?    @relation("positions_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_positions_deleted_by_users")
+  users_positions_updated_byTousers users?    @relation("positions_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_positions_updated_by_users")
+}
+
+model product_tour_lives {
+  id                                         String                      @id(map: "product_tour_live_pkey") @db.Uuid
+  name                                       String                      @db.VarChar(255)
+  build_url                                  String                      @db.VarChar(255)
+  description                                String?
+  segment_id                                 String?                     @db.Uuid
+  have_goal                                  Boolean                     @default(false)
+  goal_id                                    String?                     @db.Uuid
+  status                                     Int?                        @default(1) @db.SmallInt
+  created_by                                 String                      @db.Uuid
+  updated_by                                 String?                     @db.Uuid
+  created_at                                 DateTime                    @default(now()) @db.Timestamptz(6)
+  updated_at                                 DateTime?                   @db.Timestamptz(6)
+  is_for_all_users                           Boolean                     @default(true)
+  is_for_anonymous_users                     Boolean                     @default(false)
+  is_for_identified_users                    Boolean                     @default(false)
+  has_progress_bar                           Boolean                     @default(false)
+  progress_bar_type                          String?                     @db.VarChar(30)
+  progress_bar_position                      String?                     @db.VarChar(255)
+  progress_bar_color                         String?                     @db.VarChar(50)
+  is_wildcard                                Boolean?                    @default(false)
+  domain_id                                  String?                     @db.Uuid
+  checklist_item_lives                       checklist_item_lives[]
+  helper_item_lives                          helper_item_lives[]
+  helper_items                               helper_items[]
+  users_product_tour_lives_created_byTousers users                       @relation("product_tour_lives_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_tour_lives_created_by_users")
+  domains                                    domains?                    @relation(fields: [domain_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_tour_lives_domain_id_domains")
+  goal                                       goal?                       @relation(fields: [goal_id], references: [goal_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_tour_lives_goal_id_goal")
+  segments                                   segments?                   @relation(fields: [segment_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_tour_lives_segment_id_segments")
+  users_product_tour_lives_updated_byTousers users?                      @relation("product_tour_lives_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_tour_lives_updated_by_users")
+  product_tour_steps_lives                   product_tour_steps_lives[]
+  product_tour_trigger_lives                 product_tour_trigger_lives?
+
+  @@index([created_at], map: "idx_product_tour_lives_created_at")
+  @@index([status], map: "idx_product_tour_lives_status")
+}
+
+model product_tour_steps {
+  id                                         String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  product_tour_id                            String        @db.Uuid
+  name                                       String        @db.VarChar(255)
+  index                                      Int           @db.SmallInt
+  created_at                                 DateTime      @default(now()) @db.Timestamptz(6)
+  created_by                                 String        @db.Uuid
+  updated_at                                 DateTime?     @db.Timestamptz(6)
+  updated_by                                 String?       @db.Uuid
+  content                                    String
+  status                                     Int           @default(1) @db.SmallInt
+  deleted_at                                 DateTime?     @db.Timestamptz(6)
+  deleted_by                                 String?       @db.Uuid
+  template_type_id                           String?       @db.Uuid
+  url                                        String?
+  users_product_tour_steps_created_byTousers users         @relation("product_tour_steps_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_tour_steps_created_by_users")
+  users_product_tour_steps_deleted_byTousers users?        @relation("product_tour_steps_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_tour_steps_deleted_by_users")
+  product_tours                              product_tours @relation(fields: [product_tour_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_tour_steps_product_tour_id_product_tours")
+  users_product_tour_steps_updated_byTousers users?        @relation("product_tour_steps_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_tour_steps_updated_by_users")
+
+  @@index([product_tour_id], map: "idx_product_tour_steps_product_tour_id")
+}
+
+model product_tour_steps_lives {
+  id                                               String             @id(map: "product_tour_steps_live_pkey") @db.Uuid
+  product_tour_id                                  String             @db.Uuid
+  name                                             String             @db.VarChar(255)
+  index                                            Int                @db.SmallInt
+  created_at                                       DateTime           @default(now()) @db.Timestamptz(6)
+  created_by                                       String             @db.Uuid
+  updated_at                                       DateTime?          @db.Timestamptz(6)
+  updated_by                                       String?            @db.Uuid
+  content                                          String
+  status                                           Int                @default(1) @db.SmallInt
+  deleted_at                                       DateTime?          @db.Timestamptz(6)
+  deleted_by                                       String?            @db.Uuid
+  template_type_id                                 String?            @db.Uuid
+  url                                              String?
+  users_product_tour_steps_lives_created_byTousers users              @relation("product_tour_steps_lives_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_tour_steps_lives_created_by_users")
+  users_product_tour_steps_lives_deleted_byTousers users?             @relation("product_tour_steps_lives_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_tour_steps_lives_deleted_by_users")
+  product_tour_lives                               product_tour_lives @relation(fields: [product_tour_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_tour_steps_lives_product_tour_id_product_tour_lives")
+  users_product_tour_steps_lives_updated_byTousers users?             @relation("product_tour_steps_lives_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_tour_steps_lives_updated_by_users")
+
+  @@index([product_tour_id], map: "idx_product_tour_steps_lives_product_tour_id")
+}
+
+model product_tour_template_lives {
+  name                                                String    @db.VarChar(255)
+  content                                             String
+  thumbnail_url                                       String?
+  created_at                                          DateTime  @default(now()) @db.Timestamptz(6)
+  created_by                                          String?   @db.Uuid
+  updated_at                                          DateTime? @db.Timestamptz(6)
+  updated_by                                          String?   @db.Uuid
+  status                                              Int       @default(1) @db.SmallInt
+  deleted_at                                          DateTime? @db.Timestamptz(6)
+  deleted_by                                          String?   @db.Uuid
+  template_type_id                                    String?   @db.Uuid
+  id                                                  String    @id(map: "product_tour_template_live_pkey") @db.Uuid
+  users_product_tour_template_lives_created_byTousers users?    @relation("product_tour_template_lives_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_tour_template_lives_created_by_users")
+  users_product_tour_template_lives_deleted_byTousers users?    @relation("product_tour_template_lives_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_tour_template_lives_deleted_by_users")
+  users_product_tour_template_lives_updated_byTousers users?    @relation("product_tour_template_lives_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_tour_template_lives_updated_by_users")
+}
+
+model product_tour_templates {
+  name                                           String    @db.VarChar(255)
+  content                                        String
+  thumbnail_url                                  String?
+  created_at                                     DateTime  @default(now()) @db.Timestamptz(6)
+  created_by                                     String?   @db.Uuid
+  updated_at                                     DateTime? @db.Timestamptz(6)
+  updated_by                                     String?   @db.Uuid
+  status                                         Int       @default(1) @db.SmallInt
+  deleted_at                                     DateTime? @db.Timestamptz(6)
+  deleted_by                                     String?   @db.Uuid
+  template_type_id                               String?   @db.Uuid
+  id                                             String    @id(map: "product_tour_template_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  users_product_tour_templates_created_byTousers users?    @relation("product_tour_templates_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_tour_templates_created_by_users")
+  users_product_tour_templates_deleted_byTousers users?    @relation("product_tour_templates_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_tour_templates_deleted_by_users")
+  users_product_tour_templates_updated_byTousers users?    @relation("product_tour_templates_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_tour_templates_updated_by_users")
+}
+
+model product_tour_trigger_lives {
+  product_tour_id                                    String               @unique(map: "ukey_product_tour_trigger_lives_product_tour_id") @db.Uuid
+  trigger_type                                       String?              @db.VarChar
+  is_for_all_pages                                   Boolean?
+  conditional_operator                               String?              @db.VarChar
+  conditions                                         Json?                @db.Json
+  display_trigger_id                                 Int?                 @db.SmallInt
+  display_trigger_value                              String?              @db.VarChar(255)
+  display_frequency_id                               Int?                 @db.SmallInt
+  created_by                                         String?              @db.Uuid
+  updated_by                                         String?              @db.Uuid
+  created_at                                         DateTime?            @default(now()) @db.Timestamptz(6)
+  updated_at                                         DateTime?            @db.Timestamptz(6)
+  event_name                                         String?              @db.VarChar
+  trigger_by_event                                   Boolean              @default(false)
+  users_product_tour_trigger_lives_created_byTousers users?               @relation("product_tour_trigger_lives_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_tour_trigger_lives_created_by_users")
+  display_frequencies                                display_frequencies? @relation(fields: [display_frequency_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_tour_trigger_lives_display_frequency_id_display_freq")
+  display_triggers                                   display_triggers?    @relation(fields: [display_trigger_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_tour_trigger_lives_display_trigger_id_display_trigge")
+  product_tour_lives                                 product_tour_lives   @relation(fields: [product_tour_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_tour_trigger_lives_product_tour_id_product_tour_live")
+  users_product_tour_trigger_lives_updated_byTousers users?               @relation("product_tour_trigger_lives_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_tour_trigger_lives_updated_by_users")
+}
+
+model product_tour_triggers {
+  product_tour_id                               String               @unique(map: "ukey_product_tour_triggers_product_tour_id") @db.Uuid
+  trigger_type                                  String?              @db.VarChar
+  is_for_all_pages                              Boolean?
+  conditional_operator                          String?              @db.VarChar
+  conditions                                    Json?                @db.Json
+  display_trigger_id                            Int?                 @db.SmallInt
+  display_trigger_value                         String?              @db.VarChar(255)
+  display_frequency_id                          Int?                 @db.SmallInt
+  created_by                                    String?              @db.Uuid
+  updated_by                                    String?              @db.Uuid
+  created_at                                    DateTime?            @default(now()) @db.Timestamptz(6)
+  updated_at                                    DateTime?            @db.Timestamptz(6)
+  event_name                                    String?              @db.VarChar
+  trigger_by_event                              Boolean              @default(false)
+  users_product_tour_triggers_created_byTousers users?               @relation("product_tour_triggers_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_tour_triggers_created_by_users")
+  display_frequencies                           display_frequencies? @relation(fields: [display_frequency_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_tour_triggers_display_frequency_id_display_frequenci")
+  display_triggers                              display_triggers?    @relation(fields: [display_trigger_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_tour_triggers_display_trigger_id_display_triggers")
+  product_tours                                 product_tours        @relation(fields: [product_tour_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_tour_triggers_product_tour_id_product_tours")
+  users_product_tour_triggers_updated_byTousers users?               @relation("product_tour_triggers_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_tour_triggers_updated_by_users")
+}
+
+model product_tours {
+  id                                    String                             @id(map: "product_tour_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                                  String                             @db.VarChar(255)
+  build_url                             String                             @db.VarChar(255)
+  description                           String?
+  segment_id                            String?                            @db.Uuid
+  have_goal                             Boolean                            @default(false)
+  goal_id                               String?                            @db.Uuid
+  status                                Int?                               @default(1) @db.SmallInt
+  created_by                            String                             @db.Uuid
+  updated_by                            String?                            @db.Uuid
+  created_at                            DateTime                           @default(now()) @db.Timestamptz(6)
+  updated_at                            DateTime?                          @db.Timestamptz(6)
+  is_for_all_users                      Boolean                            @default(true)
+  is_for_anonymous_users                Boolean                            @default(false)
+  is_for_identified_users               Boolean                            @default(false)
+  has_progress_bar                      Boolean                            @default(false)
+  progress_bar_type                     String?                            @db.VarChar(30)
+  progress_bar_position                 String?                            @db.VarChar(255)
+  progress_bar_color                    String?                            @db.VarChar(50)
+  is_wildcard                           Boolean?                           @default(false)
+  domain_id                             String?                            @db.Uuid
+  checklist_items                       checklist_items[]
+  product_tour_steps                    product_tour_steps[]
+  product_tour_triggers                 product_tour_triggers?
+  users_product_tours_created_byTousers users                              @relation("product_tours_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_tours_created_by_users")
+  domains                               domains?                           @relation(fields: [domain_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_tours_domain_id_domains")
+  goal                                  goal?                              @relation(fields: [goal_id], references: [goal_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_tours_goal_id_goal")
+  segments                              segments?                          @relation(fields: [segment_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_tours_segment_id_segments")
+  users_product_tours_updated_byTousers users?                             @relation("product_tours_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_tours_updated_by_users")
+  user_progress_product_tour_lives      user_progress_product_tour_lives[]
+  user_progress_product_tours           user_progress_product_tours[]
+
+  @@index([created_at], map: "idx_product_tours_created_at")
+  @@index([status], map: "idx_product_tours_status")
+}
+
+model roles {
+  id                                 String                    @id(map: "role_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                               String                    @unique(map: "ukey_roles_name") @db.VarChar(256)
+  description                        String?
+  status                             Int                       @default(1) @db.SmallInt
+  created_at                         DateTime                  @default(now()) @db.Timestamptz(6)
+  updated_at                         DateTime?                 @db.Timestamptz(6)
+  deleted_at                         DateTime?                 @db.Timestamptz(6)
+  created_by                         String                    @db.Uuid
+  updated_by                         String?                   @db.Uuid
+  deleted_by                         String?                   @db.Uuid
+  is_system                          Boolean                   @default(false)
+  logo                               String?
+  permission_sub_features            permission_sub_features[]
+  users_roles_created_byTousers      users                     @relation("roles_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_roles_created_by_users")
+  users_roles_deleted_byTousers      users?                    @relation("roles_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_roles_deleted_by_users")
+  users_roles_updated_byTousers      users?                    @relation("roles_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_roles_updated_by_users")
+  user_role_associations             user_role_associations[]
+  users_users_default_role_idToroles users[]                   @relation("users_default_role_idToroles")
+}
+
+model segments {
+  id                               String               @id(map: "segment_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                             String               @db.VarChar(255)
+  description                      String?
+  status                           Int                  @default(1) @db.SmallInt
+  created_at                       DateTime             @default(now()) @db.Timestamptz(6)
+  created_by                       String               @db.Uuid
+  updated_at                       DateTime?            @db.Timestamptz(6)
+  updated_by                       String?              @db.Uuid
+  conditions                       Json[]               @db.Json
+  deleted_at                       DateTime?            @db.Timestamptz(6)
+  deleted_by                       String?              @db.Uuid
+  type                             String?              @db.VarChar(20)
+  checklist_lives                  checklist_lives[]
+  checklists                       checklists[]
+  helper_lives                     helper_lives[]
+  helpers                          helpers[]
+  product_tour_lives               product_tour_lives[]
+  product_tours                    product_tours[]
+  users_segments_created_byTousers users                @relation("segments_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_segments_created_by_users")
+  users_segments_deleted_byTousers users?               @relation("segments_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_segments_deleted_by_users")
+  users_segments_updated_byTousers users?               @relation("segments_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_segments_updated_by_users")
+  survey_lives                     survey_lives[]
+  surveys                          surveys[]
+  user_segments                    user_segments[]
+}
+
+model session_page_view_lives {
+  id                            String                        @id(map: "session_page_view_live_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  page_id                       String                        @db.Uuid
+  sort_order                    Int
+  viewed_at                     DateTime                      @default(now()) @db.Timestamptz(6)
+  ended_at                      DateTime?                     @db.Timestamptz(6)
+  time_spent                    Int?
+  session_id                    String                        @db.Uuid
+  pages                         pages                         @relation(fields: [page_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_session_page_view_lives_page_id_pages")
+  user_session_activities_lives user_session_activities_lives @relation(fields: [session_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_session_page_view_lives_session_id_user_session_activities_l")
+}
+
+model session_page_views {
+  id                      String                  @id(map: "session_page_view_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  page_id                 String                  @db.Uuid
+  sort_order              Int
+  viewed_at               DateTime                @default(now()) @db.Timestamptz(6)
+  ended_at                DateTime?               @db.Timestamptz(6)
+  time_spent              Int?
+  session_id              String                  @db.Uuid
+  pages                   pages                   @relation(fields: [page_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_session_page_views_page_id_pages")
+  user_session_activities user_session_activities @relation(fields: [session_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_session_page_views_session_id_user_session_activities")
+}
+
+model states {
+  id                            String                          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                          String                          @db.VarChar(100)
+  region_code                   String?                         @db.VarChar(20)
+  user_session_activities       user_session_activities[]
+  user_session_activities_lives user_session_activities_lives[]
+}
+
+model sub_features {
+  id                      String                    @id @db.Uuid
+  feature_id              String?                   @db.Uuid
+  key                     String?                   @db.VarChar
+  feature_type_id         String?                   @db.Uuid
+  status                  Int?                      @db.SmallInt
+  name                    String?                   @db.VarChar
+  permission_sub_features permission_sub_features[]
+  features                features?                 @relation(fields: [feature_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_sub_features_feature_id_features")
+  feature_types           feature_types?            @relation(fields: [feature_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_sub_features_feature_type_id_feature_types")
+
+  @@index([feature_id], map: "idx_sub_features_feature_id")
+  @@index([feature_type_id], map: "idx_sub_features_feature_type_id")
+}
+
+model survey_lives {
+  id                      String                  @id(map: "survey_live_pkey") @db.Uuid
+  name                    String                  @db.VarChar(100)
+  description             String?
+  status                  Int                     @default(1) @db.SmallInt
+  environment_domain      Json?                   @db.Json
+  appearance              Json?                   @db.Json
+  created_at              DateTime                @default(now()) @db.Timestamptz(6)
+  updated_at              DateTime?               @db.Timestamptz(6)
+  deleted_at              DateTime?               @db.Timestamptz(6)
+  created_by              String                  @db.Uuid
+  updated_by              String?                 @db.Uuid
+  deleted_by              String?                 @db.Uuid
+  is_for_all_users        Boolean                 @default(true)
+  is_for_all_environments Boolean                 @default(true)
+  have_goal               Boolean                 @default(false)
+  goal_id                 String?                 @db.Uuid
+  banner_image_url        String?
+  link                    String?
+  is_shareable            Boolean                 @default(false)
+  is_for_identified_users Boolean                 @default(false)
+  is_for_anonymous_users  Boolean                 @default(false)
+  segment_id              String?                 @db.Uuid
+  link_settings           Json?                   @db.Json
+  original_banner_name    String?
+  helper_item_lives       helper_item_lives[]
+  helper_items            helper_items[]
+  goal                    goal?                   @relation(fields: [goal_id], references: [goal_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_survey_lives_goal_id_goal")
+  segments                segments?               @relation(fields: [segment_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_survey_lives_segment_id_segments")
+  survey_question_lives   survey_question_lives[]
+  survey_trigger_lives    survey_trigger_lives?
+
+  @@index([id], map: "idx_survey_lives_id")
+  @@index([status], map: "idx_survey_lives_status")
+}
+
+model survey_question_lives {
+  id                                            String       @id(map: "survey_question_live_id_pkey") @db.Uuid
+  survey_id                                     String       @db.Uuid
+  element_type_id                               String       @db.Uuid
+  question_data                                 Json         @db.Json
+  sort_order                                    Int?         @db.SmallInt
+  status                                        Int          @default(1) @db.SmallInt
+  created_at                                    DateTime     @default(now()) @db.Timestamptz(6)
+  updated_at                                    DateTime?    @db.Timestamptz(6)
+  deleted_at                                    DateTime?    @db.Timestamptz(6)
+  created_by                                    String       @db.Uuid
+  updated_by                                    String?      @db.Uuid
+  deleted_by                                    String?      @db.Uuid
+  logic                                         Json?        @db.Json
+  settings                                      Json?        @db.Json
+  users_survey_question_lives_created_byTousers users        @relation("survey_question_lives_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_survey_question_lives_created_by_users")
+  users_survey_question_lives_deleted_byTousers users?       @relation("survey_question_lives_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_survey_question_lives_deleted_by_users")
+  survey_lives                                  survey_lives @relation(fields: [survey_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_survey_question_lives_survey_id_survey_lives")
+  users_survey_question_lives_updated_byTousers users?       @relation("survey_question_lives_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_survey_question_lives_updated_by_users")
+
+  @@index([survey_id], map: "idx_survey_question_lives_survey_id")
+}
+
+model survey_questions {
+  id                                       String    @id(map: "survey_question_id_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  survey_id                                String    @db.Uuid
+  element_type_id                          String    @db.Uuid
+  question_data                            Json      @db.Json
+  sort_order                               Int?      @db.SmallInt
+  status                                   Int       @default(1) @db.SmallInt
+  created_at                               DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at                               DateTime? @db.Timestamptz(6)
+  deleted_at                               DateTime? @db.Timestamptz(6)
+  created_by                               String    @db.Uuid
+  updated_by                               String?   @db.Uuid
+  deleted_by                               String?   @db.Uuid
+  logic                                    Json?     @db.Json
+  settings                                 Json?     @db.Json
+  users_survey_questions_created_byTousers users     @relation("survey_questions_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_survey_questions_created_by_users")
+  users_survey_questions_deleted_byTousers users?    @relation("survey_questions_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_survey_questions_deleted_by_users")
+  surveys                                  surveys   @relation(fields: [survey_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_survey_questions_survey_id_surveys")
+  users_survey_questions_updated_byTousers users?    @relation("survey_questions_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_survey_questions_updated_by_users")
+
+  @@index([survey_id], map: "idx_survey_questions_survey_id")
+}
+
+model survey_trigger_lives {
+  survey_id                                    String            @unique(map: "ukey_survey_trigger_lives_survey_id") @db.Uuid
+  all_pages                                    Boolean           @default(false)
+  conditional_operator                         String?           @db.VarChar(5)
+  display_trigger_id                           Int?              @db.SmallInt
+  display_trigger_value                        String?           @db.VarChar(255)
+  created_by                                   String?           @db.Uuid
+  updated_by                                   String?           @db.Uuid
+  created_at                                   DateTime?         @default(now()) @db.Timestamptz(6)
+  updated_at                                   DateTime?         @db.Timestamptz(6)
+  trigger_conditions                           Json?             @db.Json
+  appearance_after_days                        Int               @default(7) @db.SmallInt
+  pages_before_appearance                      Int               @default(1) @db.SmallInt
+  suppressed_days                              Int               @default(7) @db.SmallInt
+  appearance_after_switch                      Boolean?
+  pages_before_appearance_switch               Boolean?
+  suppressed_days_switch                       Boolean?
+  event_name                                   String?           @db.VarChar(255)
+  trigger_by_event                             Boolean?          @default(false)
+  users_survey_trigger_lives_created_byTousers users?            @relation("survey_trigger_lives_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_survey_trigger_lives_created_by_users")
+  display_triggers                             display_triggers? @relation(fields: [display_trigger_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_survey_trigger_lives_display_trigger_id_display_triggers")
+  survey_lives                                 survey_lives      @relation(fields: [survey_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_survey_trigger_lives_survey_id_survey_lives")
+  users_survey_trigger_lives_updated_byTousers users?            @relation("survey_trigger_lives_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_survey_trigger_lives_updated_by_users")
+}
+
+model survey_triggers {
+  survey_id                               String            @unique(map: "ukey_survey_triggers_survey_id") @db.Uuid
+  all_pages                               Boolean           @default(false)
+  conditional_operator                    String?           @db.VarChar(5)
+  display_trigger_id                      Int?              @db.SmallInt
+  display_trigger_value                   String?           @db.VarChar(255)
+  created_by                              String?           @db.Uuid
+  updated_by                              String?           @db.Uuid
+  created_at                              DateTime?         @default(now()) @db.Timestamptz(6)
+  updated_at                              DateTime?         @db.Timestamptz(6)
+  trigger_conditions                      Json?             @db.Json
+  appearance_after_days                   Int               @default(7) @db.SmallInt
+  pages_before_survey_appearence          Int               @default(1) @db.SmallInt
+  suppressed_days                         Int               @default(7) @db.SmallInt
+  appearance_after_switch                 Boolean?
+  pages_before_appearance_switch          Boolean?
+  suppressed_days_switch                  Boolean?
+  event_name                              String?           @db.VarChar(255)
+  trigger_by_event                        Boolean?          @default(false)
+  users_survey_triggers_created_byTousers users?            @relation("survey_triggers_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_survey_triggers_created_by_users")
+  display_triggers                        display_triggers? @relation(fields: [display_trigger_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_survey_triggers_display_trigger_id_display_triggers")
+  surveys                                 surveys           @relation(fields: [survey_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_survey_triggers_survey_id_surveys")
+  users_survey_triggers_updated_byTousers users?            @relation("survey_triggers_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_survey_triggers_updated_by_users")
+}
+
+model surveys {
+  id                         String                       @id(map: "survey_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                       String                       @db.VarChar(100)
+  description                String?
+  status                     Int                          @default(1) @db.SmallInt
+  environment_domain         Json?                        @db.Json
+  appearance                 Json?                        @db.Json
+  created_at                 DateTime                     @default(now()) @db.Timestamptz(6)
+  updated_at                 DateTime?                    @db.Timestamptz(6)
+  deleted_at                 DateTime?                    @db.Timestamptz(6)
+  created_by                 String                       @db.Uuid
+  updated_by                 String?                      @db.Uuid
+  deleted_by                 String?                      @db.Uuid
+  is_for_all_users           Boolean                      @default(true)
+  is_for_all_environments    Boolean                      @default(true)
+  have_goal                  Boolean                      @default(false)
+  goal_id                    String?                      @db.Uuid
+  banner_image_url           String?
+  link                       String?
+  is_shareable               Boolean                      @default(false)
+  is_for_identified_users    Boolean                      @default(false)
+  is_for_anonymous_users     Boolean                      @default(false)
+  segment_id                 String?                      @db.Uuid
+  link_settings              Json?                        @db.Json
+  original_banner_name       String?
+  survey_questions           survey_questions[]
+  survey_triggers            survey_triggers?
+  goal                       goal?                        @relation(fields: [goal_id], references: [goal_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_surveys_goal_id_goal")
+  segments                   segments?                    @relation(fields: [segment_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_surveys_segment_id_segments")
+  user_progress_survey_lives user_progress_survey_lives[]
+  user_progress_surveys      user_progress_surveys[]
+}
+
+model theme_settings {
+  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  theme        String    @db.VarChar
+  is_current   Boolean   @default(false)
+  created_at   DateTime? @default(now()) @db.Timestamptz(6)
+  created_by   String?   @db.Uuid
+  updated_at   DateTime? @db.Timestamptz(6)
+  updated_by   String?   @db.Uuid
+  custom_css   Json?     @db.Json
+  survey       Json?     @db.Json
+  product_tour Json?     @db.Json
+  checklist    Json?     @db.Json
+  demoz        Json?     @db.Json
+  helper       Json?     @db.Json
+}
+
+model timezones {
+  id                            String                          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  timezone                      String                          @db.VarChar(100)
+  offset                        Int
+  code                          String?                         @db.VarChar(100)
+  user_session_activities       user_session_activities[]
+  user_session_activities_lives user_session_activities_lives[]
+}
+
+model up_attributes {
+  id                                    Int               @id(map: "attribute_id_pkey") @default(autoincrement()) @db.SmallInt
+  name                                  String            @unique(map: "ukey_up_attributes_name") @db.VarChar(30)
+  key                                   String            @unique(map: "ukey_up_attributes_key") @db.VarChar(30)
+  attribute_group_id                    Int?              @db.SmallInt
+  data_type_id                          Int?              @db.SmallInt
+  description                           String?
+  condition_group_id                    Int?              @db.SmallInt
+  is_system_attribute                   Boolean?
+  status                                Int               @default(1) @db.SmallInt
+  created_at                            DateTime          @default(now()) @db.Timestamptz(6)
+  created_by                            String?           @db.Uuid
+  updated_at                            DateTime?         @db.Timestamptz(6)
+  updated_by                            String?           @db.Uuid
+  deleted_at                            DateTime?         @db.Timestamptz(6)
+  deleted_by                            String?           @db.Uuid
+  reference_table                       String?
+  condition_groups                      condition_groups? @relation(fields: [condition_group_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_up_attributes_condition_group_id_condition_groups")
+  users_up_attributes_created_byTousers users?            @relation("up_attributes_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_up_attributes_created_by_users")
+  data_types                            data_types?       @relation(fields: [data_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_up_attributes_data_type_id_data_types")
+  users_up_attributes_deleted_byTousers users?            @relation("up_attributes_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_up_attributes_deleted_by_users")
+  attribute_groups                      attribute_groups? @relation(fields: [attribute_group_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_up_attributes_group_id_attribute_groups")
+  users_up_attributes_updated_byTousers users?            @relation("up_attributes_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_up_attributes_updated_by_users")
+}
+
+model user_feature_progresses {
+  id           String    @id(map: "user_feature_progress_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id      String    @db.VarChar(255)
+  user_type    String    @db.VarChar(20)
+  feature_type String    @db.VarChar(50)
+  feature_id   String    @db.Uuid
+  progress     Json      @db.Json
+  created_at   DateTime  @default(now()) @db.Timestamptz(6)
+  completed_at DateTime? @db.Timestamptz(6)
+}
+
+model user_progress_checklist_lives {
+  id           String     @id(map: "user_progress_checklist_live_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id      String     @db.VarChar(255)
+  user_type    String     @db.VarChar(20)
+  checklist_id String     @db.Uuid
+  progress     Json       @db.Json
+  created_at   DateTime   @default(now()) @db.Timestamptz(6)
+  completed_at DateTime?  @db.Timestamptz(6)
+  dismissed_at DateTime?  @db.Timestamptz(6)
+  status       Int        @default(1) @db.SmallInt
+  domain_id    String?    @db.Uuid
+  session_id   String?    @db.Uuid
+  checklists   checklists @relation(fields: [checklist_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_progress_checklist_lives_checklist_id_checklists")
+  domains      domains?   @relation(fields: [domain_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_progress_checklist_lives_domain_id_domains")
+}
+
+model user_progress_checklists {
+  id           String     @id(map: "user_progress_checklist_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id      String     @db.VarChar(255)
+  user_type    String     @db.VarChar(20)
+  checklist_id String     @db.Uuid
+  progress     Json       @db.Json
+  created_at   DateTime   @default(now()) @db.Timestamptz(6)
+  completed_at DateTime?  @db.Timestamptz(6)
+  dismissed_at DateTime?  @db.Timestamptz(6)
+  status       Int        @default(1) @db.SmallInt
+  domain_id    String?    @db.Uuid
+  session_id   String?    @db.Uuid
+  checklists   checklists @relation(fields: [checklist_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_progress_checklists_checklist_id_checklists")
+  domains      domains?   @relation(fields: [domain_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_progress_checklists_domain_id_domains")
+
+  @@index([checklist_id], map: "idx_user_progress_checklists_checklist_id")
+  @@index([completed_at], map: "idx_user_progress_checklists_completed_at")
+  @@index([created_at], map: "idx_user_progress_checklists_created_at")
+  @@index([dismissed_at], map: "idx_user_progress_checklists_dismissed_at")
+  @@index([domain_id], map: "idx_user_progress_checklists_domain_id")
+  @@index([user_id], map: "idx_user_progress_checklists_user_id")
+}
+
+model user_progress_demo_lives {
+  id                String     @id(map: "user_progress_demo_live_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id           String     @db.VarChar(255)
+  user_type         String     @db.VarChar(255)
+  demo_id           String     @db.Uuid
+  step_progress     Json?      @db.Json
+  hotspot_progress  Json?      @db.Json
+  branding_count    Int        @default(0) @db.SmallInt
+  is_replay         Boolean    @default(false)
+  viewport_enter_at DateTime?  @db.Timestamptz(6)
+  viewport_exit_at  DateTime?  @db.Timestamptz(6)
+  play_time         Int        @default(0) @db.SmallInt
+  status            Int        @default(1) @db.SmallInt
+  created_at        DateTime   @default(now()) @db.Timestamptz(6)
+  played_at         DateTime?  @db.Timestamptz(6)
+  completed_at      DateTime?  @db.Timestamptz(6)
+  cta_progress      Json?      @db.Json
+  domain_id         String?    @db.Uuid
+  channel           Int?       @db.SmallInt
+  full_screen_enter Int        @default(0) @db.SmallInt
+  full_screen_exit  Int        @default(0) @db.SmallInt
+  session_id        String?    @db.Uuid
+  demo_lives        demo_lives @relation(fields: [demo_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_progress_demo_lives_demo_id_demo_lives")
+  domains           domains?   @relation(fields: [domain_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_progress_demo_lives_domain_id_domains")
+}
+
+model user_progress_demos {
+  id                String     @id(map: "user_progress_demo_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id           String     @db.VarChar(255)
+  user_type         String     @db.VarChar(255)
+  demo_id           String     @db.Uuid
+  step_progress     Json?      @db.Json
+  hotspot_progress  Json?      @db.Json
+  branding_count    Int        @default(0) @db.SmallInt
+  is_replay         Boolean    @default(false)
+  viewport_enter_at DateTime?  @db.Timestamptz(6)
+  viewport_exit_at  DateTime?  @db.Timestamptz(6)
+  play_time         Int        @default(0) @db.SmallInt
+  status            Int        @default(1) @db.SmallInt
+  created_at        DateTime   @default(now()) @db.Timestamptz(6)
+  played_at         DateTime?  @db.Timestamptz(6)
+  completed_at      DateTime?  @db.Timestamptz(6)
+  cta_progress      Json?      @db.Json
+  domain_id         String?    @db.Uuid
+  channel           Int?       @db.SmallInt
+  full_screen_enter Int        @default(0) @db.SmallInt
+  full_screen_exit  Int        @default(0) @db.SmallInt
+  session_id        String?    @db.Uuid
+  demo_lives        demo_lives @relation(fields: [demo_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_progress_demos_demo_id_demo_lives")
+  domains           domains?   @relation(fields: [domain_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_progress_demos_domain_id_domains")
+}
+
+model user_progress_helper_lives {
+  id            String    @id(map: "user_progress_helper_live_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id       String    @db.VarChar(255)
+  user_type     String    @db.VarChar(20)
+  helper_id     String    @db.Uuid
+  item_progress Json?     @db.Json
+  search_terms  Json?     @db.Json
+  launch_count  Int?
+  created_at    DateTime  @default(now()) @db.Timestamptz(6)
+  status        Int       @default(1) @db.SmallInt
+  channel       Int?      @db.SmallInt
+  domain_id     String?   @db.Uuid
+  launched_at   DateTime? @db.Timestamptz(6)
+  error_count   Int?      @default(0) @db.SmallInt
+  domains       domains?  @relation(fields: [domain_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_progress_helper_lives_domain_id_domains")
+  helpers       helpers   @relation(fields: [helper_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_progress_helper_lives_helper_id_helpers")
+}
+
+model user_progress_helpers {
+  id            String    @id(map: "user_progress_helper_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id       String    @db.VarChar(255)
+  user_type     String    @db.VarChar(20)
+  helper_id     String    @db.Uuid
+  item_progress Json?     @db.Json
+  search_terms  Json?     @db.Json
+  launch_count  Int?
+  created_at    DateTime  @default(now()) @db.Timestamptz(6)
+  status        Int       @default(1) @db.SmallInt
+  channel       Int?      @db.SmallInt
+  domain_id     String?   @db.Uuid
+  launched_at   DateTime? @db.Timestamptz(6)
+  session_id    String?   @db.Uuid
+  error_count   Int?      @default(0) @db.SmallInt
+  domains       domains?  @relation(fields: [domain_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_progress_helpers_domain_id_domains")
+  helpers       helpers   @relation(fields: [helper_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_progress_helpers_helper_id_helpers")
+}
+
+model user_progress_product_tour_lives {
+  id              String        @id(map: "user_progress_product_tour_live_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id         String        @db.VarChar(255)
+  user_type       String        @db.VarChar(20)
+  product_tour_id String        @db.Uuid
+  progress        Json          @db.Json
+  created_at      DateTime      @default(now()) @db.Timestamptz(6)
+  completed_at    DateTime?     @db.Timestamptz(6)
+  dismissed_at    DateTime?     @db.Timestamptz(6)
+  status          Int           @default(1) @db.SmallInt
+  domain_id       String?       @db.Uuid
+  session_id      String?       @db.Uuid
+  domains         domains?      @relation(fields: [domain_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_progress_product_tour_lives_domain_id_domains")
+  product_tours   product_tours @relation(fields: [product_tour_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_progress_product_tour_lives_product_tour_id_product_tou")
+}
+
+model user_progress_product_tours {
+  id              String        @id(map: "user_progress_product_tour_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id         String        @db.VarChar(255)
+  user_type       String        @db.VarChar(20)
+  product_tour_id String        @db.Uuid
+  progress        Json          @db.Json
+  created_at      DateTime      @default(now()) @db.Timestamptz(6)
+  completed_at    DateTime?     @db.Timestamptz(6)
+  dismissed_at    DateTime?     @db.Timestamptz(6)
+  status          Int           @default(1) @db.SmallInt
+  domain_id       String?       @db.Uuid
+  session_id      String?       @db.Uuid
+  domains         domains?      @relation(fields: [domain_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_progress_product_tour_domain_id_domains")
+  product_tours   product_tours @relation(fields: [product_tour_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_progress_product_tour_id_product_tours")
+
+  @@index([completed_at], map: "idx_user_progress_product_tours_completed_at")
+  @@index([created_at], map: "idx_user_progress_product_tours_created_at")
+  @@index([dismissed_at], map: "idx_user_progress_product_tours_dismissed_at")
+  @@index([domain_id], map: "idx_user_progress_product_tours_domain_id")
+  @@index([product_tour_id], map: "idx_user_progress_product_tours_product_tour_id")
+  @@index([user_id], map: "idx_user_progress_product_tours_user_id")
+}
+
+model user_progress_survey_lives {
+  id              String    @id(map: "user_progress_survey_live_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id         String?   @db.VarChar(255)
+  user_type       String?   @db.VarChar(20)
+  survey_id       String    @db.Uuid
+  progress        Json?     @db.Json
+  dismissed_count Int?
+  dismissed_at    DateTime? @db.Timestamptz(6)
+  created_at      DateTime  @default(now()) @db.Timestamptz(6)
+  completed_at    DateTime? @db.Timestamptz(6)
+  status          Int       @default(1) @db.SmallInt
+  channel         Int?      @default(1) @db.SmallInt
+  domain_id       String?   @db.Uuid
+  session_id      String?   @db.Uuid
+  domains         domains?  @relation(fields: [domain_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_progress_survey_lives_domain_id_domains")
+  surveys         surveys   @relation(fields: [survey_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_progress_survey_lives_survey_id_surveys")
+}
+
+model user_progress_surveys {
+  id              String    @id(map: "user_progress_survey_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id         String?   @db.VarChar(255)
+  user_type       String?   @db.VarChar(20)
+  survey_id       String    @db.Uuid
+  progress        Json?     @db.Json
+  dismissed_count Int?
+  dismissed_at    DateTime? @db.Timestamptz(6)
+  created_at      DateTime  @default(now()) @db.Timestamptz(6)
+  completed_at    DateTime? @db.Timestamptz(6)
+  status          Int       @default(1) @db.SmallInt
+  channel         Int?      @default(1) @db.SmallInt
+  domain_id       String?   @db.Uuid
+  session_id      String?   @db.Uuid
+  domains         domains?  @relation(fields: [domain_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_progress_surveys_domain_id_domains")
+  surveys         surveys   @relation(fields: [survey_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_progress_surveys_survey_id_surveys")
+
+  @@index([completed_at], map: "idx_user_progress_surveys_completed_at")
+  @@index([created_at], map: "idx_user_progress_surveys_created_at")
+  @@index([dismissed_at], map: "idx_user_progress_surveys_dismissed_at")
+  @@index([domain_id], map: "idx_user_progress_surveys_domain_id")
+  @@index([survey_id], map: "idx_user_progress_surveys_survey_id")
+  @@index([user_id], map: "idx_user_progress_surveys_user_id")
+}
+
+model user_role_associations {
+  user_id String @db.Uuid
+  role_id String @db.Uuid
+  roles   roles  @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_role_associations_role_id_roles")
+  users   users  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_role_associations_user_id_users")
+
+  @@unique([user_id, role_id], map: "ukey_user_role_associations_user_id_role_id")
+}
+
+model user_segments {
+  id         String   @id(map: "user_segment_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id    String   @db.VarChar(50)
+  segment_id String   @db.Uuid
+  user_type  String   @db.VarChar(25)
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  segments   segments @relation(fields: [segment_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_segments_segment_id_segments")
+}
+
+model user_session_activities {
+  id                                                    String               @id(map: "user_session_activity_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_tracking_id                                      String?
+  anonymous_tracking_id                                 String?              @db.VarChar(255)
+  user_details                                          Json?                @db.Json
+  screen_height                                         Int?
+  screen_width                                          Int?
+  browser_id                                            String?              @db.Uuid
+  operating_system_id                                   String?              @db.Uuid
+  started_at                                            DateTime             @default(now()) @db.Timestamptz(6)
+  ended_at                                              DateTime?            @db.Timestamptz(6)
+  session_state                                         String?
+  is_first_visit                                        Boolean?
+  entrance_page_id                                      String?              @db.Uuid
+  exit_page_id                                          String?              @db.Uuid
+  browser_language                                      String?              @db.VarChar
+  tab_language                                          String?              @db.VarChar
+  device_type_id                                        String?              @db.Uuid
+  geo_location                                          Json?                @db.Json
+  session_information                                   Json?                @db.Json
+  latitude                                              String?              @db.VarChar(60)
+  longitude                                             String?              @db.VarChar(60)
+  continent                                             String?              @db.VarChar(60)
+  city                                                  String?              @db.VarChar(60)
+  state_id                                              String?              @db.Uuid
+  country_id                                            String?              @db.Uuid
+  zipcode                                               Int?
+  timezone_id                                           String?              @db.Uuid
+  currency_id                                           String?              @db.Uuid
+  ip_address                                            String?              @db.VarChar(50)
+  socket_id                                             String?
+  channel                                               Int?                 @default(1) @db.SmallInt
+  domain_id                                             String?              @db.Uuid
+  event_trackings                                       event_trackings[]
+  session_page_views                                    session_page_views[]
+  browsers                                              browsers?            @relation(fields: [browser_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_session_activities_browser_id_browsers")
+  countries                                             countries?           @relation(fields: [country_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_session_activities_country_id_countries")
+  currencies                                            currencies?          @relation(fields: [currency_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_session_activities_currency_id_currencies")
+  device_types                                          device_types?        @relation(fields: [device_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_session_activities_device_type_id_device_type")
+  domains                                               domains?             @relation(fields: [domain_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_session_activities_domain_id_domains")
+  pages_user_session_activities_entrance_page_idTopages pages?               @relation("user_session_activities_entrance_page_idTopages", fields: [entrance_page_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_session_activities_entrance_page_id_pages")
+  pages_user_session_activities_exit_page_idTopages     pages?               @relation("user_session_activities_exit_page_idTopages", fields: [exit_page_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_session_activities_exit_page_id_pages")
+  operating_systems                                     operating_systems?   @relation(fields: [operating_system_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_session_activities_operating_system_id_operating_system")
+  states                                                states?              @relation(fields: [state_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_session_activities_state_id_states")
+  timezones                                             timezones?           @relation(fields: [timezone_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_session_activities_timezone_id_timezones")
+
+  @@index([anonymous_tracking_id], map: "idx_user_session_activities_anonymous_tracking_id")
+  @@index([channel], map: "idx_user_session_activities_channel")
+  @@index([domain_id], map: "idx_user_session_activities_domain_id")
+  @@index([ended_at], map: "idx_user_session_activities_ended_at")
+  @@index([session_state], map: "idx_user_session_activities_session_state")
+  @@index([started_at], map: "idx_user_session_activities_started_at")
+  @@index([user_tracking_id], map: "idx_user_session_activities_user_tracking_id")
+}
+
+model user_session_activities_lives {
+  id                                                          String                    @id(map: "user_session_activity_live_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_tracking_id                                            String?
+  anonymous_tracking_id                                       String?                   @db.VarChar(255)
+  user_details                                                Json?                     @db.Json
+  screen_height                                               Int?
+  screen_width                                                Int?
+  browser_id                                                  String?                   @db.Uuid
+  operating_system_id                                         String?                   @db.Uuid
+  started_at                                                  DateTime                  @default(now()) @db.Timestamptz(6)
+  ended_at                                                    DateTime?                 @db.Timestamptz(6)
+  session_state                                               String?
+  is_first_visit                                              Boolean?
+  entrance_page_id                                            String?                   @db.Uuid
+  exit_page_id                                                String?                   @db.Uuid
+  browser_language                                            String?                   @db.VarChar
+  tab_language                                                String?                   @db.VarChar
+  device_type_id                                              String?                   @db.Uuid
+  geo_location                                                Json?                     @db.Json
+  session_information                                         Json?                     @db.Json
+  latitude                                                    String?                   @db.VarChar(60)
+  longitude                                                   String?                   @db.VarChar(60)
+  continent                                                   String?                   @db.VarChar(60)
+  city                                                        String?                   @db.VarChar(60)
+  state_id                                                    String?                   @db.Uuid
+  country_id                                                  String?                   @db.Uuid
+  zipcode                                                     Int?
+  timezone_id                                                 String?                   @db.Uuid
+  currency_id                                                 String?                   @db.Uuid
+  ip_address                                                  String?                   @db.VarChar(50)
+  socket_id                                                   String?
+  channel                                                     Int?                      @default(1) @db.SmallInt
+  domain_id                                                   String?                   @db.Uuid
+  event_tracking_lives                                        event_tracking_lives[]
+  session_page_view_lives                                     session_page_view_lives[]
+  browsers                                                    browsers?                 @relation(fields: [browser_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_session_activities_lives_browser_id_browsers")
+  countries                                                   countries?                @relation(fields: [country_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_session_activities_lives_country_id_countries")
+  currencies                                                  currencies?               @relation(fields: [currency_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_session_activities_lives_currency_id_currencies")
+  device_types                                                device_types?             @relation(fields: [device_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_session_activities_lives_device_type_id_device_type")
+  domains                                                     domains?                  @relation(fields: [domain_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_session_activities_lives_domain_id_domains")
+  pages_user_session_activities_lives_entrance_page_idTopages pages?                    @relation("user_session_activities_lives_entrance_page_idTopages", fields: [entrance_page_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_session_activities_lives_entrance_page_id_pages")
+  pages_user_session_activities_lives_exit_page_idTopages     pages?                    @relation("user_session_activities_lives_exit_page_idTopages", fields: [exit_page_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_session_activities_lives_exit_page_id_pages")
+  operating_systems                                           operating_systems?        @relation(fields: [operating_system_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_session_activities_lives_operating_system_id_operating_")
+  states                                                      states?                   @relation(fields: [state_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_session_activities_lives_state_id_states")
+  timezones                                                   timezones?                @relation(fields: [timezone_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_session_activities_lives_timezone_id_timezones")
+}
+
+model user_tracked_data_lives {
+  user_id      String   @db.VarChar(50)
+  user_type    String   @db.VarChar(25)
+  tracked_data Json?
+  id           String   @id(map: "user_tracked_data_live_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  channel      Int?     @default(1) @db.SmallInt
+  domain_id    String?  @db.Uuid
+  anonymous_id String?  @db.Uuid
+  domains      domains? @relation(fields: [domain_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_tracked_data_lives_domain_id_domains")
+}
+
+model user_tracked_datas {
+  user_id      String   @db.VarChar(50)
+  user_type    String   @db.VarChar(25)
+  tracked_data Json?
+  id           String   @id(map: "user_tracked_data_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  channel      Int?     @default(1) @db.SmallInt
+  domain_id    String?  @db.Uuid
+  anonymous_id String?  @db.Uuid
+  domains      domains? @relation(fields: [domain_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_tracked_datas_domain_id_domains")
+
+  @@index([user_id], map: "idx_user_tracked_datas_user_id")
+  @@index([user_type], map: "idx_user_tracked_datas_user_type")
+}
+
+model users {
+  id                                                                                                String                                    @id @db.Uuid
+  first_name                                                                                        String?                                   @db.VarChar(99)
+  last_name                                                                                         String?                                   @db.VarChar(99)
+  email                                                                                             String                                    @db.VarChar(60)
+  profile_picture_url                                                                               String?
+  status                                                                                            Int                                       @default(1) @db.SmallInt
+  created_at                                                                                        DateTime                                  @default(now()) @db.Timestamptz(6)
+  created_by                                                                                        String?                                   @db.Uuid
+  updated_at                                                                                        DateTime?                                 @db.Timestamptz(6)
+  updated_by                                                                                        String?                                   @db.Uuid
+  deleted_at                                                                                        DateTime?                                 @db.Timestamptz(6)
+  deleted_by                                                                                        String?                                   @db.Uuid
+  default_role_id                                                                                   String?                                   @db.Uuid
+  attribute_groups_attribute_groups_created_byTousers                                               attribute_groups[]                        @relation("attribute_groups_created_byTousers")
+  attribute_groups_attribute_groups_deleted_byTousers                                               attribute_groups[]                        @relation("attribute_groups_deleted_byTousers")
+  attribute_groups_attribute_groups_updated_byTousers                                               attribute_groups[]                        @relation("attribute_groups_updated_byTousers")
+  builder_events_builder_events_created_byTousers                                                   builder_events[]                          @relation("builder_events_created_byTousers")
+  builder_events_builder_events_deleted_byTousers                                                   builder_events[]                          @relation("builder_events_deleted_byTousers")
+  builder_events_builder_events_updated_byTousers                                                   builder_events[]                          @relation("builder_events_updated_byTousers")
+  checklist_congratulations_content_lives_checklist_congratulations_content_lives_created_byTousers checklist_congratulations_content_lives[] @relation("checklist_congratulations_content_lives_created_byTousers")
+  checklist_congratulations_content_lives_checklist_congratulations_content_lives_updated_byTousers checklist_congratulations_content_lives[] @relation("checklist_congratulations_content_lives_updated_byTousers")
+  checklist_congratulations_contents_checklist_congratulations_contents_created_byTousers           checklist_congratulations_contents[]      @relation("checklist_congratulations_contents_created_byTousers")
+  checklist_congratulations_contents_checklist_congratulations_contents_updated_byTousers           checklist_congratulations_contents[]      @relation("checklist_congratulations_contents_updated_byTousers")
+  checklist_item_lives_checklist_item_lives_created_byTousers                                       checklist_item_lives[]                    @relation("checklist_item_lives_created_byTousers")
+  checklist_item_lives_checklist_item_lives_updated_byTousers                                       checklist_item_lives[]                    @relation("checklist_item_lives_updated_byTousers")
+  checklist_items_checklist_items_created_byTousers                                                 checklist_items[]                         @relation("checklist_items_created_byTousers")
+  checklist_items_checklist_items_updated_byTousers                                                 checklist_items[]                         @relation("checklist_items_updated_byTousers")
+  checklist_lives_checklist_lives_created_byTousers                                                 checklist_lives[]                         @relation("checklist_lives_created_byTousers")
+  checklist_lives_checklist_lives_deleted_byTousers                                                 checklist_lives[]                         @relation("checklist_lives_deleted_byTousers")
+  checklist_lives_checklist_lives_updated_byTousers                                                 checklist_lives[]                         @relation("checklist_lives_updated_byTousers")
+  checklist_trigger_lives_checklist_trigger_lives_created_byTousers                                 checklist_trigger_lives[]                 @relation("checklist_trigger_lives_created_byTousers")
+  checklist_trigger_lives_checklist_trigger_lives_updated_byTousers                                 checklist_trigger_lives[]                 @relation("checklist_trigger_lives_updated_byTousers")
+  checklist_triggers_checklist_triggers_created_byTousers                                           checklist_triggers[]                      @relation("checklist_triggers_created_byTousers")
+  checklist_triggers_checklist_triggers_updated_byTousers                                           checklist_triggers[]                      @relation("checklist_triggers_updated_byTousers")
+  checklists_checklists_created_byTousers                                                           checklists[]                              @relation("checklists_created_byTousers")
+  checklists_checklists_deleted_byTousers                                                           checklists[]                              @relation("checklists_deleted_byTousers")
+  checklists_checklists_updated_byTousers                                                           checklists[]                              @relation("checklists_updated_byTousers")
+  condition_groups_condition_groups_created_byTousers                                               condition_groups[]                        @relation("condition_groups_created_byTousers")
+  condition_groups_condition_groups_deleted_byTousers                                               condition_groups[]                        @relation("condition_groups_deleted_byTousers")
+  condition_groups_condition_groups_updated_byTousers                                               condition_groups[]                        @relation("condition_groups_updated_byTousers")
+  conditions_conditions_created_byTousers                                                           conditions[]                              @relation("conditions_created_byTousers")
+  conditions_conditions_deleted_byTousers                                                           conditions[]                              @relation("conditions_deleted_byTousers")
+  conditions_conditions_updated_byTousers                                                           conditions[]                              @relation("conditions_updated_byTousers")
+  data_types_data_types_created_byTousers                                                           data_types[]                              @relation("data_types_created_byTousers")
+  data_types_data_types_deleted_byTousers                                                           data_types[]                              @relation("data_types_deleted_byTousers")
+  data_types_data_types_updated_byTousers                                                           data_types[]                              @relation("data_types_updated_byTousers")
+  demo_lives_demo_lives_created_byTousers                                                           demo_lives[]                              @relation("demo_lives_created_byTousers")
+  demo_lives_demo_lives_deleted_byTousers                                                           demo_lives[]                              @relation("demo_lives_deleted_byTousers")
+  demo_lives_demo_lives_updated_byTousers                                                           demo_lives[]                              @relation("demo_lives_updated_byTousers")
+  demos_demos_created_byTousers                                                                     demos[]                                   @relation("demos_created_byTousers")
+  demos_demos_deleted_byTousers                                                                     demos[]                                   @relation("demos_deleted_byTousers")
+  demos_demos_updated_byTousers                                                                     demos[]                                   @relation("demos_updated_byTousers")
+  display_frequencies_display_frequencies_created_byTousers                                         display_frequencies[]                     @relation("display_frequencies_created_byTousers")
+  display_frequencies_display_frequencies_deleted_byTousers                                         display_frequencies[]                     @relation("display_frequencies_deleted_byTousers")
+  display_frequencies_display_frequencies_updated_byTousers                                         display_frequencies[]                     @relation("display_frequencies_updated_byTousers")
+  display_triggers_display_triggers_created_byTousers                                               display_triggers[]                        @relation("display_triggers_created_byTousers")
+  display_triggers_display_triggers_deleted_byTousers                                               display_triggers[]                        @relation("display_triggers_deleted_byTousers")
+  display_triggers_display_triggers_updated_byTousers                                               display_triggers[]                        @relation("display_triggers_updated_byTousers")
+  domains_domains_created_byTousers                                                                 domains[]                                 @relation("domains_created_byTousers")
+  domains_domains_deleted_byTousers                                                                 domains[]                                 @relation("domains_deleted_byTousers")
+  domains_domains_updated_byTousers                                                                 domains[]                                 @relation("domains_updated_byTousers")
+  email_templates_email_templates_created_byTousers                                                 email_templates[]                         @relation("email_templates_created_byTousers")
+  email_templates_email_templates_deleted_byTousers                                                 email_templates[]                         @relation("email_templates_deleted_byTousers")
+  email_templates_email_templates_updated_byTousers                                                 email_templates[]                         @relation("email_templates_updated_byTousers")
+  feature_types_feature_types_created_byTousers                                                     feature_types[]                           @relation("feature_types_created_byTousers")
+  feature_types_feature_types_deleted_byTousers                                                     feature_types[]                           @relation("feature_types_deleted_byTousers")
+  feature_types_feature_types_updated_byTousers                                                     feature_types[]                           @relation("feature_types_updated_byTousers")
+  fonts_fonts_created_byTousers                                                                     fonts[]                                   @relation("fonts_created_byTousers")
+  fonts_fonts_deleted_byTousers                                                                     fonts[]                                   @relation("fonts_deleted_byTousers")
+  fonts_fonts_updated_byTousers                                                                     fonts[]                                   @relation("fonts_updated_byTousers")
+  goal_goal_created_byTousers                                                                       goal[]                                    @relation("goal_created_byTousers")
+  goal_goal_deleted_byTousers                                                                       goal[]                                    @relation("goal_deleted_byTousers")
+  goal_goal_updated_byTousers                                                                       goal[]                                    @relation("goal_updated_byTousers")
+  helper_lives_helper_lives_created_byTousers                                                       helper_lives[]                            @relation("helper_lives_created_byTousers")
+  helper_lives_helper_lives_deleted_byTousers                                                       helper_lives[]                            @relation("helper_lives_deleted_byTousers")
+  helper_lives_helper_lives_updated_byTousers                                                       helper_lives[]                            @relation("helper_lives_updated_byTousers")
+  helpers_helpers_created_byTousers                                                                 helpers[]                                 @relation("helpers_created_byTousers")
+  helpers_helpers_deleted_byTousers                                                                 helpers[]                                 @relation("helpers_deleted_byTousers")
+  helpers_helpers_updated_byTousers                                                                 helpers[]                                 @relation("helpers_updated_byTousers")
+  input_types_input_types_created_byTousers                                                         input_types[]                             @relation("input_types_created_byTousers")
+  input_types_input_types_deleted_byTousers                                                         input_types[]                             @relation("input_types_deleted_byTousers")
+  input_types_input_types_updated_byTousers                                                         input_types[]                             @relation("input_types_updated_byTousers")
+  integrations_integrations_created_byTousers                                                       integrations[]                            @relation("integrations_created_byTousers")
+  integrations_integrations_deleted_byTousers                                                       integrations[]                            @relation("integrations_deleted_byTousers")
+  integrations_integrations_updated_byTousers                                                       integrations[]                            @relation("integrations_updated_byTousers")
+  kb_articles_kb_articles_created_byTousers                                                         kb_articles[]                             @relation("kb_articles_created_byTousers")
+  kb_articles_kb_articles_deleted_byTousers                                                         kb_articles[]                             @relation("kb_articles_deleted_byTousers")
+  kb_articles_kb_articles_updated_byTousers                                                         kb_articles[]                             @relation("kb_articles_updated_byTousers")
+  kb_comments_kb_comments_created_byTousers                                                         kb_comments[]                             @relation("kb_comments_created_byTousers")
+  kb_comments_kb_comments_deleted_byTousers                                                         kb_comments[]                             @relation("kb_comments_deleted_byTousers")
+  kb_comments_kb_comments_updated_byTousers                                                         kb_comments[]                             @relation("kb_comments_updated_byTousers")
+  kb_space_users                                                                                    kb_space_users[]
+  kb_spaces_kb_spaces_created_byTousers                                                             kb_spaces[]                               @relation("kb_spaces_created_byTousers")
+  kb_spaces_kb_spaces_deleted_byTousers                                                             kb_spaces[]                               @relation("kb_spaces_deleted_byTousers")
+  kb_spaces_kb_spaces_updated_byTousers                                                             kb_spaces[]                               @relation("kb_spaces_updated_byTousers")
+  kb_versions                                                                                       kb_versions[]
+  permission_sub_features                                                                           permission_sub_features[]
+  positions_positions_created_byTousers                                                             positions[]                               @relation("positions_created_byTousers")
+  positions_positions_deleted_byTousers                                                             positions[]                               @relation("positions_deleted_byTousers")
+  positions_positions_updated_byTousers                                                             positions[]                               @relation("positions_updated_byTousers")
+  product_tour_lives_product_tour_lives_created_byTousers                                           product_tour_lives[]                      @relation("product_tour_lives_created_byTousers")
+  product_tour_lives_product_tour_lives_updated_byTousers                                           product_tour_lives[]                      @relation("product_tour_lives_updated_byTousers")
+  product_tour_steps_product_tour_steps_created_byTousers                                           product_tour_steps[]                      @relation("product_tour_steps_created_byTousers")
+  product_tour_steps_product_tour_steps_deleted_byTousers                                           product_tour_steps[]                      @relation("product_tour_steps_deleted_byTousers")
+  product_tour_steps_product_tour_steps_updated_byTousers                                           product_tour_steps[]                      @relation("product_tour_steps_updated_byTousers")
+  product_tour_steps_lives_product_tour_steps_lives_created_byTousers                               product_tour_steps_lives[]                @relation("product_tour_steps_lives_created_byTousers")
+  product_tour_steps_lives_product_tour_steps_lives_deleted_byTousers                               product_tour_steps_lives[]                @relation("product_tour_steps_lives_deleted_byTousers")
+  product_tour_steps_lives_product_tour_steps_lives_updated_byTousers                               product_tour_steps_lives[]                @relation("product_tour_steps_lives_updated_byTousers")
+  product_tour_template_lives_product_tour_template_lives_created_byTousers                         product_tour_template_lives[]             @relation("product_tour_template_lives_created_byTousers")
+  product_tour_template_lives_product_tour_template_lives_deleted_byTousers                         product_tour_template_lives[]             @relation("product_tour_template_lives_deleted_byTousers")
+  product_tour_template_lives_product_tour_template_lives_updated_byTousers                         product_tour_template_lives[]             @relation("product_tour_template_lives_updated_byTousers")
+  product_tour_templates_product_tour_templates_created_byTousers                                   product_tour_templates[]                  @relation("product_tour_templates_created_byTousers")
+  product_tour_templates_product_tour_templates_deleted_byTousers                                   product_tour_templates[]                  @relation("product_tour_templates_deleted_byTousers")
+  product_tour_templates_product_tour_templates_updated_byTousers                                   product_tour_templates[]                  @relation("product_tour_templates_updated_byTousers")
+  product_tour_trigger_lives_product_tour_trigger_lives_created_byTousers                           product_tour_trigger_lives[]              @relation("product_tour_trigger_lives_created_byTousers")
+  product_tour_trigger_lives_product_tour_trigger_lives_updated_byTousers                           product_tour_trigger_lives[]              @relation("product_tour_trigger_lives_updated_byTousers")
+  product_tour_triggers_product_tour_triggers_created_byTousers                                     product_tour_triggers[]                   @relation("product_tour_triggers_created_byTousers")
+  product_tour_triggers_product_tour_triggers_updated_byTousers                                     product_tour_triggers[]                   @relation("product_tour_triggers_updated_byTousers")
+  product_tours_product_tours_created_byTousers                                                     product_tours[]                           @relation("product_tours_created_byTousers")
+  product_tours_product_tours_updated_byTousers                                                     product_tours[]                           @relation("product_tours_updated_byTousers")
+  roles_roles_created_byTousers                                                                     roles[]                                   @relation("roles_created_byTousers")
+  roles_roles_deleted_byTousers                                                                     roles[]                                   @relation("roles_deleted_byTousers")
+  roles_roles_updated_byTousers                                                                     roles[]                                   @relation("roles_updated_byTousers")
+  segments_segments_created_byTousers                                                               segments[]                                @relation("segments_created_byTousers")
+  segments_segments_deleted_byTousers                                                               segments[]                                @relation("segments_deleted_byTousers")
+  segments_segments_updated_byTousers                                                               segments[]                                @relation("segments_updated_byTousers")
+  survey_question_lives_survey_question_lives_created_byTousers                                     survey_question_lives[]                   @relation("survey_question_lives_created_byTousers")
+  survey_question_lives_survey_question_lives_deleted_byTousers                                     survey_question_lives[]                   @relation("survey_question_lives_deleted_byTousers")
+  survey_question_lives_survey_question_lives_updated_byTousers                                     survey_question_lives[]                   @relation("survey_question_lives_updated_byTousers")
+  survey_questions_survey_questions_created_byTousers                                               survey_questions[]                        @relation("survey_questions_created_byTousers")
+  survey_questions_survey_questions_deleted_byTousers                                               survey_questions[]                        @relation("survey_questions_deleted_byTousers")
+  survey_questions_survey_questions_updated_byTousers                                               survey_questions[]                        @relation("survey_questions_updated_byTousers")
+  survey_trigger_lives_survey_trigger_lives_created_byTousers                                       survey_trigger_lives[]                    @relation("survey_trigger_lives_created_byTousers")
+  survey_trigger_lives_survey_trigger_lives_updated_byTousers                                       survey_trigger_lives[]                    @relation("survey_trigger_lives_updated_byTousers")
+  survey_triggers_survey_triggers_created_byTousers                                                 survey_triggers[]                         @relation("survey_triggers_created_byTousers")
+  survey_triggers_survey_triggers_updated_byTousers                                                 survey_triggers[]                         @relation("survey_triggers_updated_byTousers")
+  up_attributes_up_attributes_created_byTousers                                                     up_attributes[]                           @relation("up_attributes_created_byTousers")
+  up_attributes_up_attributes_deleted_byTousers                                                     up_attributes[]                           @relation("up_attributes_deleted_byTousers")
+  up_attributes_up_attributes_updated_byTousers                                                     up_attributes[]                           @relation("up_attributes_updated_byTousers")
+  user_role_associations                                                                            user_role_associations[]
+  roles_users_default_role_idToroles                                                                roles?                                    @relation("users_default_role_idToroles", fields: [default_role_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_users_default_role_id_roles")
+}

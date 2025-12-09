@@ -1,0 +1,1312 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("MAIN_DB_URL")
+}
+
+model additional_discounts {
+  id                                           String          @id(map: "additional_discount_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                                         String          @db.VarChar(255)
+  period                                       Int?
+  discount_type_id                             String?         @db.Uuid
+  discount                                     String?         @db.VarChar(255)
+  description                                  String?
+  status                                       Int             @default(1) @db.SmallInt
+  created_at                                   DateTime        @default(now()) @db.Timestamptz(6)
+  updated_at                                   DateTime?       @db.Timestamptz(6)
+  deleted_at                                   DateTime?       @db.Timestamptz(6)
+  created_by                                   String          @db.Uuid
+  updated_by                                   String?         @db.Uuid
+  deleted_by                                   String?         @db.Uuid
+  users_additional_discounts_created_byTousers users           @relation("additional_discounts_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_additional_discounts_created_by_users")
+  users_additional_discounts_deleted_byTousers users?          @relation("additional_discounts_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_additional_discounts_deleted_by_users")
+  users_additional_discounts_updated_byTousers users?          @relation("additional_discounts_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_additional_discounts_updated_by_users")
+  discount_types                               discount_types? @relation(fields: [discount_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_discount_type_additional_discount_discount_types")
+  subscriptions                                subscriptions[]
+}
+
+model addon_packages {
+  id                                     String         @id(map: "addon_package_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  status                                 Int            @default(1) @db.SmallInt
+  created_at                             DateTime?      @default(now()) @db.Timestamptz(6)
+  created_by                             String         @db.Uuid
+  updated_at                             DateTime?      @db.Timestamptz(6)
+  updated_by                             String?        @db.Uuid
+  deleted_at                             DateTime?      @db.Timestamptz(6)
+  deleted_by                             String?        @db.Uuid
+  stripe_product_id                      String?
+  name                                   String?        @db.VarChar(255)
+  limit                                  Int?
+  unit_interval                          Int?           @db.SmallInt
+  users_addon_packages_created_byTousers users          @relation("addon_packages_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_addon_packages_created_by_users")
+  users_addon_packages_deleted_byTousers users?         @relation("addon_packages_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_addon_packages_deleted_by_users")
+  users_addon_packages_updated_byTousers users?         @relation("addon_packages_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_addon_packages_updated_by_users")
+  addon_prices                           addon_prices[]
+}
+
+model addon_prices {
+  id                                                                             String          @id(map: "addon_price_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  addon_package_id                                                               String          @db.Uuid
+  price                                                                          Decimal         @db.Decimal
+  currency_id                                                                    String          @db.Uuid
+  stripe_price_id                                                                String?
+  interval_type_id                                                               String?         @db.Uuid
+  status                                                                         Int             @default(1) @db.SmallInt
+  addon_packages                                                                 addon_packages  @relation(fields: [addon_package_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_addon_prices_addon_package_id_addon_packages")
+  currencies                                                                     currencies      @relation(fields: [currency_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_addon_prices_currency_id_currencies")
+  interval_types                                                                 interval_types? @relation(fields: [interval_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_addon_prices_interval_type_id_interval_types")
+  purchase_logs_purchase_logs_addon_package_monthly_active_user_idToaddon_prices purchase_logs[] @relation("purchase_logs_addon_package_monthly_active_user_idToaddon_prices")
+  purchase_logs_purchase_logs_addon_package_per_user_idToaddon_prices            purchase_logs[] @relation("purchase_logs_addon_package_per_user_idToaddon_prices")
+  subscriptions_subscriptions_addon_package_monthly_active_user_idToaddon_prices subscriptions[] @relation("subscriptions_addon_package_monthly_active_user_idToaddon_prices")
+  subscriptions_subscriptions_addon_package_per_user_idToaddon_prices            subscriptions[] @relation("subscriptions_addon_package_per_user_idToaddon_prices")
+}
+
+model applications {
+  id                                   String                         @id(map: "application_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                                 String                         @unique(map: "idx_applications_name") @db.VarChar(20)
+  description                          String?
+  license_type_id                      String?                        @db.Uuid
+  privacy_policy                       String?
+  terms_of_service                     String?
+  documentation                        String?
+  status                               Int                            @default(1) @db.SmallInt
+  created_at                           DateTime                       @default(now()) @db.Timestamptz(6)
+  updated_at                           DateTime?                      @db.Timestamptz(6)
+  deleted_at                           DateTime?                      @db.Timestamptz(6)
+  release_on                           DateTime?                      @db.Timestamptz(6)
+  overview                             String?
+  created_by                           String                         @db.Uuid
+  updated_by                           String?                        @db.Uuid
+  deleted_by                           String?                        @db.Uuid
+  type                                 String                         @db.VarChar(6)
+  logo                                 String?
+  environment                          String?                        @db.VarChar(255)
+  users_applications_created_byTousers users                          @relation("applications_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_applications_created_by_users")
+  users_applications_deleted_byTousers users?                         @relation("applications_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_applications_deleted_by_users")
+  license_types                        license_types?                 @relation(fields: [license_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_applications_license_type_license_types")
+  users_applications_updated_byTousers users?                         @relation("applications_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_applications_updated_by_users")
+  package_application_features         package_application_features[]
+  package_applications                 package_applications[]
+}
+
+model book_demos {
+  id                                  String     @id(map: "book_demo_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_name                           String     @db.VarChar(50)
+  email                               String     @db.VarChar(60)
+  country_id                          Int?       @db.SmallInt
+  phone_number                        Decimal?   @db.Decimal(15, 0)
+  description                         String?
+  demo_date_time                      DateTime?  @db.Timestamptz(6)
+  is_demo_completed                   Boolean    @default(false)
+  demo_completed_at                   DateTime?  @db.Timestamptz(6)
+  note                                String?
+  assigned_to                         String?    @db.Uuid
+  created_at                          DateTime   @default(now()) @db.Timestamptz(6)
+  updated_by                          String?    @db.Uuid
+  updated_at                          DateTime?  @db.Timestamptz(6)
+  users_book_demos_assigned_toTousers users?     @relation("book_demos_assigned_toTousers", fields: [assigned_to], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_book_demos_assigned_to_users")
+  countries                           countries? @relation(fields: [country_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_book_demos_country_id_countries")
+  users_book_demos_updated_byTousers  users?     @relation("book_demos_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_book_demos_updated_by_users")
+}
+
+model card_brands {
+  id                 String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name               String?              @db.VarChar(255)
+  image_url          String?
+  reference_name     String?              @db.VarChar(255)
+  organization_cards organization_cards[]
+}
+
+model common {
+  id    String @id @db.Uuid
+  key   String @db.VarChar
+  value Json?  @db.Json
+}
+
+model countries {
+  id                                                      Int                      @id(map: "country_pkey") @default(autoincrement()) @db.SmallInt
+  name                                                    String                   @unique(map: "idx_countries_name") @db.VarChar(256)
+  phone_code                                              Decimal?                 @db.Decimal(3, 0)
+  iso_code_2                                              String?                  @db.VarChar(2)
+  iso_code_3                                              String?                  @db.VarChar(3)
+  status                                                  Int                      @default(1) @db.SmallInt
+  created_at                                              DateTime                 @default(now()) @db.Timestamptz(6)
+  updated_at                                              DateTime?                @db.Timestamptz(6)
+  deleted_at                                              DateTime?                @db.Timestamptz(6)
+  flag_url                                                String?
+  created_by                                              String                   @db.Uuid
+  updated_by                                              String?                  @db.Uuid
+  deleted_by                                              String?                  @db.Uuid
+  book_demos                                              book_demos[]
+  users_countries_created_byTousers                       users                    @relation("countries_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_countries_created_by_users")
+  users_countries_deleted_byTousers                       users?                   @relation("countries_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_countries_deleted_by_users")
+  users_countries_updated_byTousers                       users?                   @relation("countries_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_countries_updated_by_users")
+  geo_zone_country_state                                  geo_zone_country_state[]
+  organizations_organizations_country_idTocountries       organizations[]          @relation("organizations_country_idTocountries")
+  organizations_organizations_phone_country_idTocountries organizations[]          @relation("organizations_phone_country_idTocountries")
+  states                                                  states[]
+  users_users_country_idTocountries                       users[]                  @relation("users_country_idTocountries")
+  users_users_phone_country_idTocountries                 users[]                  @relation("users_phone_country_idTocountries")
+}
+
+model coupon_codes {
+  id                                   String          @id(map: "coupon_code_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  discount_type_id                     String          @db.Uuid
+  package_id                           String?         @db.Uuid
+  code                                 String          @db.VarChar(10)
+  expiry_date                          DateTime?       @db.Timestamptz(6)
+  quantity                             Int?
+  discount                             Decimal?        @db.Decimal(10, 0)
+  status                               Int             @default(1) @db.SmallInt
+  created_at                           DateTime        @default(now()) @db.Timestamptz(6)
+  updated_at                           DateTime?       @db.Timestamptz(6)
+  deleted_at                           DateTime?       @db.Timestamptz(6)
+  created_by                           String          @db.Uuid
+  updated_by                           String?         @db.Uuid
+  deleted_by                           String?         @db.Uuid
+  start_date                           DateTime?       @db.Timestamptz(6)
+  addon_package_id                     String?         @db.Uuid
+  stripe_code                          String          @db.VarChar
+  name                                 String?         @db.VarChar
+  package_price_id                     String?         @db.Uuid
+  quantity_per_account                 Int?            @db.SmallInt
+  interval_type_id                     String?         @db.Uuid
+  users_coupon_codes_created_byTousers users           @relation("coupon_codes_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_coupon_codes_created_by_users")
+  users_coupon_codes_deleted_byTousers users?          @relation("coupon_codes_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_coupon_codes_deleted_by_users")
+  discount_types                       discount_types  @relation(fields: [discount_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_coupon_codes_discount_type_id_discount_types")
+  interval_types                       interval_types? @relation(fields: [interval_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_coupon_codes_interval_type_id_interval_types")
+  packages                             packages?       @relation(fields: [package_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_coupon_codes_package_id_packages")
+  package_prices                       package_prices? @relation(fields: [package_price_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_coupon_codes_package_price_id_package_prices")
+  users_coupon_codes_updated_byTousers users?          @relation("coupon_codes_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_coupon_codes_updated_by_users")
+  subscriptions                        subscriptions[]
+}
+
+model currencies {
+  id                                 String           @id(map: "currency_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                               String           @unique(map: "idx_currencies_name") @db.VarChar(20)
+  symbol                             String?          @db.VarChar(3)
+  code                               String?          @db.VarChar(3)
+  status                             Int              @default(1) @db.SmallInt
+  created_at                         DateTime         @default(now()) @db.Timestamptz(6)
+  updated_at                         DateTime?        @db.Timestamptz(6)
+  deleted_at                         DateTime?        @db.Timestamptz(6)
+  created_by                         String           @db.Uuid
+  updated_by                         String?          @db.Uuid
+  deleted_by                         String?          @db.Uuid
+  is_default                         Boolean?         @default(false)
+  addon_prices                       addon_prices[]
+  users_currencies_created_byTousers users            @relation("currencies_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_currencies_created_by_users")
+  users_currencies_deleted_byTousers users?           @relation("currencies_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_currencies_deleted_by_users")
+  users_currencies_updated_byTousers users?           @relation("currencies_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_currencies_updated_by_users")
+  geo_zones                          geo_zones[]
+  organizations                      organizations[]
+  package_prices                     package_prices[]
+}
+
+model discount_types {
+  id                                     String                 @id(map: "discount_type_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                                   String                 @unique(map: "idx_discount_types_name") @db.VarChar(50)
+  symbol                                 String                 @db.VarChar(10)
+  status                                 Int                    @default(1) @db.SmallInt
+  created_at                             DateTime               @default(now()) @db.Timestamptz(6)
+  updated_at                             DateTime?              @db.Timestamptz(6)
+  deleted_at                             DateTime?              @db.Timestamptz(6)
+  created_by                             String                 @db.Uuid
+  updated_by                             String?                @db.Uuid
+  deleted_by                             String?                @db.Uuid
+  additional_discounts                   additional_discounts[]
+  coupon_codes                           coupon_codes[]
+  users_discount_types_created_byTousers users                  @relation("discount_types_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_discount_types_created_by_users")
+  users_discount_types_deleted_byTousers users?                 @relation("discount_types_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_discount_types_deleted_by_users")
+  users_discount_types_updated_byTousers users?                 @relation("discount_types_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_discount_types_updated_by_users")
+}
+
+model early_access_requests {
+  id                String  @id(map: "early_access_request_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  organization_name String? @db.VarChar(255)
+  subdomain         String? @db.VarChar(255)
+  first_name        String? @db.VarChar(255)
+  last_name         String? @db.VarChar(255)
+  email             String? @db.VarChar(255)
+  team_role         String?
+  team_size         String?
+  other_info        String?
+}
+
+model email_notifications {
+  id                                          String    @id(map: "email_notification_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  key                                         String    @db.VarChar(50)
+  email_addresses                             String[]  @db.VarChar
+  status                                      Int       @db.SmallInt
+  created_at                                  DateTime  @default(now()) @db.Timestamptz(6)
+  created_by                                  String?   @db.Uuid
+  updated_at                                  DateTime? @db.Timestamptz(6)
+  updated_by                                  String?   @db.Uuid
+  deleted_at                                  DateTime? @db.Timestamptz(6)
+  deleted_by                                  String?   @db.Uuid
+  description                                 String?
+  users_email_notifications_created_byTousers users?    @relation("email_notifications_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_email_notifications_created_by_users")
+  users_email_notifications_deleted_byTousers users?    @relation("email_notifications_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_email_notifications_deleted_by_users")
+  users_email_notifications_updated_byTousers users?    @relation("email_notifications_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_email_notifications_updated_by_users")
+
+  @@index([created_by], map: "idx_email_notifications_created_by")
+  @@index([deleted_by], map: "idx_email_notifications_deleted_by")
+  @@index([updated_by], map: "idx_email_notifications_updated_by")
+}
+
+model email_template_categories {
+  id              String            @id(map: "email_template_category_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name            String            @db.VarChar(255)
+  description     String?
+  status          Int               @default(1) @db.SmallInt
+  email_templates email_templates[]
+}
+
+model email_templates {
+  id                                      String                     @id(map: "email_template_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                                    String                     @unique(map: "idx_email_templates_name") @db.VarChar(100)
+  key                                     String                     @unique(map: "idx_email_templates_key") @db.VarChar(100)
+  subject                                 String?
+  content                                 String?
+  is_notification_active                  Boolean?
+  notification_content                    String?
+  notification_link                       String?
+  internal_notes                          String?
+  status                                  Int                        @default(1) @db.SmallInt
+  created_at                              DateTime                   @default(now()) @db.Timestamptz(6)
+  updated_at                              DateTime?                  @db.Timestamptz(6)
+  deleted_at                              DateTime?                  @db.Timestamptz(6)
+  created_by                              String                     @db.Uuid
+  updated_by                              String?                    @db.Uuid
+  deleted_by                              String?                    @db.Uuid
+  email_template_category_id              String?                    @db.Uuid
+  users_email_templates_created_byTousers users                      @relation("email_templates_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_email_templates_created_by_users")
+  users_email_templates_deleted_byTousers users?                     @relation("email_templates_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_email_templates_deleted_by_users")
+  email_template_categories               email_template_categories? @relation(fields: [email_template_category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_email_templates_email_template_category_id_email_template_ca")
+  users_email_templates_updated_byTousers users?                     @relation("email_templates_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_email_templates_updated_by_users")
+}
+
+model event_listeners {
+  id                                      String    @id(map: "event_listener_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  listener                                String    @unique(map: "idx_event_listeners_listener") @db.VarChar(100)
+  logo_url                                String?
+  description                             String?
+  status                                  Int       @default(1) @db.SmallInt
+  created_at                              DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at                              DateTime? @db.Timestamptz(6)
+  deleted_at                              DateTime? @db.Timestamptz(6)
+  created_by                              String    @db.Uuid
+  updated_by                              String?   @db.Uuid
+  deleted_by                              String?   @db.Uuid
+  users_event_listeners_created_byTousers users     @relation("event_listeners_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_event_listeners_created_by_users")
+  users_event_listeners_deleted_byTousers users?    @relation("event_listeners_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_event_listeners_deleted_by_users")
+  users_event_listeners_updated_byTousers users?    @relation("event_listeners_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_event_listeners_updated_by_users")
+}
+
+model feature_types {
+  id                                    String         @id(map: "feature_type_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                                  String         @unique(map: "idx_feature_types_name") @db.VarChar(20)
+  can_create                            Boolean?
+  can_read                              Boolean?
+  can_update                            Boolean?
+  can_delete                            Boolean?
+  can_action                            Boolean?
+  status                                Int            @default(1) @db.SmallInt
+  created_at                            DateTime       @default(now()) @db.Timestamptz(6)
+  updated_at                            DateTime?      @db.Timestamptz(6)
+  deleted_at                            DateTime?      @db.Timestamptz(6)
+  created_by                            String         @db.Uuid
+  updated_by                            String?        @db.Uuid
+  deleted_by                            String?        @db.Uuid
+  can_export                            Boolean?
+  can_import                            Boolean?       @default(false)
+  users_feature_types_created_byTousers users          @relation("feature_types_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_feature_types_created_by_users")
+  users_feature_types_deleted_byTousers users?         @relation("feature_types_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_feature_types_deleted_by_users")
+  users_feature_types_updated_byTousers users?         @relation("feature_types_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_feature_types_updated_by_users")
+  sub_features                          sub_features[]
+}
+
+model features {
+  id                               String                         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                             String                         @db.VarChar(256)
+  description                      String?
+  license_type_id                  String?                        @db.Uuid
+  release_date                     DateTime?                      @db.Timestamptz(6)
+  status                           Int                            @default(1) @db.SmallInt
+  created_at                       DateTime                       @default(now()) @db.Timestamptz(6)
+  updated_at                       DateTime?                      @db.Timestamptz(6)
+  deleted_at                       DateTime?                      @db.Timestamptz(6)
+  created_by                       String                         @db.Uuid
+  updated_by                       String?                        @db.Uuid
+  deleted_by                       String?                        @db.Uuid
+  logo_url                         String?
+  environment                      String?                        @db.VarChar(255)
+  input_type_id                    String?                        @db.Uuid
+  users_features_created_byTousers users                          @relation("features_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_features_created_by_users")
+  users_features_deleted_byTousers users?                         @relation("features_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_features_deleted_by_users")
+  input_types                      input_types?                   @relation(fields: [input_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_features_input_type_id_input_types")
+  license_types                    license_types?                 @relation(fields: [license_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_features_license_type_id_license_types")
+  users_features_updated_byTousers users?                         @relation("features_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_features_updated_by_users")
+  package_application_features     package_application_features[]
+  sub_features                     sub_features[]
+}
+
+model geo_zone_country_state {
+  geo_zone_id Int       @db.SmallInt
+  country_id  Int       @db.SmallInt
+  state_id    Int       @db.SmallInt
+  countries   countries @relation(fields: [country_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_geo_zone_country_state_country_id_countries")
+  geo_zones   geo_zones @relation(fields: [geo_zone_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_geo_zone_country_state_geo_zone_id_geo_zones")
+  states      states    @relation(fields: [state_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_geo_zone_country_state_state_id_states")
+
+  @@unique([geo_zone_id, country_id, state_id], map: "idx_geo_zone_country_state")
+}
+
+model geo_zones {
+  id                                 Int                      @id(map: "geo_zone_pkey") @default(autoincrement()) @db.SmallInt
+  name                               String                   @db.VarChar(256)
+  description                        String?
+  status                             Int                      @default(1) @db.SmallInt
+  created_at                         DateTime                 @default(now()) @db.Timestamptz(6)
+  updated_at                         DateTime?                @db.Timestamptz(6)
+  deleted_at                         DateTime?                @db.Timestamptz(6)
+  created_by                         String                   @db.Uuid
+  updated_by                         String?                  @db.Uuid
+  deleted_by                         String?                  @db.Uuid
+  key                                String?                  @db.VarChar(50)
+  currency_id                        String?                  @db.Uuid
+  geo_zone_country_state             geo_zone_country_state[]
+  users_geo_zones_created_byTousers  users                    @relation("geo_zones_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_geo_zones_created_by_users")
+  currencies                         currencies?              @relation(fields: [currency_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_geo_zones_currency_id_currencies")
+  users_geo_zones_deleted_byTousers  users?                   @relation("geo_zones_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_geo_zones_deleted_by_users")
+  users_geo_zones_updated_byTousers  users?                   @relation("geo_zones_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_geo_zones_updated_by_users")
+  users_users_geo_zone_idTogeo_zones users[]                  @relation("users_geo_zone_idTogeo_zones")
+}
+
+model input_types {
+  id                                  String     @id(map: "input_type_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                                String?    @unique(map: "idx_input_types_name") @db.VarChar(30)
+  key                                 String?    @unique(map: "idx_input_types_key") @db.VarChar(30)
+  is_multi_select                     Boolean?   @default(false)
+  status                              Int        @default(1) @db.SmallInt
+  created_at                          DateTime   @default(now()) @db.Timestamptz(6)
+  created_by                          String?    @db.Uuid
+  updated_at                          DateTime?  @db.Timestamptz(6)
+  updated_by                          String?    @db.Uuid
+  deleted_at                          DateTime?  @db.Timestamptz(6)
+  deleted_by                          String?    @db.Uuid
+  features                            features[]
+  users_input_types_created_byTousers users?     @relation("input_types_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_input_types_created_by_users")
+  users_input_types_deleted_byTousers users?     @relation("input_types_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_input_types_deleted_by_users")
+  users_input_types_updated_byTousers users?     @relation("input_types_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_input_types_updated_by_users")
+}
+
+model integration_platforms {
+  id                                            String    @id(map: "integration_platform_id_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  icon_url                                      String?   @db.VarChar
+  name                                          String?   @db.VarChar
+  description                                   String?   @db.VarChar
+  status                                        Int       @default(1) @db.SmallInt
+  created_at                                    DateTime  @default(now()) @db.Timestamptz(6)
+  created_by                                    String?   @db.Uuid
+  updated_at                                    DateTime? @db.Timestamptz(6)
+  updated_by                                    String?   @db.Uuid
+  deleted_at                                    DateTime? @db.Timestamptz(6)
+  deleted_by                                    String?   @db.Uuid
+  configuration                                 Json?     @db.Json
+  key                                           String?   @db.VarChar(100)
+  users_integration_platforms_created_byTousers users?    @relation("integration_platforms_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_integration_platforms_created_by_users")
+  users_integration_platforms_deleted_byTousers users?    @relation("integration_platforms_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_integration_platforms_deleted_by_users")
+  users_integration_platforms_updated_byTousers users?    @relation("integration_platforms_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_integration_platforms_updated_by_users")
+}
+
+model interval_types {
+  id             String           @id(map: "interval_type_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name           String?          @db.VarChar
+  key            String           @db.VarChar
+  value          Int              @db.SmallInt
+  addon_prices   addon_prices[]
+  coupon_codes   coupon_codes[]
+  package_prices package_prices[]
+}
+
+model invoices {
+  id                   String        @id(map: "invoice_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  subscription_id      String        @db.Uuid
+  start_date           DateTime?     @db.Timestamptz(6)
+  end_date             DateTime?     @db.Timestamptz(6)
+  description          String?       @db.VarChar(255)
+  amount               Decimal?      @db.Decimal(10, 2)
+  status               String?       @db.VarChar
+  user_id              String?       @db.Uuid
+  reference_invoice_id String?       @unique(map: "idx_invoices_reference_invoice_id")
+  host_url             String?       @db.VarChar(255)
+  invoice_number       String?       @db.VarChar(50)
+  billing_address      Json?         @db.Json
+  payment_method       String?       @db.VarChar(255)
+  subscriptions        subscriptions @relation(fields: [subscription_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_invoices_subscription_id_subscriptions")
+}
+
+model language_variables {
+  language_id                                Int       @unique(map: "idx_language_variables_language_id") @db.SmallInt
+  variables                                  Json      @db.Json
+  status                                     Int       @default(1) @db.SmallInt
+  created_at                                 DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at                                 DateTime? @db.Timestamptz(6)
+  deleted_at                                 DateTime? @db.Timestamptz(6)
+  created_by                                 String    @db.Uuid
+  updated_by                                 String?   @db.Uuid
+  deleted_by                                 String?   @db.Uuid
+  users_language_variables_created_byTousers users     @relation("language_variables_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_language_variables_created_by_users")
+  users_language_variables_deleted_byTousers users?    @relation("language_variables_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_language_variables_deleted_by_users")
+  languages                                  languages @relation(fields: [language_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_language_variables_language_id_languages")
+  users_language_variables_updated_byTousers users?    @relation("language_variables_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_language_variables_updated_by_users")
+}
+
+model languages {
+  id                                 Int                 @id(map: "locale_pkey") @default(autoincrement()) @db.SmallInt
+  name                               String              @unique(map: "idx_languages_name") @db.VarChar(256)
+  status                             Int                 @default(1) @db.SmallInt
+  created_at                         DateTime            @default(now()) @db.Timestamptz(6)
+  updated_at                         DateTime?           @db.Timestamptz(6)
+  deleted_at                         DateTime?           @db.Timestamptz(6)
+  flag_url                           String?
+  created_by                         String              @db.Uuid
+  updated_by                         String?             @db.Uuid
+  deleted_by                         String?             @db.Uuid
+  code                               String?             @unique(map: "idx_languages_code") @db.VarChar(2)
+  language_variables                 language_variables?
+  users_languages_created_byTousers  users               @relation("languages_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_languages_created_by_users")
+  users_languages_deleted_byTousers  users?              @relation("languages_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_languages_deleted_by_users")
+  users_languages_updated_byTousers  users?              @relation("languages_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_languages_updated_by_users")
+  users_users_language_idTolanguages users[]             @relation("users_language_idTolanguages")
+}
+
+model license_types {
+  id                                    String         @id(map: "license_type_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                                  String         @unique(map: "idx_license_types_name") @db.VarChar(20)
+  status                                Int            @default(1) @db.SmallInt
+  created_at                            DateTime       @default(now()) @db.Timestamptz(6)
+  updated_at                            DateTime?      @db.Timestamptz(6)
+  deleted_at                            DateTime?      @db.Timestamptz(6)
+  created_by                            String         @db.Uuid
+  updated_by                            String?        @db.Uuid
+  deleted_by                            String?        @db.Uuid
+  applications                          applications[]
+  features                              features[]
+  users_license_types_created_byTousers users          @relation("license_types_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_license_types_created_by_users")
+  users_license_types_deleted_byTousers users?         @relation("license_types_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_license_types_deleted_by_users")
+  users_license_types_updated_byTousers users?         @relation("license_types_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_license_types_updated_by_users")
+  sub_features                          sub_features[]
+}
+
+model organization_cards {
+  organization_id  String?        @db.Uuid
+  last_four_digits String?        @db.VarChar(255)
+  cvv_status       String?        @db.VarChar(255)
+  expiry_month     String?        @db.VarChar(255)
+  stripe_card_id   String?
+  created_at       DateTime       @default(now()) @db.Timestamptz(6)
+  created_by       String         @db.Uuid
+  id               String         @id(map: "account_cards_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  brand_id         String?        @db.Uuid
+  is_default       Boolean?       @default(false)
+  expiry_year      String?        @db.VarChar(255)
+  card_brands      card_brands?   @relation(fields: [brand_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_organization_cards_brand_id_card_brands")
+  users            users          @relation(fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_organization_cards_created_by_users")
+  organizations    organizations? @relation(fields: [organization_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_organization_cards_organization_id_organizations")
+}
+
+model organization_mau_counts {
+  id                 String        @id(map: "account_mau_count_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  organization_id    String        @db.Uuid
+  month_started_at   DateTime      @db.Timestamptz(6)
+  month_ended_at     DateTime      @db.Timestamptz(6)
+  mau_count          Int           @default(0)
+  subscription_id    String        @db.Uuid
+  created_at         DateTime      @default(now()) @db.Timestamptz(6)
+  exhaust_percentage Int?          @db.SmallInt
+  organizations      organizations @relation(fields: [organization_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_organization_mau_counts_organization_id_organizations")
+  subscriptions      subscriptions @relation(fields: [subscription_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_organization_mau_counts_subscription_id_subscriptions")
+}
+
+model organization_theme_settings {
+  organization_id                                     String        @db.Uuid
+  theme                                               String?       @db.VarChar(255)
+  survey                                              Json?         @db.Json
+  product_tour                                        Json?         @db.Json
+  checklist                                           Json?         @db.Json
+  custom_css                                          Json?         @db.Json
+  created_at                                          DateTime      @default(now()) @db.Timestamptz(6)
+  created_by                                          String        @db.Uuid
+  updated_at                                          DateTime?     @db.Timestamptz(6)
+  updated_by                                          String?       @db.Uuid
+  id                                                  String        @id(map: "account_theme_setting_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  is_current                                          Boolean       @default(false)
+  demoz                                               Json?         @db.Json
+  helper                                              Json?         @db.Json
+  users_organization_theme_settings_created_byTousers users         @relation("organization_theme_settings_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_organization_theme_settings_created_by_users")
+  organizations                                       organizations @relation(fields: [organization_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_organization_theme_settings_organization_id_organizations")
+  users_organization_theme_settings_updated_byTousers users?        @relation("organization_theme_settings_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_organization_theme_settings_updated_by_users")
+}
+
+model organizations {
+  id                                                  String                        @id(map: "account_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                                                String                        @db.VarChar(100)
+  description                                         String?
+  logo_url                                            String?
+  address_line1                                       String?
+  email                                               String?                       @db.VarChar(60)
+  country_id                                          Int?                          @db.SmallInt
+  phone_number                                        Decimal?                      @db.Decimal(15, 0)
+  type                                                String                        @db.VarChar(8)
+  timezone_id                                         Int?                          @db.SmallInt
+  domain                                              String?                       @unique(map: "idx_organizations_domain") @db.VarChar(256)
+  subdomain                                           String?                       @unique(map: "idx_organizations_subdomain") @db.VarChar(256)
+  status                                              Int                           @default(1) @db.SmallInt
+  created_at                                          DateTime                      @default(now()) @db.Timestamptz(6)
+  updated_at                                          DateTime?                     @db.Timestamptz(6)
+  deleted_at                                          DateTime?                     @db.Timestamptz(6)
+  created_by                                          String                        @db.Uuid
+  updated_by                                          String?                       @db.Uuid
+  deleted_by                                          String?                       @db.Uuid
+  package_id                                          String?                       @db.Uuid
+  script_id                                           String?                       @db.VarChar(255)
+  is_script_installed                                 Boolean?
+  last_published_at                                   DateTime?                     @db.Timestamptz(6)
+  script_installed_at                                 DateTime?                     @db.Timestamptz(6)
+  published_version                                   String?                       @db.VarChar(20)
+  currency_id                                         String?                       @db.Uuid
+  city                                                String?                       @db.VarChar(255)
+  state_id                                            Int?                          @db.SmallInt
+  zip_code                                            String?                       @db.VarChar(12)
+  address_line2                                       String?
+  website_url                                         String?
+  phone_country_id                                    Int?                          @db.SmallInt
+  is_phone_verified                                   Boolean?                      @default(false)
+  phone_verified_at                                   DateTime?                     @db.Timestamptz(6)
+  theme_settings                                      Json?                         @db.Json
+  tax_ids                                             Json[]                        @db.Json
+  is_early_access                                     Boolean                       @default(false)
+  other_info                                          Json?                         @db.Json
+  organization_cards                                  organization_cards[]
+  organization_mau_counts                             organization_mau_counts[]
+  organization_theme_settings                         organization_theme_settings[]
+  countries_organizations_country_idTocountries       countries?                    @relation("organizations_country_idTocountries", fields: [country_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_organizations_country_id_countries")
+  users_organizations_created_byTousers               users                         @relation("organizations_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_organizations_created_by_users")
+  currencies                                          currencies?                   @relation(fields: [currency_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_organizations_currency_id_currencies")
+  users_organizations_deleted_byTousers               users?                        @relation("organizations_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_organizations_deleted_by_users")
+  packages                                            packages?                     @relation(fields: [package_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_organizations_package_id_packages")
+  countries_organizations_phone_country_idTocountries countries?                    @relation("organizations_phone_country_idTocountries", fields: [phone_country_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_organizations_phone_country_id_countries")
+  states                                              states?                       @relation(fields: [state_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_organizations_state_id_states")
+  timezones                                           timezones?                    @relation(fields: [timezone_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_organizations_timezone_id_timezones")
+  users_organizations_updated_byTousers               users?                        @relation("organizations_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_organizations_updated_by_users")
+  purchase_logs                                       purchase_logs[]
+  socket_organizations                                socket_organizations[]
+  subscriptions                                       subscriptions[]
+  tenant_dbs                                          tenant_dbs?
+  user_authentications                                user_authentications[]
+  user_organizations                                  user_organizations[]
+}
+
+model otps {
+  id         String   @id(map: "otp_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id    String   @db.Uuid
+  expired_at DateTime @db.Timestamptz(6)
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  type       String   @db.VarChar(50)
+  old_value  String?
+  new_value  String?
+  is_used    Boolean  @default(false)
+  attempts   Int?     @db.SmallInt
+  otp_code   String?  @db.VarChar(6)
+  users      users    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_otps_user_id_users")
+
+  @@index([user_id], map: "idx_otps_user_id")
+}
+
+model package_application_features {
+  package_id                                           String       @db.Uuid
+  application_id                                       String       @db.Uuid
+  feature_id                                           String       @db.Uuid
+  created_at                                           DateTime     @default(now()) @db.Timestamptz(6)
+  updated_at                                           DateTime?    @db.Timestamptz(6)
+  status                                               Int          @default(1) @db.SmallInt
+  created_by                                           String       @db.Uuid
+  updated_by                                           String?      @db.Uuid
+  feature_limit                                        BigInt?
+  applications                                         applications @relation(fields: [application_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_package_application_features_application_id_applications")
+  users_package_application_features_created_byTousers users        @relation("package_application_features_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_package_application_features_created_by_users")
+  features                                             features     @relation(fields: [feature_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_package_application_features_feature_id_features")
+  packages                                             packages     @relation(fields: [package_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_package_application_features_package_id_packages")
+  users_package_application_features_updated_byTousers users?       @relation("package_application_features_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_package_application_features_updated_by_users")
+
+  @@unique([package_id, application_id, feature_id], map: "idx_package_application_features")
+  @@index([feature_id], map: "idx_package_application_features_feature_id")
+}
+
+model package_applications {
+  package_id                                   String       @db.Uuid
+  application_id                               String       @db.Uuid
+  status                                       Int          @default(1) @db.SmallInt
+  created_at                                   DateTime     @default(now()) @db.Timestamptz(6)
+  updated_at                                   DateTime?    @db.Timestamptz(6)
+  created_by                                   String       @db.Uuid
+  updated_by                                   String?      @db.Uuid
+  applications                                 applications @relation(fields: [application_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_package_applications_application_id_applications")
+  users_package_applications_created_byTousers users        @relation("package_applications_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_package_applications_created_by_users")
+  packages                                     packages     @relation(fields: [package_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_package_applications_package_id_packages")
+  users_package_applications_updated_byTousers users?       @relation("package_applications_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_package_applications_updated_by_users")
+
+  @@unique([package_id, application_id], map: "idx_package_applications")
+}
+
+model package_prices {
+  id                 String          @id(map: "package_price_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  package_id         String          @db.Uuid
+  currency_id        String          @db.Uuid
+  interval_type_id   String          @db.Uuid
+  price              Decimal         @db.Decimal
+  status             Int             @default(1) @db.SmallInt
+  created_at         DateTime        @default(now()) @db.Timestamptz(6)
+  created_by         String          @db.Uuid
+  updated_at         DateTime?       @db.Timestamptz(6)
+  updated_by         String?         @db.Uuid
+  reference_price_id String?
+  coupon_codes       coupon_codes[]
+  currencies         currencies      @relation(fields: [currency_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_package_prices_currency_id_currencies")
+  interval_types     interval_types  @relation(fields: [interval_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_package_prices_interval_type_id_interval_types")
+  packages           packages        @relation(fields: [package_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_package_prices_package_id_packages")
+  purchase_logs      purchase_logs[]
+  subscriptions      subscriptions[]
+}
+
+model packages {
+  id                               String                         @id(map: "package_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                             String                         @unique(map: "idx_packages_name") @db.VarChar(256)
+  description                      String?
+  type                             String?                        @db.VarChar(6)
+  status                           Int                            @default(1) @db.SmallInt
+  created_at                       DateTime                       @default(now()) @db.Timestamptz(6)
+  updated_at                       DateTime?                      @db.Timestamptz(6)
+  deleted_at                       DateTime?                      @db.Timestamptz(6)
+  created_by                       String                         @db.Uuid
+  updated_by                       String?                        @db.Uuid
+  deleted_by                       String?                        @db.Uuid
+  is_default                       Boolean?                       @default(false)
+  trial_days                       Int                            @default(0) @db.SmallInt
+  stripe_product_id                String?
+  additional_user_unit_limit       Int?                           @db.SmallInt
+  monthly_active_user_unit_limit   Int?                           @db.SmallInt
+  level                            Int?                           @default(0) @db.SmallInt
+  is_trial                         Boolean?                       @default(false)
+  can_extend_trial                 Boolean?                       @default(false)
+  extend_trial_days                Int?                           @default(0) @db.SmallInt
+  coupon_codes                     coupon_codes[]
+  organizations                    organizations[]
+  package_application_features     package_application_features[]
+  package_applications             package_applications[]
+  package_prices                   package_prices[]
+  users_packages_created_byTousers users                          @relation("packages_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_packages_created_by_users")
+  users_packages_deleted_byTousers users?                         @relation("packages_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_packages_deleted_by_users")
+  users_packages_updated_byTousers users?                         @relation("packages_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_packages_updated_by_users")
+  purchase_logs                    purchase_logs[]
+}
+
+model permission_sub_features {
+  role_id                                         String       @db.Uuid
+  sub_features_id                                 String       @db.Uuid
+  created_at                                      DateTime     @default(now()) @db.Timestamptz(6)
+  updated_at                                      DateTime?    @db.Timestamptz(6)
+  created_by                                      String       @db.Uuid
+  updated_by                                      String?      @db.Uuid
+  id                                              String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  can_action                                      Boolean?
+  can_create                                      Boolean?
+  can_delete                                      Boolean?
+  can_read                                        Boolean?
+  can_update                                      Boolean?
+  can_import                                      Boolean?     @default(false)
+  can_export                                      Boolean?     @default(false)
+  users_permission_sub_features_created_byTousers users        @relation("permission_sub_features_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_permission_sub_features_created_by_users")
+  roles                                           roles        @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_permission_sub_features_role_id_roles")
+  sub_features                                    sub_features @relation(fields: [sub_features_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_permission_sub_features_sub_features_id_sub_features")
+  users_permission_sub_features_updated_byTousers users?       @relation("permission_sub_features_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_permission_sub_features_updated_by_users")
+}
+
+model product_tour_template_types {
+  id                                                  String                   @id(map: "product_tour_template_type_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  type                                                String?                  @unique(map: "idx_product_tour_template_types_type") @db.VarChar(30)
+  thumbnail_url                                       String?
+  status                                              Int                      @default(1) @db.SmallInt
+  created_at                                          DateTime                 @default(now()) @db.Timestamptz(6)
+  updated_at                                          DateTime?                @db.Timestamptz(6)
+  deleted_at                                          DateTime?                @db.Timestamptz(6)
+  created_by                                          String                   @db.Uuid
+  updated_by                                          String?                  @db.Uuid
+  deleted_by                                          String?                  @db.Uuid
+  sort_order                                          Int?                     @db.SmallInt
+  users_product_tour_template_types_created_byTousers users                    @relation("product_tour_template_types_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_tour_template_types_created_by_users")
+  users_product_tour_template_types_deleted_byTousers users?                   @relation("product_tour_template_types_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_tour_template_types_deleted_by_users")
+  users_product_tour_template_types_updated_byTousers users?                   @relation("product_tour_template_types_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_tour_template_types_updated_by_users")
+  product_tour_templates                              product_tour_templates[]
+}
+
+model product_tour_templates {
+  id                                             String                      @id(map: "product_tour_template_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  type_id                                        String                      @db.Uuid
+  name                                           String                      @db.VarChar(255)
+  content                                        String?
+  thumbnail_url                                  String?
+  status                                         Int                         @default(1) @db.SmallInt
+  created_at                                     DateTime                    @default(now()) @db.Timestamptz(6)
+  updated_at                                     DateTime?                   @db.Timestamptz(6)
+  deleted_at                                     DateTime?                   @db.Timestamptz(6)
+  created_by                                     String                      @db.Uuid
+  updated_by                                     String?                     @db.Uuid
+  deleted_by                                     String?                     @db.Uuid
+  description                                    String?
+  sort_order                                     Int?                        @db.SmallInt
+  users_product_tour_templates_created_byTousers users                       @relation("product_tour_templates_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_tour_templates_created_by_users")
+  product_tour_template_types                    product_tour_template_types @relation(fields: [type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_tour_templates_type_id_product_tour_template_types")
+  users_product_tour_templates_updated_byTousers users?                      @relation("product_tour_templates_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_tour_templates_updated_by_users")
+}
+
+model purchase_logs {
+  id                                                                            String         @id(map: "purchase_log_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  organization_id                                                               String         @db.Uuid
+  package_id                                                                    String         @db.Uuid
+  package_price_id                                                              String         @db.Uuid
+  is_active                                                                     Boolean        @default(true)
+  session_id                                                                    String?
+  created_at                                                                    DateTime       @default(now()) @db.Timestamptz(6)
+  created_by                                                                    String         @db.Uuid
+  addon_package_per_user_id                                                     String?        @db.Uuid
+  addon_package_monthly_active_user_id                                          String?        @db.Uuid
+  additional_user_quantity                                                      Int?           @db.SmallInt
+  monthly_active_user_quantity                                                  Int?           @db.SmallInt
+  addon_prices_purchase_logs_addon_package_monthly_active_user_idToaddon_prices addon_prices?  @relation("purchase_logs_addon_package_monthly_active_user_idToaddon_prices", fields: [addon_package_monthly_active_user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_purchase_logs_addon_package_monthly_active_user_id_addon_pri")
+  addon_prices_purchase_logs_addon_package_per_user_idToaddon_prices            addon_prices?  @relation("purchase_logs_addon_package_per_user_idToaddon_prices", fields: [addon_package_per_user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_purchase_logs_addon_package_per_user_id_addon_prices")
+  users                                                                         users          @relation(fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_purchase_logs_created_by_users")
+  organizations                                                                 organizations  @relation(fields: [organization_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_purchase_logs_organization_id_organizations")
+  packages                                                                      packages       @relation(fields: [package_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_purchase_logs_package_id_packages")
+  package_prices                                                                package_prices @relation(fields: [package_price_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_purchase_logs_package_price_id_package_prices")
+}
+
+model restricted_sub_domains {
+  id                                             String    @id(map: "sub_domain_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                                           String    @unique(map: "idx_restricted_sub_domains_name") @db.VarChar(255)
+  status                                         Int       @default(1) @db.SmallInt
+  created_at                                     DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at                                     DateTime? @db.Timestamptz(6)
+  deleted_at                                     DateTime? @db.Timestamptz(6)
+  created_by                                     String    @db.Uuid
+  updated_by                                     String?   @db.Uuid
+  deleted_by                                     String?   @db.Uuid
+  users_restricted_sub_domains_created_byTousers users     @relation("restricted_sub_domains_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_restricted_sub_domains_created_by_users")
+  users_restricted_sub_domains_deleted_byTousers users?    @relation("restricted_sub_domains_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_restricted_sub_domains_deleted_by_users")
+  users_restricted_sub_domains_updated_byTousers users?    @relation("restricted_sub_domains_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_restricted_sub_domains_updated_by_users")
+}
+
+model roles {
+  id                            String                    @id(map: "role_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                          String                    @unique(map: "idx_roles_name") @db.VarChar(256)
+  description                   String?
+  status                        Int                       @default(1) @db.SmallInt
+  created_at                    DateTime                  @default(now()) @db.Timestamptz(6)
+  updated_at                    DateTime?                 @db.Timestamptz(6)
+  deleted_at                    DateTime?                 @db.Timestamptz(6)
+  created_by                    String                    @db.Uuid
+  updated_by                    String?                   @db.Uuid
+  deleted_by                    String?                   @db.Uuid
+  permission_sub_features       permission_sub_features[]
+  users_roles_created_byTousers users                     @relation("roles_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_roles_created_by_users")
+  users_roles_deleted_byTousers users?                    @relation("roles_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_roles_deleted_by_users")
+  users_roles_updated_byTousers users?                    @relation("roles_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_roles_updated_by_users")
+  user_role_association         user_role_association[]
+}
+
+model sandbox_categories {
+  id          String  @id(map: "category_id_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String  @db.VarChar(255)
+  description String?
+  logo_url    String?
+  key         String? @unique(map: "idx_sandbox_categories_key") @db.VarChar(255)
+  status      Int?    @default(1) @db.SmallInt
+}
+
+model socket_organizations {
+  organization_id String        @db.Uuid
+  socket_id       String?
+  id              String        @id(map: "socket_accounts_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  organizations   organizations @relation(fields: [organization_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_socket_organizations_organization_id_organizations")
+}
+
+model states {
+  id                             Int                      @id(map: "state_pkey") @default(autoincrement()) @db.SmallInt
+  country_id                     Int                      @db.SmallInt
+  name                           String                   @db.VarChar(255)
+  code                           String?                  @db.VarChar(6)
+  status                         Int                      @default(1) @db.SmallInt
+  created_at                     DateTime                 @default(now()) @db.Timestamptz(6)
+  updated_at                     DateTime?                @db.Timestamptz(6)
+  deleted_at                     DateTime?                @db.Timestamptz(6)
+  created_by                     String                   @db.Uuid
+  updated_by                     String?                  @db.Uuid
+  deleted_by                     String?                  @db.Uuid
+  geo_zone_country_state         geo_zone_country_state[]
+  organizations                  organizations[]
+  countries                      countries                @relation(fields: [country_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_states_country_id_countries")
+  users_states_created_byTousers users                    @relation("states_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_states_created_by_users")
+  users_states_deleted_byTousers users?                   @relation("states_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_states_deleted_by_users")
+  users_states_updated_byTousers users?                   @relation("states_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_states_updated_by_users")
+
+  @@unique([country_id, name], map: "idx_states_country_id_name")
+}
+
+model sub_features {
+  id                      String                    @id(map: "sub_features_id_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                    String                    @db.VarChar(255)
+  status                  Int                       @default(1) @db.SmallInt
+  key                     String                    @db.VarChar(255)
+  environment             String?                   @db.VarChar(255)
+  released_on             DateTime?                 @db.Timestamptz(6)
+  feature_type_id         String?                   @db.Uuid
+  description             String?                   @db.VarChar
+  feature_id              String                    @db.Uuid
+  license_type_id         String?                   @db.Uuid
+  permission_sub_features permission_sub_features[]
+  features                features                  @relation(fields: [feature_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_sub_features_feature_id_features")
+  feature_types           feature_types?            @relation(fields: [feature_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_sub_features_feature_type_id_feature_types")
+  license_types           license_types?            @relation(fields: [license_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_sub_features_license_type_id_license_types")
+}
+
+model subscriptions {
+  id                                                                            String                    @id(map: "subscription_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  organization_id                                                               String                    @db.Uuid
+  coupon_code_id                                                                String?                   @db.Uuid
+  additional_discount_id                                                        String?                   @db.Uuid
+  start_date                                                                    DateTime?                 @db.Timestamptz(6)
+  end_date                                                                      DateTime?                 @db.Timestamptz(6)
+  unsubscribe_date                                                              DateTime?                 @db.Timestamptz(6)
+  is_free                                                                       Boolean?                  @default(false)
+  is_current                                                                    Boolean?                  @default(false)
+  status                                                                        Int                       @default(1) @db.SmallInt
+  created_at                                                                    DateTime                  @default(now()) @db.Timestamptz(6)
+  updated_at                                                                    DateTime?                 @db.Timestamptz(6)
+  created_by                                                                    String?                   @db.Uuid
+  updated_by                                                                    String?                   @db.Uuid
+  stripe_sub_id                                                                 String?
+  grand_total                                                                   Decimal?                  @db.Decimal
+  is_per_user                                                                   Boolean?                  @default(false)
+  is_monthly_active_user                                                        Boolean?                  @default(false)
+  addon_package_per_user_id                                                     String?                   @db.Uuid
+  addon_package_monthly_active_user_id                                          String?                   @db.Uuid
+  package_price_id                                                              String?                   @db.Uuid
+  additional_user_qty                                                           Int?                      @db.SmallInt
+  monthly_active_user_qty                                                       Int?                      @db.SmallInt
+  is_extended                                                                   Boolean?                  @default(false)
+  is_extension_requested                                                        Boolean?                  @default(false)
+  is_trial                                                                      Boolean?                  @default(false)
+  invoices                                                                      invoices[]
+  organization_mau_counts                                                       organization_mau_counts[]
+  additional_discounts                                                          additional_discounts?     @relation(fields: [additional_discount_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_subscriptions_additional_discount_id_additional_discounts")
+  addon_prices_subscriptions_addon_package_monthly_active_user_idToaddon_prices addon_prices?             @relation("subscriptions_addon_package_monthly_active_user_idToaddon_prices", fields: [addon_package_monthly_active_user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_subscriptions_addon_package_monthly_active_user_id_addon_pri")
+  addon_prices_subscriptions_addon_package_per_user_idToaddon_prices            addon_prices?             @relation("subscriptions_addon_package_per_user_idToaddon_prices", fields: [addon_package_per_user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_subscriptions_addon_package_per_user_id_addon_prices")
+  coupon_codes                                                                  coupon_codes?             @relation(fields: [coupon_code_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_subscriptions_coupon_code_id_coupon_codes")
+  users_subscriptions_created_byTousers                                         users?                    @relation("subscriptions_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_subscriptions_created_by_users")
+  organizations                                                                 organizations             @relation(fields: [organization_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_subscriptions_organization_id_organizations")
+  package_prices                                                                package_prices?           @relation(fields: [package_price_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_subscriptions_package_price_id_package_prices")
+  users_subscriptions_updated_byTousers                                         users?                    @relation("subscriptions_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_subscriptions_updated_by_users")
+
+  @@index([end_date], map: "idx_subscriptions_end_date")
+  @@index([is_current], map: "idx_subscriptions_is_current")
+  @@index([is_free], map: "idx_subscriptions_is_free")
+  @@index([organization_id], map: "idx_subscriptions_organization_id")
+  @@index([start_date], map: "idx_subscriptions_start_date")
+}
+
+model survey_element_types {
+  id                                           String             @id(map: "nps_element_type_id_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title                                        String             @unique(map: "idx_survey_element_types_title") @db.VarChar(255)
+  description                                  String?
+  thumbnail_url                                String?
+  key                                          String             @unique(map: "idx_survey_element_types_key") @db.VarChar(255)
+  status                                       Int                @default(1) @db.SmallInt
+  created_at                                   DateTime           @default(now()) @db.Timestamptz(6)
+  updated_at                                   DateTime?          @db.Timestamptz(6)
+  deleted_at                                   DateTime?          @db.Timestamptz(6)
+  created_by                                   String             @db.Uuid
+  updated_by                                   String?            @db.Uuid
+  deleted_by                                   String?            @db.Uuid
+  sort_order                                   Int?               @db.SmallInt
+  users_survey_element_types_created_byTousers users              @relation("survey_element_types_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_survey_element_types_created_by_users")
+  users_survey_element_types_deleted_byTousers users?             @relation("survey_element_types_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_survey_element_types_deleted_by_users")
+  users_survey_element_types_updated_byTousers users?             @relation("survey_element_types_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_survey_element_types_updated_by_users")
+  survey_questions                             survey_questions[]
+}
+
+model survey_questions {
+  id                                       String               @id(map: "nps_question_id_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  survey_id                                String               @db.Uuid
+  element_type_id                          String               @db.Uuid
+  question                                 Json                 @db.Json
+  sort_order                               Int?                 @db.SmallInt
+  status                                   Int                  @default(1) @db.SmallInt
+  created_at                               DateTime             @default(now()) @db.Timestamptz(6)
+  updated_at                               DateTime?            @db.Timestamptz(6)
+  deleted_at                               DateTime?            @db.Timestamptz(6)
+  created_by                               String               @db.Uuid
+  updated_by                               String?              @db.Uuid
+  deleted_by                               String?              @db.Uuid
+  logic                                    Json?                @db.Json
+  settings                                 Json?                @db.Json
+  users_survey_questions_created_byTousers users                @relation("survey_questions_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_survey_questions_created_by_users")
+  users_survey_questions_deleted_byTousers users?               @relation("survey_questions_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_survey_questions_deleted_by_users")
+  survey_element_types                     survey_element_types @relation(fields: [element_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_survey_questions_element_type_id_survey_element_types")
+  surveys                                  surveys              @relation(fields: [survey_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_survey_questions_survey_id_surveys")
+  users_survey_questions_updated_byTousers users?               @relation("survey_questions_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_survey_questions_updated_by_users")
+}
+
+model survey_types {
+  id                                   String    @id(map: "nps_type_id_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title                                String    @unique(map: "idx_survey_types_title") @db.VarChar(30)
+  description                          String?
+  status                               Int       @default(1) @db.SmallInt
+  created_at                           DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at                           DateTime? @db.Timestamptz(6)
+  deleted_at                           DateTime? @db.Timestamptz(6)
+  created_by                           String    @db.Uuid
+  updated_by                           String?   @db.Uuid
+  deleted_by                           String?   @db.Uuid
+  sort_order                           Int?      @db.SmallInt
+  users_survey_types_created_byTousers users     @relation("survey_types_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_survey_types_created_by_users")
+  users_survey_types_deleted_byTousers users?    @relation("survey_types_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_survey_types_deleted_by_users")
+  users_survey_types_updated_byTousers users?    @relation("survey_types_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_survey_types_updated_by_users")
+  surveys                              surveys[]
+}
+
+model surveys {
+  id                              String             @id(map: "nps_id_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                            String             @db.VarChar(255)
+  type_id                         String?            @db.Uuid
+  description                     String?
+  thumbnail_url                   String?
+  appearance                      Json?              @db.Json
+  status                          Int                @default(1) @db.SmallInt
+  created_at                      DateTime           @default(now()) @db.Timestamptz(6)
+  updated_at                      DateTime?          @db.Timestamptz(6)
+  deleted_at                      DateTime?          @db.Timestamptz(6)
+  created_by                      String             @db.Uuid
+  updated_by                      String?            @db.Uuid
+  deleted_by                      String?            @db.Uuid
+  sort_order                      Int?               @db.SmallInt
+  banner_url                      String?
+  original_banner_name            String?
+  survey_questions                survey_questions[]
+  users_surveys_created_byTousers users              @relation("surveys_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_surveys_created_by_users")
+  users_surveys_deleted_byTousers users?             @relation("surveys_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_surveys_deleted_by_users")
+  survey_types                    survey_types?      @relation(fields: [type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_surveys_type_id_survey_types")
+  users_surveys_updated_byTousers users?             @relation("surveys_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_surveys_updated_by_users")
+}
+
+model tax_types {
+  tax_id      String  @id(map: "country_tax_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  country_id  Int     @db.SmallInt
+  tax_type    String? @db.VarChar(20)
+  description String? @db.VarChar(254)
+}
+
+model team_roles {
+  team_role_id                       String    @id(map: "team_role_id_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                               String    @db.VarChar(100)
+  description                        String?
+  status                             Int       @default(1) @db.SmallInt
+  created_by                         String    @db.Uuid
+  created_at                         DateTime  @default(now()) @db.Timestamptz(6)
+  updated_by                         String?   @db.Uuid
+  updated_at                         DateTime? @db.Timestamptz(6)
+  deleted_by                         String?   @db.Uuid
+  deleted_at                         DateTime? @db.Timestamptz(6)
+  users_team_roles_created_byTousers users     @relation("team_roles_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_team_roles_created_by_users")
+  users_team_roles_deleted_byTousers users?    @relation("team_roles_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_team_roles_deleted_by_users")
+  users_team_roles_updated_byTousers users?    @relation("team_roles_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_team_roles_updated_by_users")
+}
+
+model tenant_dbs {
+  tenant_id                          Int           @id(map: "tenant_db_pkey") @default(autoincrement())
+  account_id                         String        @unique(map: "idx_tenant_dbs_account_id") @db.Uuid
+  db_url                             String        @unique(map: "idx_tenant_dbs_db_url")
+  status                             Int           @default(1) @db.SmallInt
+  created_at                         DateTime      @default(now()) @db.Timestamptz(6)
+  updated_at                         DateTime?     @db.Timestamptz(6)
+  deleted_at                         DateTime?     @db.Timestamptz(6)
+  created_by                         String        @db.Uuid
+  updated_by                         String?       @db.Uuid
+  deleted_by                         String?       @db.Uuid
+  password                           String?       @db.VarChar(20)
+  user_name                          String?       @db.VarChar(20)
+  organizations                      organizations @relation(fields: [account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_tenant_dbs_account_id_organizations")
+  users_tenant_dbs_created_byTousers users         @relation("tenant_dbs_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_tenant_dbs_created_by_users")
+  users_tenant_dbs_deleted_byTousers users?        @relation("tenant_dbs_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_tenant_dbs_deleted_by_users")
+  users_tenant_dbs_updated_byTousers users?        @relation("tenant_dbs_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_tenant_dbs_updated_by_users")
+}
+
+model timezones {
+  id            Int             @id(map: "timezone_pkey") @default(autoincrement()) @db.SmallInt
+  display_name  String          @db.VarChar(255)
+  name          String          @db.VarChar(255)
+  gmt_offset    Int?            @default(0)
+  organizations organizations[]
+  users         users[]
+}
+
+model ug_article_template {
+  article_template_id                         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title                                       String    @db.VarChar(255)
+  article_template_key                        String    @db.VarChar(100)
+  template_content                            String
+  status                                      Int       @default(1) @db.SmallInt
+  created_at                                  DateTime  @default(now()) @db.Timestamptz(6)
+  created_by                                  String    @db.Uuid
+  updated_at                                  DateTime? @db.Timestamptz(6)
+  updated_by                                  String?   @db.Uuid
+  deleted_at                                  DateTime? @db.Timestamptz(6)
+  deleted_by                                  String?   @db.Uuid
+  users_ug_article_template_created_byTousers users     @relation("ug_article_template_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_ug_article_template_created_by_users")
+  users_ug_article_template_deleted_byTousers users?    @relation("ug_article_template_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_ug_article_template_deleted_by_users")
+  users_ug_article_template_updated_byTousers users?    @relation("ug_article_template_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_ug_article_template_updated_by_users")
+}
+
+model user_authentications {
+  user_id                         String         @unique(map: "idx_user_authentications_user_id") @db.Uuid
+  is_two_fa_enabled               Boolean        @default(false)
+  default_two_fa_method           String?        @db.VarChar(20)
+  password                        String?        @db.VarChar(256)
+  authenticator_key               String?
+  is_authenticator_verified       Boolean?       @default(false)
+  authenticator_verified_at       DateTime?      @db.Timestamptz(6)
+  is_phone_verified               Boolean?       @default(false)
+  phone_verified_at               DateTime?      @db.Timestamptz(6)
+  is_email_verified               Boolean?       @default(false)
+  email_verified_at               DateTime?      @db.Timestamptz(6)
+  login_attempts                  Int?           @default(0) @db.SmallInt
+  last_login_attempt_at           DateTime?      @db.Timestamptz(6)
+  password_reset_token            String?
+  is_two_fa_phone_enabled         Boolean?       @default(false)
+  is_two_fa_email_enabled         Boolean?       @default(false)
+  is_two_fa_authenticator_enabled Boolean?       @default(false)
+  default_role_id                 String?        @db.Uuid
+  default_organization_id         String?        @db.Uuid
+  organizations                   organizations? @relation(fields: [default_organization_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_authentications_default_organization_id_organizations")
+  users                           users          @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_authentications_user_id_users")
+}
+
+model user_login_sessions {
+  id            String    @id(map: "user_login_session_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id       String?   @db.Uuid
+  browser       String?
+  os            String?
+  ip_address    String?
+  log           String
+  login_at      DateTime? @db.Timestamptz(6)
+  logout_at     DateTime? @db.Timestamptz(6)
+  two_fa_status String?   @db.VarChar(10)
+  created_at    DateTime  @default(now()) @db.Timestamptz(6)
+  refresh_token String?
+  remember_me   Boolean   @default(false)
+  users         users?    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_login_sessions_user_id_users")
+}
+
+model user_notifications {
+  id                String  @id(map: "user_notification_id_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  notification_type String? @db.VarChar(20)
+  news_and_updates  Int?    @db.SmallInt
+  tips_and_tutorial Int?    @db.SmallInt
+  user_research     Int?    @db.SmallInt
+  user_upgrade      Int?    @db.SmallInt
+  user_downgrade    Int?    @db.SmallInt
+}
+
+model user_organizations {
+  user_id                                    String        @db.Uuid
+  organization_id                            String        @db.Uuid
+  status                                     Int           @default(1) @db.SmallInt
+  created_at                                 DateTime      @default(now()) @db.Timestamptz(6)
+  updated_at                                 DateTime?     @db.Timestamptz(6)
+  deleted_at                                 DateTime?     @db.Timestamptz(6)
+  created_by                                 String        @db.Uuid
+  updated_by                                 String?       @db.Uuid
+  deleted_by                                 String?       @db.Uuid
+  invitation_token                           String?
+  invitation_accepted_at                     DateTime?     @db.Timestamptz(6)
+  is_invitation_token_used                   Boolean?
+  id                                         String        @id(map: "user_account_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  invitation_role_id                         String?       @db.Uuid
+  users_user_organizations_created_byTousers users         @relation("user_organizations_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_organizations_created_by_users")
+  users_user_organizations_deleted_byTousers users?        @relation("user_organizations_deleted_byTousers", fields: [deleted_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_organizations_deleted_by_users")
+  organizations                              organizations @relation(fields: [organization_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_organizations_organization_id_organizations")
+  users_user_organizations_updated_byTousers users?        @relation("user_organizations_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_organizations_updated_by_users")
+  users_user_organizations_user_idTousers    users         @relation("user_organizations_user_idTousers", fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_organizations_user_id_users")
+
+  @@unique([user_id, organization_id], map: "idx_user_organizations_user_id_organization_id")
+}
+
+model user_role_association {
+  user_id String @db.Uuid
+  role_id String @db.Uuid
+  roles   roles  @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_role_association_role_id_roles")
+  users   users  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_role_association_user_id_users")
+
+  @@unique([user_id, role_id], map: "idx_user_role_association_user_id_role_id")
+}
+
+model users {
+  id                                                                          String                         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  first_name                                                                  String?                        @db.VarChar(99)
+  last_name                                                                   String?                        @db.VarChar(99)
+  email                                                                       String                         @db.VarChar(60)
+  profile_picture_url                                                         String?
+  country_id                                                                  Int?                           @db.SmallInt
+  phone_number                                                                Decimal?                       @db.Decimal(15, 0)
+  status                                                                      Int                            @default(1) @db.SmallInt
+  created_at                                                                  DateTime                       @default(now()) @db.Timestamptz(6)
+  created_by                                                                  String?                        @db.Uuid
+  updated_at                                                                  DateTime?                      @db.Timestamptz(6)
+  updated_by                                                                  String?                        @db.Uuid
+  deleted_at                                                                  DateTime?                      @db.Timestamptz(6)
+  deleted_by                                                                  String?                        @db.Uuid
+  geo_zone_id                                                                 Int?                           @db.SmallInt
+  language_id                                                                 Int?                           @db.SmallInt
+  phone_country_id                                                            Int?                           @db.SmallInt
+  timezone_id                                                                 Int?                           @db.SmallInt
+  is_phone_verified                                                           Boolean?                       @default(false)
+  phone_verified_at                                                           DateTime?                      @db.Timestamptz(6)
+  settings                                                                    Json?                          @db.Json
+  social_auth_server                                                          String?                        @db.VarChar
+  additional_discounts_additional_discounts_created_byTousers                 additional_discounts[]         @relation("additional_discounts_created_byTousers")
+  additional_discounts_additional_discounts_deleted_byTousers                 additional_discounts[]         @relation("additional_discounts_deleted_byTousers")
+  additional_discounts_additional_discounts_updated_byTousers                 additional_discounts[]         @relation("additional_discounts_updated_byTousers")
+  addon_packages_addon_packages_created_byTousers                             addon_packages[]               @relation("addon_packages_created_byTousers")
+  addon_packages_addon_packages_deleted_byTousers                             addon_packages[]               @relation("addon_packages_deleted_byTousers")
+  addon_packages_addon_packages_updated_byTousers                             addon_packages[]               @relation("addon_packages_updated_byTousers")
+  applications_applications_created_byTousers                                 applications[]                 @relation("applications_created_byTousers")
+  applications_applications_deleted_byTousers                                 applications[]                 @relation("applications_deleted_byTousers")
+  applications_applications_updated_byTousers                                 applications[]                 @relation("applications_updated_byTousers")
+  book_demos_book_demos_assigned_toTousers                                    book_demos[]                   @relation("book_demos_assigned_toTousers")
+  book_demos_book_demos_updated_byTousers                                     book_demos[]                   @relation("book_demos_updated_byTousers")
+  countries_countries_created_byTousers                                       countries[]                    @relation("countries_created_byTousers")
+  countries_countries_deleted_byTousers                                       countries[]                    @relation("countries_deleted_byTousers")
+  countries_countries_updated_byTousers                                       countries[]                    @relation("countries_updated_byTousers")
+  coupon_codes_coupon_codes_created_byTousers                                 coupon_codes[]                 @relation("coupon_codes_created_byTousers")
+  coupon_codes_coupon_codes_deleted_byTousers                                 coupon_codes[]                 @relation("coupon_codes_deleted_byTousers")
+  coupon_codes_coupon_codes_updated_byTousers                                 coupon_codes[]                 @relation("coupon_codes_updated_byTousers")
+  currencies_currencies_created_byTousers                                     currencies[]                   @relation("currencies_created_byTousers")
+  currencies_currencies_deleted_byTousers                                     currencies[]                   @relation("currencies_deleted_byTousers")
+  currencies_currencies_updated_byTousers                                     currencies[]                   @relation("currencies_updated_byTousers")
+  discount_types_discount_types_created_byTousers                             discount_types[]               @relation("discount_types_created_byTousers")
+  discount_types_discount_types_deleted_byTousers                             discount_types[]               @relation("discount_types_deleted_byTousers")
+  discount_types_discount_types_updated_byTousers                             discount_types[]               @relation("discount_types_updated_byTousers")
+  email_notifications_email_notifications_created_byTousers                   email_notifications[]          @relation("email_notifications_created_byTousers")
+  email_notifications_email_notifications_deleted_byTousers                   email_notifications[]          @relation("email_notifications_deleted_byTousers")
+  email_notifications_email_notifications_updated_byTousers                   email_notifications[]          @relation("email_notifications_updated_byTousers")
+  email_templates_email_templates_created_byTousers                           email_templates[]              @relation("email_templates_created_byTousers")
+  email_templates_email_templates_deleted_byTousers                           email_templates[]              @relation("email_templates_deleted_byTousers")
+  email_templates_email_templates_updated_byTousers                           email_templates[]              @relation("email_templates_updated_byTousers")
+  event_listeners_event_listeners_created_byTousers                           event_listeners[]              @relation("event_listeners_created_byTousers")
+  event_listeners_event_listeners_deleted_byTousers                           event_listeners[]              @relation("event_listeners_deleted_byTousers")
+  event_listeners_event_listeners_updated_byTousers                           event_listeners[]              @relation("event_listeners_updated_byTousers")
+  feature_types_feature_types_created_byTousers                               feature_types[]                @relation("feature_types_created_byTousers")
+  feature_types_feature_types_deleted_byTousers                               feature_types[]                @relation("feature_types_deleted_byTousers")
+  feature_types_feature_types_updated_byTousers                               feature_types[]                @relation("feature_types_updated_byTousers")
+  features_features_created_byTousers                                         features[]                     @relation("features_created_byTousers")
+  features_features_deleted_byTousers                                         features[]                     @relation("features_deleted_byTousers")
+  features_features_updated_byTousers                                         features[]                     @relation("features_updated_byTousers")
+  geo_zones_geo_zones_created_byTousers                                       geo_zones[]                    @relation("geo_zones_created_byTousers")
+  geo_zones_geo_zones_deleted_byTousers                                       geo_zones[]                    @relation("geo_zones_deleted_byTousers")
+  geo_zones_geo_zones_updated_byTousers                                       geo_zones[]                    @relation("geo_zones_updated_byTousers")
+  input_types_input_types_created_byTousers                                   input_types[]                  @relation("input_types_created_byTousers")
+  input_types_input_types_deleted_byTousers                                   input_types[]                  @relation("input_types_deleted_byTousers")
+  input_types_input_types_updated_byTousers                                   input_types[]                  @relation("input_types_updated_byTousers")
+  integration_platforms_integration_platforms_created_byTousers               integration_platforms[]        @relation("integration_platforms_created_byTousers")
+  integration_platforms_integration_platforms_deleted_byTousers               integration_platforms[]        @relation("integration_platforms_deleted_byTousers")
+  integration_platforms_integration_platforms_updated_byTousers               integration_platforms[]        @relation("integration_platforms_updated_byTousers")
+  language_variables_language_variables_created_byTousers                     language_variables[]           @relation("language_variables_created_byTousers")
+  language_variables_language_variables_deleted_byTousers                     language_variables[]           @relation("language_variables_deleted_byTousers")
+  language_variables_language_variables_updated_byTousers                     language_variables[]           @relation("language_variables_updated_byTousers")
+  languages_languages_created_byTousers                                       languages[]                    @relation("languages_created_byTousers")
+  languages_languages_deleted_byTousers                                       languages[]                    @relation("languages_deleted_byTousers")
+  languages_languages_updated_byTousers                                       languages[]                    @relation("languages_updated_byTousers")
+  license_types_license_types_created_byTousers                               license_types[]                @relation("license_types_created_byTousers")
+  license_types_license_types_deleted_byTousers                               license_types[]                @relation("license_types_deleted_byTousers")
+  license_types_license_types_updated_byTousers                               license_types[]                @relation("license_types_updated_byTousers")
+  organization_cards                                                          organization_cards[]
+  organization_theme_settings_organization_theme_settings_created_byTousers   organization_theme_settings[]  @relation("organization_theme_settings_created_byTousers")
+  organization_theme_settings_organization_theme_settings_updated_byTousers   organization_theme_settings[]  @relation("organization_theme_settings_updated_byTousers")
+  organizations_organizations_created_byTousers                               organizations[]                @relation("organizations_created_byTousers")
+  organizations_organizations_deleted_byTousers                               organizations[]                @relation("organizations_deleted_byTousers")
+  organizations_organizations_updated_byTousers                               organizations[]                @relation("organizations_updated_byTousers")
+  otps                                                                        otps[]
+  package_application_features_package_application_features_created_byTousers package_application_features[] @relation("package_application_features_created_byTousers")
+  package_application_features_package_application_features_updated_byTousers package_application_features[] @relation("package_application_features_updated_byTousers")
+  package_applications_package_applications_created_byTousers                 package_applications[]         @relation("package_applications_created_byTousers")
+  package_applications_package_applications_updated_byTousers                 package_applications[]         @relation("package_applications_updated_byTousers")
+  packages_packages_created_byTousers                                         packages[]                     @relation("packages_created_byTousers")
+  packages_packages_deleted_byTousers                                         packages[]                     @relation("packages_deleted_byTousers")
+  packages_packages_updated_byTousers                                         packages[]                     @relation("packages_updated_byTousers")
+  permission_sub_features_permission_sub_features_created_byTousers           permission_sub_features[]      @relation("permission_sub_features_created_byTousers")
+  permission_sub_features_permission_sub_features_updated_byTousers           permission_sub_features[]      @relation("permission_sub_features_updated_byTousers")
+  product_tour_template_types_product_tour_template_types_created_byTousers   product_tour_template_types[]  @relation("product_tour_template_types_created_byTousers")
+  product_tour_template_types_product_tour_template_types_deleted_byTousers   product_tour_template_types[]  @relation("product_tour_template_types_deleted_byTousers")
+  product_tour_template_types_product_tour_template_types_updated_byTousers   product_tour_template_types[]  @relation("product_tour_template_types_updated_byTousers")
+  product_tour_templates_product_tour_templates_created_byTousers             product_tour_templates[]       @relation("product_tour_templates_created_byTousers")
+  product_tour_templates_product_tour_templates_updated_byTousers             product_tour_templates[]       @relation("product_tour_templates_updated_byTousers")
+  purchase_logs                                                               purchase_logs[]
+  restricted_sub_domains_restricted_sub_domains_created_byTousers             restricted_sub_domains[]       @relation("restricted_sub_domains_created_byTousers")
+  restricted_sub_domains_restricted_sub_domains_deleted_byTousers             restricted_sub_domains[]       @relation("restricted_sub_domains_deleted_byTousers")
+  restricted_sub_domains_restricted_sub_domains_updated_byTousers             restricted_sub_domains[]       @relation("restricted_sub_domains_updated_byTousers")
+  roles_roles_created_byTousers                                               roles[]                        @relation("roles_created_byTousers")
+  roles_roles_deleted_byTousers                                               roles[]                        @relation("roles_deleted_byTousers")
+  roles_roles_updated_byTousers                                               roles[]                        @relation("roles_updated_byTousers")
+  states_states_created_byTousers                                             states[]                       @relation("states_created_byTousers")
+  states_states_deleted_byTousers                                             states[]                       @relation("states_deleted_byTousers")
+  states_states_updated_byTousers                                             states[]                       @relation("states_updated_byTousers")
+  subscriptions_subscriptions_created_byTousers                               subscriptions[]                @relation("subscriptions_created_byTousers")
+  subscriptions_subscriptions_updated_byTousers                               subscriptions[]                @relation("subscriptions_updated_byTousers")
+  survey_element_types_survey_element_types_created_byTousers                 survey_element_types[]         @relation("survey_element_types_created_byTousers")
+  survey_element_types_survey_element_types_deleted_byTousers                 survey_element_types[]         @relation("survey_element_types_deleted_byTousers")
+  survey_element_types_survey_element_types_updated_byTousers                 survey_element_types[]         @relation("survey_element_types_updated_byTousers")
+  survey_questions_survey_questions_created_byTousers                         survey_questions[]             @relation("survey_questions_created_byTousers")
+  survey_questions_survey_questions_deleted_byTousers                         survey_questions[]             @relation("survey_questions_deleted_byTousers")
+  survey_questions_survey_questions_updated_byTousers                         survey_questions[]             @relation("survey_questions_updated_byTousers")
+  survey_types_survey_types_created_byTousers                                 survey_types[]                 @relation("survey_types_created_byTousers")
+  survey_types_survey_types_deleted_byTousers                                 survey_types[]                 @relation("survey_types_deleted_byTousers")
+  survey_types_survey_types_updated_byTousers                                 survey_types[]                 @relation("survey_types_updated_byTousers")
+  surveys_surveys_created_byTousers                                           surveys[]                      @relation("surveys_created_byTousers")
+  surveys_surveys_deleted_byTousers                                           surveys[]                      @relation("surveys_deleted_byTousers")
+  surveys_surveys_updated_byTousers                                           surveys[]                      @relation("surveys_updated_byTousers")
+  team_roles_team_roles_created_byTousers                                     team_roles[]                   @relation("team_roles_created_byTousers")
+  team_roles_team_roles_deleted_byTousers                                     team_roles[]                   @relation("team_roles_deleted_byTousers")
+  team_roles_team_roles_updated_byTousers                                     team_roles[]                   @relation("team_roles_updated_byTousers")
+  tenant_dbs_tenant_dbs_created_byTousers                                     tenant_dbs[]                   @relation("tenant_dbs_created_byTousers")
+  tenant_dbs_tenant_dbs_deleted_byTousers                                     tenant_dbs[]                   @relation("tenant_dbs_deleted_byTousers")
+  tenant_dbs_tenant_dbs_updated_byTousers                                     tenant_dbs[]                   @relation("tenant_dbs_updated_byTousers")
+  ug_article_template_ug_article_template_created_byTousers                   ug_article_template[]          @relation("ug_article_template_created_byTousers")
+  ug_article_template_ug_article_template_deleted_byTousers                   ug_article_template[]          @relation("ug_article_template_deleted_byTousers")
+  ug_article_template_ug_article_template_updated_byTousers                   ug_article_template[]          @relation("ug_article_template_updated_byTousers")
+  user_authentications                                                        user_authentications?
+  user_login_sessions                                                         user_login_sessions[]
+  user_organizations_user_organizations_created_byTousers                     user_organizations[]           @relation("user_organizations_created_byTousers")
+  user_organizations_user_organizations_deleted_byTousers                     user_organizations[]           @relation("user_organizations_deleted_byTousers")
+  user_organizations_user_organizations_updated_byTousers                     user_organizations[]           @relation("user_organizations_updated_byTousers")
+  user_organizations_user_organizations_user_idTousers                        user_organizations[]           @relation("user_organizations_user_idTousers")
+  user_role_association                                                       user_role_association[]
+  countries_users_country_idTocountries                                       countries?                     @relation("users_country_idTocountries", fields: [country_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_users_country_id_countries")
+  geo_zones_users_geo_zone_idTogeo_zones                                      geo_zones?                     @relation("users_geo_zone_idTogeo_zones", fields: [geo_zone_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_users_geo_zone_id_geo_zones")
+  languages_users_language_idTolanguages                                      languages?                     @relation("users_language_idTolanguages", fields: [language_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_users_language_id_languages")
+  countries_users_phone_country_idTocountries                                 countries?                     @relation("users_phone_country_idTocountries", fields: [phone_country_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_users_phone_country_id_countries")
+  timezones                                                                   timezones?                     @relation(fields: [timezone_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_users_timezone_id_timezones")
+}

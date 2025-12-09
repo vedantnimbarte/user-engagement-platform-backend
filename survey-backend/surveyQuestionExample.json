@@ -1,0 +1,552 @@
+{
+  "questions": [
+    {
+      "sort_order": 0,
+      "question": {
+        "question_name": "How likely are you to recommend us to your friends & colleagues?",
+        "description": "",
+        "notLikelyText": "Not likely",
+        "likelyText": "Very likely"
+      },
+      "logic": {
+        "Distractor": 4,
+        "Passive": "Finish the Survey",
+        "Promoter": "Next Question"
+      },
+      "design": {
+        "color_type": "Gradient",
+        "countColor": {
+          "first_color": {
+            "id": "first_color",
+            "label": "First color",
+            "color": "#f10404"
+          },
+          "second_color": {
+            "id": "second_color",
+            "label": "Second color",
+            "color": "#feba08"
+          },
+          "third_color": {
+            "id": "third_color",
+            "label": "Third color",
+            "color": "#09b570"
+          }
+        },
+        "range": 10,
+        "reverseValue": false,
+        "start1": false,
+        "image": false,
+        "imageData": {
+          "url": null,
+          "name": "",
+          "asBackground": false,
+          "cords": "50% 50%",
+          "position": "right"
+        }
+      },
+      "element_type": "nps"
+    },
+    {
+      "sort_order": 1,
+      "question_json": {
+        "question_name": "What can we do to improve that score?",
+        "description": "",
+        "placeHolderText": "Write your answer here",
+        "buttonText": "Submit Feedback"
+      },
+      "logic_json": {
+        "anyOptions": "Next Question"
+      },
+      "setting_json": {
+        "requireAnswer": false,
+        "image": false,
+        "backButton": false,
+        "backButtonText": "Back",
+        "backButtonPosition": "Right",
+        "imageData": {
+          "url": null,
+          "name": "",
+          "asBackground": false,
+          "cords": "50% 50%",
+          "position": "right"
+        }
+      },
+      "element_type": "long_answer"
+    },
+    {
+      "sort_order": 2,
+      "question_json": {
+        "question_name": "Would you be interested in a quick demo with a member of our team?",
+        "description": "",
+        "yesButton": "Yes",
+        "noButton": "No"
+      },
+      "logic_json": {
+        "yesOptions": "Next Question",
+        "noOptions": "Next Question"
+      },
+      "setting_json": {
+        "highLightYesButton": true,
+        "reverseButton": true,
+        "image": null,
+        "imageData": {
+          "position": "right",
+          "asBackground": false,
+          "small": false,
+          "url": "",
+          "name": ""
+        }
+      },
+      "element_type": "yes_no_question"
+    },
+    {
+      "sort_order": 3,
+      "question_json": {
+        "question_name": "Fill your information",
+        "description": "",
+        "fields": {
+          "first_name": {
+            "label": "First name",
+            "type": "text",
+            "show": true,
+            "required": false
+          },
+          "last_name": {
+            "label": "Last name",
+            "type": "text",
+            "show": true,
+            "required": false
+          },
+          "phone_no": {
+            "label": "Phone number",
+            "type": "tel",
+            "show": true,
+            "required": false
+          },
+          "email": {
+            "label": "Email",
+            "type": "email",
+            "show": true,
+            "required": false
+          },
+          "company": {
+            "label": "Company",
+            "type": "text",
+            "show": true,
+            "required": false
+          }
+        }
+      },
+      "logic_json": {
+        "anyAnser": "Next Question"
+      },
+      "setting_json": {
+        "nextButton": true,
+        "backButton": false,
+        "nextButtonText": "Next",
+        "BackButtonText": "Back",
+        "buttonPosition": "Right",
+        "image": null,
+        "imageData": {
+          "position": "right",
+          "asBackground": false,
+          "small": false,
+          "url": "",
+          "name": ""
+        }
+      },
+      "element_type": "contact_information"
+    },
+    {
+      "sort_order": 4,
+      "question_json": {
+        "question_name": "What do you enjoy most about our service?",
+        "description": "",
+        "option": [
+          {
+            "key": 1,
+            "optionDesc": "Answer 1",
+            "comment": false,
+            "commentRequired": false,
+            "checked": false
+          },
+          {
+            "key": 2,
+            "optionDesc": "Answer 2",
+            "comment": false,
+            "commentRequired": false,
+            "checked": false
+          }
+        ]
+      },
+      "logic_json": {
+        "anyAnser": "Next Question"
+      },
+      "setting_json": {
+        "minQuestion": 0,
+        "maxQuestion": 2,
+        "nextButton": true,
+        "backButton": false,
+        "nextButtonText": "Next",
+        "backButtonText": "Back",
+        "buttonPosition": "Right",
+        "image": null,
+        "imageData": {
+          "position": "right",
+          "asBackground": false,
+          "small": false,
+          "url": "",
+          "name": ""
+        }
+      },
+      "element_type": "multiple_choice"
+    },
+    {
+      "sort_order": 5,
+      "question_json": {
+        "question_name": "A Compelling headline",
+        "description": "",
+        "buttonText": "Continue"
+      },
+      "logic_json": {
+        "anyOptions": "Next Question"
+      },
+      "setting_json": {
+        "image": null,
+        "imageData": {
+          "position": "right",
+          "asBackground": false,
+          "small": false,
+          "url": "",
+          "name": ""
+        },
+        "backButton": false,
+        "backButtonTxt": "Back",
+        "backButtonPosition": "Right"
+      },
+      "element_type": "introduction_panel"
+    },
+    {
+      "sort_order": 6,
+      "question_json": {
+        "question_name": "How satisfied are you with our service?",
+        "description": "",
+        "lowRating": "Unsatisfied",
+        "highRating": "Satisfied"
+      },
+      "logic_json": {
+        "Distractor": "Next Question",
+        "Passive": "Next Question",
+        "Promoter": "Next Question"
+      },
+      "setting_json": {
+        "range": 5,
+        "image": null,
+        "imageData": {
+          "position": "right",
+          "asBackground": false,
+          "small": false,
+          "url": "",
+          "name": ""
+        }
+      },
+      "element_type": "csat"
+    },
+    {
+      "sort_order": 7,
+      "question_json": {
+        "question_name": "How easy was using our product so far?",
+        "description": "",
+        "lowRating": "Very difficult",
+        "highRating": "Very easy"
+      },
+      "logic_json": {
+        "Distractor": "Next Question",
+        "Passive": "Next Question",
+        "Promoter": "Next Question"
+      },
+      "setting_json": {
+        "range": 5,
+        "shape": "Numeric",
+        "image": null,
+        "imageData": {
+          "position": "right",
+          "asBackground": false,
+          "small": false,
+          "url": "",
+          "name": ""
+        }
+      },
+      "element_type": "ces"
+    },
+    {
+      "sort_order": 8,
+      "question_json": {
+        "question_name": "How satisfied are you with our service?",
+        "description": "",
+        "targetUrl": "https://google.com",
+        "buttonText": "Click here"
+      },
+      "logic_json": {
+        "anyOptions": "Next Question"
+      },
+      "setting_json": {
+        "openNewTab": true,
+        "image": null,
+        "imageData": {
+          "position": "right",
+          "asBackground": false,
+          "small": false,
+          "url": "",
+          "name": ""
+        },
+        "backButton": false,
+        "backButtonTxt": "Back",
+        "backButtonPosition": "Right"
+      },
+      "element_type": "call_to_action"
+    },
+    {
+      "sort_order": 9,
+      "question_json": {
+        "question_name": "Looking to give us a rating ?",
+        "description": "",
+        "lowRating": "low",
+        "highRating": "high"
+      },
+      "logic_json": {
+        "Distractor": "Next Question",
+        "Passive": "Next Question",
+        "Promoter": "Next Question"
+      },
+      "setting_json": {
+        "range": 5,
+        "image": null,
+        "imageData": {
+          "position": "right",
+          "asBackground": false,
+          "small": false,
+          "url": "",
+          "name": ""
+        }
+      },
+      "element_type": "star_rating"
+    },
+    {
+      "sort_order": 10,
+      "question_json": {
+        "question_name": "What do you enjoy most about our service?",
+        "description": "",
+        "option": [
+          {
+            "key": 1,
+            "optionDesc": "Option 1",
+            "comment": false,
+            "commentRequired": false,
+            "logicValue": "Next Question",
+            "value": "Option 1"
+          },
+          {
+            "key": 2,
+            "optionDesc": "Option 2",
+            "comment": false,
+            "commentRequired": false,
+            "logicValue": "Next Question",
+            "value": "Option 2"
+          }
+        ]
+      },
+      "logic_json": {
+        "anyAnser": "Next Question"
+      },
+      "setting_json": {
+        "nextButton": true,
+        "backButton": false,
+        "nextButtonText": "Next",
+        "backButtonText": "Back",
+        "buttonPosition": "Right",
+        "image": null,
+        "imageData": {
+          "position": "right",
+          "asBackground": false,
+          "small": false,
+          "url": "",
+          "name": ""
+        }
+      },
+      "element_type": "single_answer_list"
+    },
+    {
+      "sort_order": 11,
+      "question_json": {
+        "question_name": "did our feature help you?",
+        "description": "We really appreciate your rating. Your feedback helps us improve our product and serve you better."
+      },
+      "logic_json": {
+        "anyAnser": "Next Question"
+      },
+      "setting_json": {
+        "scalePoint": 5,
+        "scaleLable": ["Very bad", "Bad", "Neutral", "Good", "Very good"],
+        "statement": [
+          {
+            "statement_id": 1,
+            "statement_text": "Statement 1"
+          },
+          {
+            "statement_id": 2,
+            "statement_text": "Statement 2"
+          }
+        ],
+        "image": false,
+        "imageData": {
+          "url": null,
+          "name": "",
+          "asBackground": false,
+          "cords": "50% 50%",
+          "position": "right"
+        }
+      },
+      "element_type": "rating_matrix"
+    },
+    {
+      "sort_order": 12,
+      "question_json": {
+        "question_name": "What can we do to improve that score?",
+        "description": "",
+        "placeHolderText": "Write your answer here",
+        "buttonText": "Submit Feedback"
+      },
+      "logic_json": {
+        "anyOptions": "Next Question"
+      },
+      "setting_json": {
+        "requireAnswer": false,
+        "image": false,
+        "backButton": false,
+        "backButtonText": "Back",
+        "backButtonPosition": "Right",
+        "imageData": {
+          "url": null,
+          "name": "",
+          "asBackground": false,
+          "cords": "50% 50%",
+          "position": "right"
+        }
+      },
+      "element_type": "short_answer"
+    },
+    {
+      "sort_order": 13,
+      "question_json": {
+        "question_name": "can you please give your email for later connection?",
+        "description": "",
+        "placeHolderText": "Write your email here",
+        "buttonText": "Submit"
+      },
+      "logic_json": {
+        "anyOptions": "Next Question"
+      },
+      "setting_json": {
+        "requireAnswer": false,
+        "image": false,
+        "backButton": false,
+        "backButtonText": "Back",
+        "backButtonPosition": "Right",
+        "imageData": {
+          "url": null,
+          "name": "",
+          "asBackground": false,
+          "cords": "50% 50%",
+          "position": "right"
+        }
+      },
+      "element_type": "email"
+    },
+    {
+      "sort_order": 10,
+      "question_json": {
+        "question_name": "What do you enjoy most about our service?",
+        "description": "",
+        "placeHolderText": "Select your answer here",
+        "option": [
+          {
+            "key": 1,
+            "option": "Option 1"
+          },
+          {
+            "key": 2,
+            "option": "Option 2"
+          }
+        ]
+      },
+      "logic_json": {
+        "anyAnser": "Next Question"
+      },
+      "setting_json": {
+        "nextButton": true,
+        "backButton": false,
+        "nextButtonText": "Next",
+        "backButtonText": "Back",
+        "buttonPosition": "Right",
+        "image": null,
+        "imageData": {
+          "position": "right",
+          "asBackground": false,
+          "small": false,
+          "url": "",
+          "name": ""
+        }
+      },
+      "element_type": "dropdown"
+    },
+    {
+      "sort_order": 10,
+      "question_json": {
+        "question_name": "attach your files here?",
+        "description": ""
+      },
+      "logic_json": {
+        "anyAnser": "Next Question"
+      },
+      "setting_json": {
+        "nextButton": true,
+        "backButton": false,
+        "nextButtonText": "Next",
+        "backButtonText": "Back",
+        "buttonPosition": "Right",
+        "image": null,
+        "imageData": {
+          "position": "right",
+          "asBackground": false,
+          "small": false,
+          "url": "",
+          "name": ""
+        }
+      },
+      "attched_files": ["file1", "file2"],
+      "element_type": "attchment"
+    },
+    {
+      "sort_order": 11,
+      "question_json": {
+        "question_name": "Thank You!",
+        "description": "We really appreciate your rating. Your feedback helps us improve our product and serve you better."
+      },
+      "logic_json": {},
+      "setting_json": {
+        "delightAnimation": false,
+        "autoCloseSecond": 4,
+        "image": false,
+        "imageData": {
+          "url": null,
+          "name": "",
+          "asBackground": false,
+          "cords": "50% 50%",
+          "position": "right"
+        }
+      },
+      "element_type": "end_of_survey"
+    }
+  ]
+}

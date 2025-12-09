@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - UserPlus Tracking Test</title>
+    <link rel="icon" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/svgs/solid/user-tag.svg" type="image/svg+xml">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Add the userplus script -->
+    <script src="userplus.js"></script>
+    <script>
+        // Initialize the tracking script
+        document.addEventListener('DOMContentLoaded', function() {
+            window.userplus.init("JHGFMZVCB4");
+            console.log("UserPlus initialized on About page");
+        });
+    </script>
+    <style>
+        .event-log {
+            height: 200px;
+            overflow-y: auto;
+        }
+        /* Animations */
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+        .animate-status {
+            animation: pulse 1.5s infinite;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+<!-- Navigation -->
+<nav class="bg-indigo-600 text-white shadow-lg">
+    <div class="container mx-auto px-4 py-3">
+        <div class="flex justify-between items-center">
+            <div class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                </svg>
+                <span class="font-bold text-xl">UserPlus Tracking Test</span>
+            </div>
+            <div class="hidden md:flex space-x-4">
+                <a href="index.html" class="py-2 px-3 hover:bg-indigo-700 rounded font-medium">Home</a>
+                <a href="products.html" class="py-2 px-3 hover:bg-indigo-700 rounded font-medium">Products</a>
+                <a href="profile.html" class="py-2 px-3 hover:bg-indigo-700 rounded font-medium">Profile</a>
+                <a href="about.html" class="py-2 px-3 bg-indigo-700 rounded font-medium">About</a>
+            </div>
+            <div id="session-status" class="hidden md:flex items-center space-x-2">
+                <span id="status-indicator" class="h-3 w-3 rounded-full bg-green-400 animate-status"></span>
+                <span id="status-text">Active</span>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<div class="container mx-auto p-4">
+    <!-- Header Section -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">About UserPlus Tracking</h1>
+        <p class="text-gray-600">Learn about the tracking capabilities and test environment</p>
+    </div>
+
+    <!-- Main Grid Layout -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- About UserPlus -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                What is UserPlus?
+            </h2>
+            <div class="prose text-gray-600">
+                <p class="mb-3">UserPlus is a comprehensive user tracking solution that helps website owners understand user behavior, session information, and engagement metrics.</p>
+
+                <p class="mb-3">This test environment was created to demonstrate and validate the tracking capabilities of the UserPlus script, including:</p>
+
+                <ul class="list-disc ml-6 mb-4">
+                    <li class="mb-1">Click activity tracking</li>
+                    <li class="mb-1">User identification (anonymous vs. identified)</li>
+                    <li class="mb-1">Session management</li>
+                    <li class="mb-1">Custom event tracking</li>
+                    <li class="mb-1">User state transitions (active, idle, inactive)</li>
+                    <li class="mb-1">Page navigation tracking</li>
+                </ul>
+
+                <p>Use the various pages in this test environment to validate all aspects of user tracking.</p>
+            </div>
+        </div>
+
+        <!-- Test Cases -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                </svg>
+                Test Cases
+            </h2>
+            <div class="space-y-4">
+                <div class="border-l-4 border-indigo-500 pl-4 py-1">
+                    <h3 class="font-medium text-gray-800 mb-1">User Identification</h3>
+                    <p class="text-sm text-gray-600">Test anonymous vs. identified user tracking on the <a href="profile.html" class="text-indigo-600 hover:underline">Profile</a> page.</p>
+                </div>
+
+                <div class="border-l-4 border-indigo-500 pl-4 py-1">
+                    <h3 class="font-medium text-gray-800 mb-1">Click Event Tracking</h3>
+                    <p class="text-sm text-gray-600">Test button click tracking on the <a href="products.html" class="text-indigo-600 hover:underline">Products</a> page.</p>
+                </div>
+
+                <div class="border-l-4 border-indigo-500 pl-4 py-1">
+                    <h3 class="font-medium text-gray-800 mb-1">Custom Event Tracking</h3>
+                    <p class="text-sm text-gray-600">Create and track custom events on the <a href="index.html" class="text-indigo-600 hover:underline">Home</a> page.</p>
+                </div>
+
+                <div class="border-l-4 border-indigo-500 pl-4 py-1">
+                    <h3 class="font-medium text-gray-800 mb-1">Session Management</h3>
+                    <p class="text-sm text-gray-600">Test session states (active, idle, inactive) and view session info on any page.</p>
+                </div>
+
+                <div class="border-l-4 border-indigo-500 pl-4 py-1">
+                    <h3 class="font-medium text-gray-800 mb-1">Page Navigation</h3>
+                    <p class="text-sm text-gray-600">Move between pages to see page view tracking in action.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technical Details -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                </svg>
+                Technical Details
+            </h2>
+            <div class="prose text-gray-600">
+                <p class="mb-3">The UserPlus tracking script uses browser storage to maintain user and session information:</p>
+
+                <ul class="list-disc ml-6 mb-4">
+                    <li class="mb-1"><strong>LocalStorage:</strong> Stores persistent user information such as user ID and type</li>
+                    <li class="mb-1"><strong>SessionStorage:</strong> Stores temporary session information</li>
+                    <li class="mb-1"><strong>Cookies:</strong> Used as a fallback for environments where localStorage is unavailable</li>
+                </ul>
+
+                <p class="mb-3">The script tracks session states:</p>
+
+                <ul class="list-disc ml-6 mb-4">
+                    <li class="mb-1"><strong>Active:</strong> User is actively engaging with the site</li>
+                    <li class="mb-1"><strong>Idle:</strong> User has been inactive for some time (60 seconds)</li>
+                    <li class="mb-1"><strong>Inactive:</strong> Session has been terminated or user has logged out</li>
+                </ul>
+
+                <p>All event data is sent to the UserPlus API endpoint for analytics processing.</p>
+            </div>
+        </div>
+
+        <!-- Implementation Guide -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                Implementation Guide
+            </h2>
+            <div class="prose text-gray-600">
+                <p class="mb-3">To implement UserPlus tracking on your website:</p>
+
+                <ol class="list-decimal ml-6 mb-4">
+                    <li class="mb-1">Include the <code class="bg-gray-100 text-indigo-600 px-1 py-0.5 rounded">userplus.js</code> script in your HTML</li>
+                    <li class="mb-1">Initialize the tracking with your script ID</li>
+                    <li class="mb-1">Use the provided methods to track user interactions:</li>
+                </ol>
+
+                <div class="bg-gray-50 p-3 rounded-md mb-4 font-mono text-sm">
+                    <div class="mb-2"><span class="text-indigo-600">// Initialize tracking</span></div>
+                    <div class="mb-3">window.userplus.init("YOUR_SCRIPT_ID");</div>
+
+                    <div class="mb-2"><span class="text-indigo-600">// Identify a user</span></div>
+                    <div class="mb-3">window.userplus.identify("user_123", { name: "John Doe" });</div>
+
+                    <div class="mb-2"><span class="text-indigo-600">// Track custom event</span></div>
+                    <div>window.userplus.event("purchase", { product_id: "abc123" });</div>
+                </div>
+
+                <p>For more detailed implementation guides and API documentation, please refer to the official UserPlus documentation.</p>
+            </div>
+        </div>
+
+        <!-- Event Log Card -->
+        <div class="bg-white rounded-lg shadow-md p-6 col-span-1 md:col-span-2">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-semibold text-gray-800 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg>
+                    About Page Event Log
+                </h2>
+                <button id="clear-log" class="text-sm bg-gray-200 text-gray-700 py-1 px-3 rounded hover:bg-gray-300 transition">
+                    Clear Log
+                </button>
+            </div>
+            <div id="event-log" class="event-log bg-gray-50 border border-gray-200 rounded-md p-4 font-mono text-sm">
+                <div class="text-gray-400">[System] Page loaded. View tracking events here...</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="bg-gray-800 text-white py-8 mt-8">
+    <div class="container mx-auto px-4">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-4 md:mb-0">
+                <h3 class="text-lg font-semibold mb-2">UserPlus Tracking Test</h3>
+                <p class="text-gray-400 text-sm">A comprehensive testing environment for UserPlus tracking implementation</p>
+            </div>
+            <div class="flex space-x-4">
+                <a href="index.html" class="text-gray-300 hover:text-white transition">Home</a>
+                <a href="products.html" class="text-gray-300 hover:text-white transition">Products</a>
+                <a href="profile.html" class="text-gray-300 hover:text-white transition">Profile</a>
+                <a href="about.html" class="text-gray-300 hover:text-white transition">About</a>
+            </div>
+        </div>
+        <div class="border-t border-gray-700 mt-6 pt-6 text-center text-gray-400 text-sm">
+            &copy; 2025 UserPlus Testing Environment. All rights reserved.
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Helper function to log events to the event log
+    function logEvent(type, message, details = null) {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString();
+        const eventLog = document.getElementById('event-log');
+
+        // Create log entry
+        const logEntry = document.createElement('div');
+        logEntry.className = 'py-1 border-b border-gray-200';
+
+        let detailsStr = '';
+        if (details) {
+            try {
+                detailsStr = typeof details === 'string' ? details : JSON.stringify(details);
+            } catch (e) {
+                detailsStr = '[Complex Object]';
+            }
+        }
+
+        // Set colors based on event type
+        let typeClass = 'text-gray-800';
+        if (type === 'success') typeClass = 'text-green-600';
+        if (type === 'error') typeClass = 'text-red-600';
+        if (type === 'warning') typeClass = 'text-yellow-600';
+        if (type === 'info') typeClass = 'text-blue-600';
+
+        logEntry.innerHTML = `
+                <span class="text-gray-500">[${timeString}]</span>
+                <span class="${typeClass} font-medium">${type.toUpperCase()}</span>:
+                <span>${message}</span>
+                ${detailsStr ? `<pre class="text-xs mt-1 pl-2 text-gray-600 overflow-x-auto">${detailsStr}</pre>` : ''}
+            `;
+
+        // Check if we need to clear the initial "waiting" message
+        if (eventLog.querySelector('.text-gray-400')) {
+            eventLog.innerHTML = '';
+        }
+
+        // Add to log
+        eventLog.appendChild(logEntry);
+
+        // Auto-scroll to the bottom
+        eventLog.scrollTop = eventLog.scrollHeight;
+    }
+
+    // Document ready function
+    document.addEventListener('DOMContentLoaded', function() {
+        // Log initial page load
+        logEvent('info', 'About page loaded', { page: 'about.html' });
+
+        // Add click tracking to all links
+        document.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                const text = this.textContent.trim();
+
+                // Track click event with UserPlus
+                try {
+                    if (window.userplus && typeof window.userplus.event === 'function') {
+                        window.userplus.event('link_click', {
+                            href: href,
+                            text: text,
+                            page: 'about',
+                            timestamp: new Date().toISOString()
+                        });
+
+                        logEvent('success', `Link clicked: ${text}`, { href });
+                    }
+                } catch (error) {
+                    logEvent('error', 'Failed to track link click', { message: error.message });
+                }
+            });
+        });
+
+        // Clear log button
+        document.getElementById('clear-log').addEventListener('click', function() {
+            document.getElementById('event-log').innerHTML = '<div class="text-gray-400">[System] Log cleared</div>';
+            logEvent('info', 'Event log cleared');
+        });
+    });
+</script>
+</body>
+</html>

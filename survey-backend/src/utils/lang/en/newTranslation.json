@@ -1,0 +1,54 @@
+{
+    "msg": {
+      "success": "Success",
+      "created": "Created successfully",
+      "updated": "Updated successfully",
+      "deleted": "Deleted successfully",
+      "not_found": "Resource not found",
+      "bad_request": "Bad request",
+      "unauthorized": "Unauthorized access",
+      "forbidden": "Forbidden access",
+      "internal_server_error": "Internal server error occurred",
+      "validation_error": "Validation error",
+      
+      "auth": {
+        "login_success": "Login successful",
+        "login_failed": "Login failed",
+        "invalid_credentials": "Invalid email or password",
+        "email_not_verified": "Email not verified",
+        "account_blocked": "Account is blocked",
+        "logout_success": "Logout successful",
+        "token_expired": "Token has expired",
+        "invalid_token": "Invalid token",
+        "email_already_exists": "Email already exists",
+        "user_not_found": "User not found",
+        "password_reset_sent": "Password reset instructions sent to email",
+        "password_updated": "Password updated successfully",
+        "invalid_otp": "Invalid OTP",
+        "otp_expired": "OTP has expired",
+        "verification_success": "Verification successful",
+        "verification_failed": "Verification failed"
+      },
+  
+      "user": {
+        "profile_updated": "Profile updated successfully",
+        "profile_not_found": "Profile not found",
+        "invalid_user_id": "Invalid user ID"
+      },
+  
+      "file": {
+        "upload_success": "File uploaded successfully",
+        "upload_failed": "File upload failed",
+        "invalid_file_type": "Invalid file type",
+        "file_too_large": "File size too large"
+      },
+  
+      "validation": {
+        "required_field": "{{field}} is required",
+        "invalid_email": "Invalid email format",
+        "invalid_password": "Password must be at least 8 characters long",
+        "passwords_not_match": "Passwords do not match",
+        "invalid_phone": "Invalid phone number"
+      }
+    }
+  }

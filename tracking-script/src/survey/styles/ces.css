@@ -1,0 +1,140 @@
+/* CSS Variables for customization */
+:root {
+    --ces-title-color: #000000;
+    --ces-description-color: #657488;
+    --ces-background-color: #ffffff;
+  }
+  
+  /* Main container */
+  .ces-container {
+    height: 74px;
+    width: 440px;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    background-color: var(--ces-background-color, #ffffff);
+  }
+  
+  /* Rating scale container */
+  .ces-rating-scale {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 0 4px;
+  }
+  
+  /* Rating buttons */
+  .ces-rating-button {
+    min-width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    font-weight: 500;
+    border-radius: 5.09px;
+    padding: 5.09px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+  }
+  
+  .ces-rating-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .ces-rating-button:focus {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+  }
+  
+  .ces-rating-button.ces-rating-selected {
+    font-weight: bold;
+    transform: scale(1.1);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Color classes for different rating values */
+  .ces-rating-0 {
+    background-color: #FFE0E2;
+  }
+  
+  .ces-rating-1 {
+    background-color: #FFDFE2;
+  }
+  
+  .ces-rating-2 {
+    background-color: #FFE0E2;
+  }
+  
+  .ces-rating-3 {
+    background-color: #FFE5E3;
+  }
+  
+  .ces-rating-4 {
+    background-color: #FFE7E2;
+  }
+  
+  .ces-rating-5 {
+    background-color: #FFF1EF;
+  }
+  
+  .ces-rating-6 {
+    background-color: #FFF0CF;
+  }
+  
+  .ces-rating-7 {
+    background-color: #FFF1CF;
+  }
+  
+  .ces-rating-8 {
+    background-color: #F3F7DC;
+  }
+  
+  .ces-rating-9 {
+    background-color: #F0F6D1;
+  }
+  
+  .ces-rating-10 {
+    background-color: #CDF9E5;
+  }
+  
+  /* Labels container */
+  .ces-labels {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 12px;
+  }
+  
+  .ces-label-min,
+  .ces-label-max {
+    font-weight: 500;
+    color: var(--ces-description-color, #657488);
+  }
+  
+  /* Responsive design */
+  @media (max-width: 480px) {
+    .ces-container {
+      width: 100%;
+      max-width: 440px;
+      padding: 0 16px;
+      box-sizing: border-box;
+    }
+    
+    .ces-rating-scale {
+      gap: 4px;
+      padding: 0 2px;
+    }
+    
+    .ces-rating-button {
+      min-width: 28px;
+      height: 28px;
+      font-size: 15px;
+    }
+  }

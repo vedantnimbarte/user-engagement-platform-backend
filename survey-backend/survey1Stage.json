@@ -1,0 +1,54 @@
+{
+    "surveys": [
+      {
+        "stage": "Onboarding",
+        "type_of_survey": "Welcome + Onboarding Survey (Short)",
+        "trigger": "After 2-3 logins or 10 mins usage",
+        "goal": "Understand user intent, experience clarity",
+        "description": "This short survey helps capture the user's initial intent and expectations. It shows users you're listening from day one and helps tailor future experiences based on their goals, which increases early engagement and retention."
+      },
+      {
+        "stage": "First Milestone",
+        "type_of_survey": "Feature Feedback (e.g., Chart Board, Cloudcollab)",
+        "trigger": "After using a core feature (e.g., creating 1st chart board)",
+        "goal": "Measure feature usefulness",
+        "description": "By asking for feedback after a user engages with a core feature, you validate what’s working and what’s not. It also makes users feel valued for their opinion and can highlight hidden pain points early on."
+      },
+      {
+        "stage": "1-Week/3-Uses Later",
+        "type_of_survey": "Product Experience Survey",
+        "trigger": "7 days after signup or 3rd session",
+        "goal": "Evaluate overall satisfaction and friction points",
+        "description": "This helps measure if your onboarding and value delivery are effective after initial usage. It also gives you timely insights before users drop off and allows for targeted interventions."
+      },
+      {
+        "stage": "Contextual Micro-surveys",
+        "type_of_survey": "Thumbs up/down or Emoji + Free Text",
+        "trigger": "After completing small tasks (e.g., export, invite teammate)",
+        "goal": "Collect quick feedback with minimal interruption",
+        "description": "These lightweight, non-intrusive surveys allow you to collect rapid feedback on specific actions. They keep users engaged and signal that their experience matters without slowing them down."
+      },
+      {
+        "stage": "NPS Survey",
+        "type_of_survey": "Standard NPS 0-10 Rating",
+        "trigger": "After 2-4 weeks of use or post successful project",
+        "goal": "Measure loyalty & word-of-mouth potential",
+        "description": "Net Promoter Score helps measure long-term user satisfaction and predict future growth. Knowing which users are promoters vs. detractors lets you target follow-ups and gather deeper insights."
+      },
+      {
+        "stage": "Exit/Churn Survey",
+        "type_of_survey": "Exit Intent or Cancelation Survey",
+        "trigger": "When user downgrades, deletes account, or is inactive for 2 weeks",
+        "goal": "Understand reasons for churn or disinterest",
+        "description": "Critical for identifying what's pushing users away. These insights help you refine your product, pricing, or messaging — and sometimes, even win the user back with a timely intervention."
+      },
+      {
+        "stage": "Feature Request / Suggestion Box",
+        "type_of_survey": "Always-available floating button or within Help menu",
+        "trigger": "Passive engagement",
+        "goal": "Learn what users want next",
+        "description": "Encourages users to share ideas in real time. It builds a feedback culture, makes users feel like contributors, and gives your team a pipeline of ideas directly from real users."
+      }
+    ]
+  }
+  

@@ -1,0 +1,21 @@
+{
+  "name": "@userplus/common",
+  "version": "0.0.2",
+  "description": "All the common functions to be used in all services.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Userplus",
+  "license": "ISC",
+  "dependencies": {
+    "crypto-js": "^4.1.1",
+    "excel4node": "^1.8.0",
+    "html-pdf": "^3.0.1",
+    "joi": "^17.9.2",
+    "jsonwebtoken": "^8.5.1",
+    "otp-generator": "^4.0.0",
+    "pg": "^8.11.1",
+    "redis": "^4.6.7"
+  }
+}

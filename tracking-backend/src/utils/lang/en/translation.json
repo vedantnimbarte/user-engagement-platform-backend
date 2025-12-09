@@ -1,0 +1,17 @@
+{
+  "msg": {
+    "ok": "OK",
+    "argument_validation_error": "Invalid argument passed.",
+    "created_success": "Created successfully.",
+    "updated_success": "Updated successfully.",
+    "deleted_success": "Deleted successfully.",
+    "already_exists": "This Email Already exist.",
+    "cannot_perform_action": "Could not perform action.",
+    "internal_server_error": "Internal server error.",
+    "user_already_exists": "User already exists! Please try login",
+    "user_has_been_created_successfully": "User has been created successfully!",
+    "logged_in_successfully": "User has been logged in successfully!!",
+    "unauthorized_request": "You are unauthorized for this request!",
+    "user_not_found": "User not found!"
+   }
+}

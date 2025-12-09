@@ -1,0 +1,6 @@
+{
+  "name": "name of the survey",
+  "description": "description of the survey",
+  "type": "type of the survey, it can be 'web'(show in users product or website), 'email'(sending it to email), or 'shereble page'(can shere this survey page to anyone at anywere to get details)",
+  "questions": []
+}
